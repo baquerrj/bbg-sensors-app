@@ -1,8 +1,8 @@
 #include "common.h"
 #include <time.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <sys/syscall.h>
 
 void print_header( FILE* file )
 {
@@ -19,7 +19,6 @@ void print_header( FILE* file )
 
    return;
 }
-
 
 void thread_exit( file_t* log, int exit_status )
 {

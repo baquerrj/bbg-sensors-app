@@ -1,29 +1,18 @@
-#include <signal.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <signal.h>
 #include "temperature.h"
 #include "common.h"
+
+#include <signal.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <sys/syscall.h>
+
 
 static pthread_t temp_thread;
 //static pthread_t light_thread;
 //static pthread_t logger_thread;
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-#if 0
-void print_header(FILE *file)
-{
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
-   fprintf( file, "=====================================================\n" );
-   fprintf( file, "Master Thread [%d]: %ld.%ld secs\n",
-            (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
-   return;
-}
-#endif
+
 
 int main( int argc, char *argv[] )
 {

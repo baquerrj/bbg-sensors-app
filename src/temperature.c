@@ -1,9 +1,9 @@
-
 #include "temperature.h"
 #include <errno.h>
 #include <time.h>
 #include <signal.h>
 #include <string.h>
+#include <stdlib.h>
 
 static timer_t    timerid;
 struct itimerspec trigger;
@@ -12,55 +12,6 @@ static file_t *log;
 
 static pthread_mutex_t  tmutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t   tcond = PTHREAD_COND_INITIALIZER;
-#if 0
-void temperature_header(FILE* file)
-{
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
-   fprintf( file, "\n=====================================================\n" );
-   fprintf( file, "Temperature Sensor Thread [%d]: %ld.%ld secs\n",
-            (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
-   fflush( file );
-   return;
-}
-
-
-void thread_exit( int exit_status )
-{
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
-
-   while( pthread_mutex_lock(&mutex) );
-   temperature_header( log->fid );
-   temperature_header( stdout );
-
-   switch( exit_status )
-   {
-      case SIGUSR1:
-         fprintf( stdout, "Caught SIGUSR1 Signal! Exiting...\n");
-         fprintf( log->fid, "Caught SIGUSR1 Signal! Exiting...\n");
-         fflush( log->fid );
-         break;
-      case SIGUSR2:
-         fprintf( stdout, "Caught SIGUSR2 Signal! Exiting...\n");
-         fprintf( log->fid, "Caught SIGUSR2 Signal! Exiting...\n");
-         fflush( log->fid );
-         break;
-      default:
-         break;
-   }
-   fprintf( stdout, "Goodbye World! End Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   fprintf( log->fid, "Goodbye World! End Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   fflush( log->fid );
-   fclose( log->fid );
-   pthread_mutex_unlock(&mutex);
-
-   free( log );
-   pthread_exit(EXIT_SUCCESS);
-}
-#endif
 
 static void sig_handler( int signo )
 {
@@ -88,7 +39,7 @@ static int report_cpu( void )
       pthread_mutex_lock(&tmutex);
       pthread_cond_wait(&tcond, &tmutex);
       pthread_mutex_unlock(&tmutex);
-      
+
       pthread_mutex_lock(&mutex);
       print_header( log->fid );
       pthread_mutex_unlock(&mutex);
