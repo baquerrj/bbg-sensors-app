@@ -1,9 +1,31 @@
+/*
+ * =================================================================================
+ *    @file     temperature.c
+ *    @brief    
+ *
+ *  <+DETAILED+>
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
 #include "temperature.h"
 #include <errno.h>
 #include <time.h>
 #include <signal.h>
 #include <string.h>
 #include <stdlib.h>
+#include <semaphore.h>
 
 static timer_t    timerid;
 struct itimerspec trigger;
@@ -13,6 +35,17 @@ static file_t *log;
 static pthread_mutex_t  tmutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t   tcond = PTHREAD_COND_INITIALIZER;
 
+
+/*
+ * =================================================================================
+ * Function:       sig_handler
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
 static void sig_handler( int signo )
 {
    if( signo == SIGUSR1 )
@@ -32,6 +65,17 @@ static void sig_handler( int signo )
    return;
 }
 
+
+/*
+ * =================================================================================
+ * Function:       report_cpu
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
 static int report_cpu( void )
 {
    while( 1 )
@@ -47,6 +91,17 @@ static int report_cpu( void )
    return 0;
 }
 
+
+/*
+ * =================================================================================
+ * Function:       setup_timer
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
 static int setup_timer( void )
 {
    /* Set up timer */
@@ -74,6 +129,18 @@ static int setup_timer( void )
    return 0;
 }
 
+
+
+/*
+ * =================================================================================
+ * Function:       temperature_fn
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
 void *temperature_fn(void *arg)
 {
    /* Get time that thread was spawned */
