@@ -38,7 +38,6 @@ static pthread_t temp_thread;
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-int shm_fd;
 static shared_data_t *shm;
 
 /*

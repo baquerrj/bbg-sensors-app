@@ -121,7 +121,7 @@ void *get_shared_memory( void )
 {
    struct shared_data *shm_p;
 
-   shm_fd = shm_open( SHM_SEGMENT_NAME, O_CREAT | O_EXCL | O_RDWR, 0666 );
+   int shm_fd = shm_open( SHM_SEGMENT_NAME, O_CREAT | O_EXCL | O_RDWR, 0666 );
    if( 0 < shm_fd )
    {
       fprintf( stdout, "Creating shared memroy and setting size to %lu bytes\n",

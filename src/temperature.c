@@ -30,6 +30,7 @@
 static timer_t    timerid;
 struct itimerspec trigger;
 
+static shared_data_t *shm;
 static file_t *log;
 
 static pthread_mutex_t  tmutex = PTHREAD_MUTEX_INITIALIZER;
@@ -147,6 +148,8 @@ void *temperature_fn(void *arg)
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
 
+   shm = get_shared_memory();
+   
    static int failure = 1;
    /* Initialize thread */
    if( NULL == arg )
