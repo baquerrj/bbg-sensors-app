@@ -1,7 +1,7 @@
 /*
  * =================================================================================
  *    @file     common.c
- *    @brief    
+ *    @brief
  *
  *  <+DETAILED+>
  *
@@ -36,7 +36,7 @@
 /*
  * =================================================================================
  * Function:       print_header
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -63,7 +63,7 @@ void print_header( FILE* file )
 /*
  * =================================================================================
  * Function:       thread_exit
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -110,7 +110,7 @@ void thread_exit( file_t* log, int exit_status )
 /*
  * =================================================================================
  * Function:       get_shared_memory
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -122,35 +122,45 @@ void *get_shared_memory( void )
    struct shared_data *shm_p;
 
    int shm_fd = shm_open( SHM_SEGMENT_NAME, O_CREAT | O_EXCL | O_RDWR, 0666 );
-   if( 0 < shm_fd )
+   if( 0 > shm_fd )
    {
-      fprintf( stdout, "Creating shared memroy and setting size to %lu bytes\n",
+      int errnum = errno;
+      if( EEXIST == errnum )
+      {
+		   /* Already exists: open again without O_CREAT */
+		   shm_fd = shm_open(SHM_SEGMENT_NAME, O_RDWR, 0);
+	   }
+      else
+      {
+         fprintf( stderr, "Encountered error opening shared memory: %s\n",
+                  strerror( errnum ) );
+         exit(EXIT_FAILURE);
+      }
+   }
+   else
+   {
+      fprintf( stdout, "Creating shared memory and setting size to %lu bytes\n",
                sizeof( shared_data_t ) );
 
       if( 0 > ftruncate( shm_fd, sizeof( shared_data_t )) )
       {
-         perror( "Encountered error setting size of shared memroy" );
-         exit(1);
+         int errnum = errno;
+         fprintf( stderr, "Encountered error setting size of shared memroy: %s\n",
+                  strerror( errnum ) );
+         exit(EXIT_FAILURE);
       }
-	}
-   else if( -1 == shm_fd && EEXIST == errno )
-   {
-		/* Already exists: open again without O_CREAT */
-		shm_fd = shm_open(SHM_SEGMENT_NAME, O_RDWR, 0);
-	}
-   else if (shm_fd == -1)
-   {
-		perror( "shm_open " SHM_SEGMENT_NAME );
-		exit(1);
-	}
+   }
 
 	/* Map the shared memory */
 	shm_p = mmap(NULL, sizeof( shared_data_t ), PROT_READ | PROT_WRITE,
 		     MAP_SHARED, shm_fd, 0);
 
-	if (shm_p == NULL) {
-		perror( "Encountered error memory mapping shared memory" );
-		exit(1);
+   if( NULL == shm_p )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error memory mapping shared memory: %s\n",
+               strerror( errnum ) );
+		exit(EXIT_FAILURE);
 	}
 	return shm_p;
 }
@@ -160,7 +170,7 @@ void *get_shared_memory( void )
 /*
  * =================================================================================
  * Function:       sems_init
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
