@@ -141,6 +141,7 @@ int main( int argc, char *argv[] )
             time.tv_sec, time.tv_nsec );
 
    munmap( shm, sizeof( shared_data_t ) );
+   shm_unlink( SHM_SEGMENT_NAME );
    free( log );
    free( args );
    return 0;
