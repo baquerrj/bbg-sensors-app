@@ -11,10 +11,10 @@ SRCS  := $(wildcard $(SRC)/*.c)
 OBJS  := $(patsubst $(SRC)/%.c, $(RES)/%.o, $(SRCS))
 PROG  := ./bin/prog
 
-all: run
-	./$(PROG) /tmp/log
+all: $(PROG)
 
 run: $(PROG)
+	./$(PROG) /tmp/log
 
 $(RES)/%.o: $(SRC)/%.c
 	mkdir -p $(RES)
