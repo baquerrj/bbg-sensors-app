@@ -27,7 +27,7 @@
 #include <semaphore.h>
 
 #define SHM_SEGMENT_NAME "/shm-log"
-
+#define BUFFER_SIZE 2048
 
 /******************************************************************************
  *  
@@ -38,7 +38,7 @@ typedef struct {
 } file_t;
 
 /******************************************************************************
- *  
+ *  Struct to hold arguments passed to threads
  ******************************************************************************/
 typedef struct {
    void *arg1;
@@ -47,15 +47,14 @@ typedef struct {
 
 
 /******************************************************************************
- *  
+ *  Shared Memory Data Struct
  ******************************************************************************/
 typedef struct {
-   char buffer[2048];
+   char buffer[BUFFER_SIZE];
    sem_t w_sem;
    sem_t r_sem;
 } shared_data_t;
 
-extern pthread_mutex_t mutex;
 
 
 /*
@@ -68,7 +67,7 @@ extern pthread_mutex_t mutex;
  * <+DETAILED+>
  * =================================================================================
  */
-extern void print_header( FILE* file );
+extern void print_header( char *buffer );
 
 /*
  * =================================================================================
@@ -80,7 +79,7 @@ extern void print_header( FILE* file );
  * <+DETAILED+>
  * =================================================================================
  */
-extern void thread_exit( file_t* log, int exit_status );
+extern void thread_exit( int exit_status );
 
 /*
  * =================================================================================

@@ -31,7 +31,6 @@ static timer_t    timerid;
 struct itimerspec trigger;
 
 static shared_data_t *shm;
-static file_t *log;
 
 static pthread_mutex_t  tmutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t   tcond = PTHREAD_COND_INITIALIZER;
@@ -52,12 +51,12 @@ static void sig_handler( int signo )
    if( signo == SIGUSR1 )
    {
       printf("Received SIGUSR1! Exiting...\n");
-      thread_exit( log, signo );
+      thread_exit( signo );
    }
    else if( signo == SIGUSR2 )
    {
       printf("Received SIGUSR2! Exiting...\n");
-      thread_exit( log, signo );
+      thread_exit( signo );
    }
    else if( signo == SIGCONT )
    {
@@ -69,7 +68,7 @@ static void sig_handler( int signo )
 
 /*
  * =================================================================================
- * Function:       report_cpu
+ * Function:       cycle
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
@@ -77,7 +76,7 @@ static void sig_handler( int signo )
  * <+DETAILED+>
  * =================================================================================
  */
-static int report_cpu( void )
+void cycle( void )
 {
    while( 1 )
    {
@@ -85,11 +84,12 @@ static int report_cpu( void )
       pthread_cond_wait(&tcond, &tmutex);
       pthread_mutex_unlock(&tmutex);
 
-      pthread_mutex_lock(&mutex);
-      print_header( log->fid );
-      pthread_mutex_unlock(&mutex);
+      sem_wait(&shm->w_sem);
+      print_header(shm->buffer);
+      //memcpy( shm->buffer, buf, sizeof(shm->buffer) );
+      sem_post(&shm->r_sem);
    }
-   return 0;
+   return;
 }
 
 
@@ -103,7 +103,7 @@ static int report_cpu( void )
  * <+DETAILED+>
  * =================================================================================
  */
-static int setup_timer( void )
+int setup_timer( void )
 {
    /* Set up timer */
    char info[] = "timer woken up!";
@@ -121,7 +121,7 @@ static int setup_timer( void )
 
    trigger.it_value.tv_sec = 1;
    trigger.it_interval.tv_nsec = 100 * 1000000;
-   trigger.it_interval.tv_sec = 1;
+   //trigger.it_interval.tv_sec = 1;
 
    pthread_mutex_init( &tmutex, NULL );
    pthread_cond_init( &tcond, NULL );
@@ -142,53 +142,30 @@ static int setup_timer( void )
  * <+DETAILED+>
  * =================================================================================
  */
-void *temperature_fn(void *arg)
+void *temperature_fn( void *arg )
 {
    /* Get time that thread was spawned */
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
 
    shm = get_shared_memory();
-   
-   static int failure = 1;
-   /* Initialize thread */
-   if( NULL == arg )
-   {
-      fprintf( stderr, "Thread requires name of log file!\n" );
-      pthread_exit(&failure);
-   }
 
-   /* Take mutex to write to file */
-   pthread_mutex_lock(&mutex);
-
-   log = malloc( sizeof( file_t ) );
-   if( NULL == log )
-   {
-      fprintf( stderr, "Ecountered error allocating memory for log file!\n");
-      pthread_exit(&failure);
-   }
-
-   args_t *args = arg;
-   log->name = (char *)args->arg1;
-   log->fid = fopen( log->name, "a+" );
-   if( NULL == log->fid )
-   {
-      perror( "Ecountered error opening log file!\n" );
-      pthread_exit(&failure);
-   }
-
-   print_header( log->fid );
-   fprintf( log->fid, "Hello World! Start Time: %ld.%ld secs\n",
+   /* Write initial state to shared memory */   
+   sem_wait(&shm->w_sem);
+   print_header(shm->buffer);
+   fprintf( stdout, "Hello World! Start Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
-
-   /* Release file mutex */
-   pthread_mutex_unlock(&mutex);
+   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+   /* Signal to logger that shared memory has been updated */
+   sem_post(&shm->r_sem);
 
    signal(SIGUSR1, sig_handler);
    signal(SIGUSR2, sig_handler);
 
    setup_timer();
-   report_cpu();
-   thread_exit( log, 0 );
+   cycle();
+   
+   thread_exit( 0 );
    return NULL;
 }

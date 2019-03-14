@@ -32,7 +32,7 @@
 #include <sys/stat.h>
 
 
-
+   
 /*
  * =================================================================================
  * Function:       print_header
@@ -43,19 +43,29 @@
  * <+DETAILED+>
  * =================================================================================
  */
-void print_header( FILE* file )
+void print_header( char* buffer )
 {
+
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
-   fprintf( file, "\n=====================================================\n" );
-   fprintf( file, "Thread [%d]: %ld.%ld secs\n",
-            (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
-   fflush( file );
-   fprintf( stdout, "\n=====================================================\n" );
-   fprintf( stdout, "Thread [%d]: %ld.%ld secs\n",
-            (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
-   fflush( stdout );
 
+   if( NULL == buffer )
+   {
+      fprintf( stdout, "\n=====================================================\n" );
+      fprintf( stdout, "Thread [%d]: %ld.%ld secs\n",
+               (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
+      fflush( stdout );
+   }
+   else if( NULL != buffer )
+   {
+      char tmp[100]  = "\n=====================================================\n";
+      char tmp2[100];
+      sprintf( tmp2, "Thread [%d]: %ld.%ld secs\n",
+               (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
+
+      strcat( tmp, tmp2 );
+      strcpy( buffer, tmp );
+   }
    return;
 }
 
@@ -70,38 +80,25 @@ void print_header( FILE* file )
  * <+DETAILED+>
  * =================================================================================
  */
-void thread_exit( file_t* log, int exit_status )
+void thread_exit( int exit_status )
 {
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
-
-   while( pthread_mutex_lock(&mutex) );
-   print_header( log->fid );
 
    switch( exit_status )
    {
       case SIGUSR1:
          fprintf( stdout, "Caught SIGUSR1 Signal! Exiting...\n");
-         fprintf( log->fid, "Caught SIGUSR1 Signal! Exiting...\n");
-         fflush( log->fid );
          break;
       case SIGUSR2:
          fprintf( stdout, "Caught SIGUSR2 Signal! Exiting...\n");
-         fprintf( log->fid, "Caught SIGUSR2 Signal! Exiting...\n");
-         fflush( log->fid );
          break;
       default:
          break;
    }
    fprintf( stdout, "Goodbye World! End Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
-   fprintf( log->fid, "Goodbye World! End Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   fflush( log->fid );
-   fclose( log->fid );
-   pthread_mutex_unlock(&mutex);
 
-   free( log );
    pthread_exit(EXIT_SUCCESS);
 }
 
@@ -180,19 +177,19 @@ void *get_shared_memory( void )
 int sems_init( shared_data_t *shm )
 {
    int retVal = 0;
-   retVal = sem_init( &shm->w_sem, 0, 1 );
+   retVal = sem_init( &shm->w_sem, 1, 1 );
    if( 0 > retVal )
    {
       int errnum = errno;
-      fprintf( stderr, "Encountered enrror initializing write semaphore: %s\n",
+      fprintf( stderr, "Encountered error initializing write semaphore: %s\n",
                strerror( errnum ) );
       return retVal;
    }
-   retVal = sem_init( &shm->r_sem, 0, 1 );
+   retVal = sem_init( &shm->r_sem, 1, 0 );
    if( 0 > retVal )
    {
       int errnum = errno;
-      fprintf( stderr, "Encountered enrror initializing read semaphore: %s\n",
+      fprintf( stderr, "Encountered error initializing read semaphore: %s\n",
                strerror( errnum ) );
       return retVal;
    }

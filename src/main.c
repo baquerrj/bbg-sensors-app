@@ -19,6 +19,7 @@
  */
 
 #include "temperature.h"
+#include "logger.h"
 #include "common.h"
 
 #include <fcntl.h>
@@ -34,9 +35,7 @@
 
 static pthread_t temp_thread;
 //static pthread_t light_thread;
-//static pthread_t logger_thread;
-
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_t logger_thread;
 
 static shared_data_t *shm;
 
@@ -58,6 +57,7 @@ static void signal_handler( int signo )
          fprintf( stderr, "Master caught SIGINT!\n" );
          /* Raise SIGUSR1 signal to kill child thread */
          pthread_kill( temp_thread, SIGUSR1 );
+         pthread_kill( logger_thread, SIGUSR1 );
    }
 }
 
@@ -110,39 +110,28 @@ int main( int argc, char *argv[] )
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
 
-   print_header( log->fid );
-   fprintf( log->fid, "Starting Threads! Start Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   fflush( log->fid );
-   print_header( stdout );
-   fprintf( log->fid, "Starting Threads! Start Time: %ld.%ld secs\n",
+   print_header( NULL );
+   fprintf( stdout, "Starting Threads! Start Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
 
    /* Attempting to spawn child threads */
-//   pthread_create( &logger_thread, NULL, logger_fn, (void *)args );
-//   pthread_create( &light_thread, NULL, light_fn, (void *)args );
-   pthread_create( &temp_thread, NULL, temperature_fn, (void *)args );
+   pthread_create( &temp_thread, NULL, temperature_fn, NULL);
+   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
 
-//   pthread_join( logger_thread, NULL );
-//   pthread_join( light_thread, NULL );
    pthread_join( temp_thread, NULL );
+   pthread_join( logger_thread, NULL );
 
    clock_gettime(CLOCK_REALTIME, &time);
 
-   print_header( log->fid );
-   fprintf( log->fid, "All threads exited! Main thread exiting... " );
-   fprintf( log->fid, "End Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   fclose( log->fid );
 
-   print_header( stdout );
+   print_header( NULL );
    fprintf( stdout, "All threads exited! Main thread exiting... " );
    fprintf( stdout, "End Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
-
-   munmap( shm, sizeof( shared_data_t ) );
-   shm_unlink( SHM_SEGMENT_NAME );
+   
    free( log );
    free( args );
+   munmap( shm, sizeof( shared_data_t ) );
+   shm_unlink( SHM_SEGMENT_NAME );
    return 0;
 }

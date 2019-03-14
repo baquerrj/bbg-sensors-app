@@ -35,4 +35,31 @@
  */
 void *temperature_fn( void *arg );
 
+
+
+/*
+ * =================================================================================
+ * Function:       cycle
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void cycle( void );
+
+
+/*
+ * =================================================================================
+ * Function:       setup_timer
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int setup_timer( void );
+
 #endif /* TEMPERATURE_H */
