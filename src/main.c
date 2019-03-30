@@ -1,7 +1,7 @@
 /*
  * =================================================================================
  *    @file     main.c
- *    @brief    
+ *    @brief
  *
  *  <+DETAILED+>
  *
@@ -21,6 +21,7 @@
 #include "temperature.h"
 #include "logger.h"
 #include "common.h"
+#include "watchdog.h"
 
 #include <fcntl.h>
 #include <signal.h>
@@ -36,13 +37,14 @@
 static pthread_t temp_thread;
 //static pthread_t light_thread;
 static pthread_t logger_thread;
+static pthread_t watchdog;
 
 static shared_data_t *shm;
 
 /*
  * =================================================================================
  * Function:       signal_handler
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -57,7 +59,8 @@ static void signal_handler( int signo )
          fprintf( stderr, "Master caught SIGINT!\n" );
          /* Raise SIGUSR1 signal to kill child thread */
          pthread_kill( temp_thread, SIGUSR1 );
-         pthread_kill( logger_thread, SIGUSR1 );
+//         pthread_kill( logger_thread, SIGUSR1 );
+//         pthread_kill( watchdog, SIGUSR1 );
    }
 }
 
@@ -66,7 +69,7 @@ static void signal_handler( int signo )
 /*
  * =================================================================================
  * Function:       main
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -117,6 +120,12 @@ int main( int argc, char *argv[] )
    /* Attempting to spawn child threads */
    pthread_create( &temp_thread, NULL, temperature_fn, NULL);
    pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
+   pthread_t threads[2] = { temp_thread, logger_thread };
+   pthread_create( &watchdog, NULL, watchdog_fn, (void*)threads );
+
+
+   pthread_join( watchdog, NULL );
+
 
    pthread_join( temp_thread, NULL );
    pthread_join( logger_thread, NULL );
@@ -128,7 +137,7 @@ int main( int argc, char *argv[] )
    fprintf( stdout, "All threads exited! Main thread exiting... " );
    fprintf( stdout, "End Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
-   
+
    free( log );
    free( args );
    munmap( shm, sizeof( shared_data_t ) );

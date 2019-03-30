@@ -51,10 +51,10 @@ void print_header( char* buffer )
 
    if( NULL == buffer )
    {
-      fprintf( stdout, "\n=====================================================\n" );
-      fprintf( stdout, "Thread [%d]: %ld.%ld secs\n",
+      fprintf( stderr, "\n=====================================================\n" );
+      fprintf( stderr, "Thread [%d]: %ld.%ld secs\n",
                (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
-      fflush( stdout );
+      fflush( stderr );
    }
    else if( NULL != buffer )
    {
