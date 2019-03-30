@@ -1,7 +1,7 @@
 /*
  * =================================================================================
  *    @file     temperature.c
- *    @brief    
+ *    @brief
  *
  *  <+DETAILED+>
  *
@@ -39,7 +39,7 @@ static pthread_cond_t   tcond = PTHREAD_COND_INITIALIZER;
 /*
  * =================================================================================
  * Function:       sig_handler
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -69,7 +69,7 @@ static void sig_handler( int signo )
 /*
  * =================================================================================
  * Function:       cycle
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -78,15 +78,20 @@ static void sig_handler( int signo )
  */
 void cycle( void )
 {
+   static int i = 0;
    while( 1 )
    {
+      static char buffer[BUFFER_SIZE];
+      sprintf( buffer, "temp thread cycle[%d]\n", ++i );
+
+
       pthread_mutex_lock(&tmutex);
       pthread_cond_wait(&tcond, &tmutex);
       pthread_mutex_unlock(&tmutex);
 
       sem_wait(&shm->w_sem);
-      print_header(shm->buffer);
-      //memcpy( shm->buffer, buf, sizeof(shm->buffer) );
+      print_header(shm->header);
+      memcpy( shm->buffer, buffer, sizeof(shm->buffer) );
       sem_post(&shm->r_sem);
    }
    return;
@@ -96,7 +101,7 @@ void cycle( void )
 /*
  * =================================================================================
  * Function:       setup_timer
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -120,8 +125,8 @@ int setup_timer( void )
    timer_create(CLOCK_REALTIME, &sev, &timerid);
 
    trigger.it_value.tv_sec = 1;
-   trigger.it_interval.tv_nsec = 100 * 1000000;
-   //trigger.it_interval.tv_sec = 1;
+//   trigger.it_interval.tv_nsec = 100 * 1000000;
+   trigger.it_interval.tv_sec = 1;
 
    pthread_mutex_init( &tmutex, NULL );
    pthread_cond_init( &tcond, NULL );
@@ -135,7 +140,7 @@ int setup_timer( void )
 /*
  * =================================================================================
  * Function:       temperature_fn
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -150,7 +155,7 @@ void *temperature_fn( void *arg )
 
    shm = get_shared_memory();
 
-   /* Write initial state to shared memory */   
+   /* Write initial state to shared memory */
    sem_wait(&shm->w_sem);
    print_header(shm->buffer);
    fprintf( stdout, "Hello World! Start Time: %ld.%ld secs\n",
@@ -165,7 +170,7 @@ void *temperature_fn( void *arg )
 
    setup_timer();
    cycle();
-   
+
    thread_exit( 0 );
    return NULL;
 }

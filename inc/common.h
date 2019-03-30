@@ -40,19 +40,21 @@ typedef struct {
 /******************************************************************************
  *  Struct to hold arguments passed to threads
  ******************************************************************************/
-typedef struct {
-   void *arg1;
-   void *arg2;
-} args_t;
+typedef struct thread_id_s {
+   pthread_t t1;
+   pthread_t t2;
+} thread_id_s;
 
 
 /******************************************************************************
  *  Shared Memory Data Struct
  ******************************************************************************/
 typedef struct {
-   char buffer[BUFFER_SIZE];
+   char buffer[BUFFER_SIZE];  /* Buffer for message from thread */
+   char header[BUFFER_SIZE];  /* Buffer for header identifying the thread who wrote to shm */
    sem_t w_sem;
    sem_t r_sem;
+
 } shared_data_t;
 
 

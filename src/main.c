@@ -58,9 +58,9 @@ static void signal_handler( int signo )
       case SIGINT:
          fprintf( stderr, "Master caught SIGINT!\n" );
          /* Raise SIGUSR1 signal to kill child thread */
-         pthread_kill( temp_thread, SIGUSR1 );
+//         pthread_kill( temp_thread, SIGUSR1 );
 //         pthread_kill( logger_thread, SIGUSR1 );
-//         pthread_kill( watchdog, SIGUSR1 );
+         pthread_kill( watchdog, SIGUSR2 );
    }
 }
 
@@ -81,7 +81,6 @@ int main( int argc, char *argv[] )
 {
    signal( SIGINT, signal_handler );
    static file_t *log;
-   args_t *args;
    printf( "Number of arguments %d\n", argc );
    if( argc > 1 )
    {
@@ -89,12 +88,6 @@ int main( int argc, char *argv[] )
       log->fid = fopen( argv[1], "a" );
       log->name = argv[1];
       printf( "Opened file %s\n", argv[1] );
-      args = malloc(sizeof(args_t));
-      args->arg1 = log->name;
-      if( argv[2] )
-      {
-         args->arg2 = argv[2];
-      }
    }
    else
    {
@@ -116,19 +109,28 @@ int main( int argc, char *argv[] )
    print_header( NULL );
    fprintf( stdout, "Starting Threads! Start Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
+   
+   struct thread_id_s* threads = malloc( sizeof( struct thread_id_s ) );
+
 
    /* Attempting to spawn child threads */
    pthread_create( &temp_thread, NULL, temperature_fn, NULL);
    pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
-   pthread_t threads[2] = { temp_thread, logger_thread };
+//   pthread_t threads[2] = { temp_thread, logger_thread };
+   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
+            temp_thread, logger_thread );
+   threads->t1 = temp_thread;
+   threads->t2 = logger_thread;
+   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
+            threads->t1, threads->t2 );
    pthread_create( &watchdog, NULL, watchdog_fn, (void*)threads );
 
 
    pthread_join( watchdog, NULL );
 
 
-   pthread_join( temp_thread, NULL );
-   pthread_join( logger_thread, NULL );
+ //  pthread_join( temp_thread, NULL );
+ //  pthread_join( logger_thread, NULL );
 
    clock_gettime(CLOCK_REALTIME, &time);
 
@@ -139,7 +141,7 @@ int main( int argc, char *argv[] )
             time.tv_sec, time.tv_nsec );
 
    free( log );
-   free( args );
+   free( threads );
    munmap( shm, sizeof( shared_data_t ) );
    shm_unlink( SHM_SEGMENT_NAME );
    return 0;

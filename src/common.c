@@ -62,7 +62,6 @@ void print_header( char* buffer )
       char tmp2[100];
       sprintf( tmp2, "Thread [%d]: %ld.%ld secs\n",
                (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
-
       strcat( tmp, tmp2 );
       strcpy( buffer, tmp );
    }
