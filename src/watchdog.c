@@ -102,8 +102,8 @@ void *watchdog_fn( void *thread_args )
       threads = malloc( sizeof( struct thread_id_s ) );
       threads = (struct thread_id_s*)thread_args;
 
-      fprintf( stdout,"Processed thread %ld\n", threads->t1 );
-      fprintf( stdout,"Processed thread %ld\n", threads->t2 );
+//      fprintf( stdout,"Processed thread %ld\n", threads->t1 );
+//      fprintf( stdout,"Processed thread %ld\n", threads->t2 );
    }
    while(1);
 
