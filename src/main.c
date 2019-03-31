@@ -22,6 +22,7 @@
 #include "logger.h"
 #include "common.h"
 #include "watchdog.h"
+#include "led.h"
 
 #include <fcntl.h>
 #include <signal.h>
@@ -68,6 +69,26 @@ static void signal_handler( int signo )
 
 /*
  * =================================================================================
+ * Function:       turn_off_leds
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void turn_off_leds( void )
+{
+   led_off( LED0_BRIGHTNESS );
+   led_off( LED1_BRIGHTNESS );
+   led_off( LED2_BRIGHTNESS );
+   led_off( LED3_BRIGHTNESS );
+   return;
+}
+
+
+/*
+ * =================================================================================
  * Function:       main
  * @brief
  *
@@ -76,7 +97,6 @@ static void signal_handler( int signo )
  * <+DETAILED+>
  * =================================================================================
  */
-
 int main( int argc, char *argv[] )
 {
    signal( SIGINT, signal_handler );
@@ -112,16 +132,19 @@ int main( int argc, char *argv[] )
    
    struct thread_id_s* threads = malloc( sizeof( struct thread_id_s ) );
 
+   led_on( LED2_BRIGHTNESS );
 
+   set_trigger( LED2_TRIGGER, "timer" );
+   set_delay( LED2_DELAYON, 50 );
    /* Attempting to spawn child threads */
    pthread_create( &temp_thread, NULL, temperature_fn, NULL);
    pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
-   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
-            temp_thread, logger_thread );
+//   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
+//            temp_thread, logger_thread );
    threads->t1 = temp_thread;
    threads->t2 = logger_thread;
-   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
-            threads->t1, threads->t2 );
+//   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
+//            threads->t1, threads->t2 );
    pthread_create( &watchdog, NULL, watchdog_fn, (void*)threads );
 
 
@@ -139,5 +162,6 @@ int main( int argc, char *argv[] )
    free( threads );
    munmap( shm, sizeof( shared_data_t ) );
    shm_unlink( SHM_SEGMENT_NAME );
+   turn_off_leds();
    return 0;
 }

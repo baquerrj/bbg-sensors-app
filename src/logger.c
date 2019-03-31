@@ -21,6 +21,7 @@
  * =================================================================================
  */
 
+#include "led.h"
 #include "logger.h"
 #include <errno.h>
 #include <string.h>
@@ -117,12 +118,12 @@ void *logger_fn( void *arg )
    while( 1 )
    {
       sem_wait(&shm->r_sem);
-
       memcpy( buf, shm, sizeof(*shm) );
-      
+         
       fprintf( log, "%s\n%s", buf->header, buf->buffer );
       fflush( log );
 
+      led_toggle( LED3_BRIGHTNESS ); 
       sem_post(&shm->w_sem);
    }
 
