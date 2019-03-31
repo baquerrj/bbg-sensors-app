@@ -135,7 +135,7 @@ void *get_shared_memory( void )
    }
    else
    {
-      fprintf( stdout, "Creating shared memory and setting size to %lu bytes\n",
+      fprintf( stdout, "Creating shared memory and setting size to %u bytes\n",
                sizeof( shared_data_t ) );
 
       if( 0 > ftruncate( shm_fd, sizeof( shared_data_t )) )

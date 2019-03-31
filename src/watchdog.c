@@ -43,6 +43,7 @@ static void sig_handler( int signo )
       fflush( stdout );
       pthread_kill( threads->t2, SIGUSR1 );
       free( threads );
+      thread_exit( 0 );
    }
 }
 
@@ -88,9 +89,6 @@ int watchdog_init( pthread_t *threads )
  */
 void *watchdog_fn( void *thread_args )
 {
-   fprintf( stdout, "watchdog!\n" );
-   fflush( stdout );
-   //signal( SIGUSR1, sig_handler );
    signal( SIGUSR2, sig_handler );
    exit_e retVal = EXIT_ERROR;
    if( NULL == thread_args )
@@ -102,16 +100,10 @@ void *watchdog_fn( void *thread_args )
    else
    {
       threads = malloc( sizeof( struct thread_id_s ) );
-      threads = (struct threads_id_s*)thread_args; 
+      threads = (struct thread_id_s*)thread_args;
 
       fprintf( stdout,"Processed thread %ld\n", threads->t1 );
-      fprintf( stdout,"Processed thread %ld\n", threads->t2);
-
-//      while( NULL != thread_args )
-//      {
-//         threads[ i ] = (pthread_t)thread_args;
-//         thread_args++;
-//      }
+      fprintf( stdout,"Processed thread %ld\n", threads->t2 );
    }
    while(1);
 

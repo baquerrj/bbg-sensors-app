@@ -116,7 +116,6 @@ int main( int argc, char *argv[] )
    /* Attempting to spawn child threads */
    pthread_create( &temp_thread, NULL, temperature_fn, NULL);
    pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
-//   pthread_t threads[2] = { temp_thread, logger_thread };
    fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
             temp_thread, logger_thread );
    threads->t1 = temp_thread;
@@ -127,10 +126,6 @@ int main( int argc, char *argv[] )
 
 
    pthread_join( watchdog, NULL );
-
-
- //  pthread_join( temp_thread, NULL );
- //  pthread_join( logger_thread, NULL );
 
    clock_gettime(CLOCK_REALTIME, &time);
 

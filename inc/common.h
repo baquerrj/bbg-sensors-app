@@ -78,7 +78,7 @@ typedef enum {
  * <+DETAILED+>
  * =================================================================================
  */
-extern void print_header( char *buffer );
+void print_header( char *buffer );
 
 /*
  * =================================================================================
@@ -90,7 +90,7 @@ extern void print_header( char *buffer );
  * <+DETAILED+>
  * =================================================================================
  */
-extern void thread_exit( int exit_status );
+void thread_exit( int exit_status );
 
 /*
  * =================================================================================
@@ -102,7 +102,7 @@ extern void thread_exit( int exit_status );
  * <+DETAILED+>
  * =================================================================================
  */
-extern void *get_shared_memory( void );
+void *get_shared_memory( void );
 
 
 /*
@@ -115,6 +115,6 @@ extern void *get_shared_memory( void );
  * <+DETAILED+>
  * =================================================================================
  */
-extern int sems_init( shared_data_t *shm );
+int sems_init( shared_data_t *shm );
 
 #endif /* COMMON_H */
