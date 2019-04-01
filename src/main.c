@@ -19,6 +19,7 @@
  */
 
 #include "temperature.h"
+#include "light.h"
 #include "logger.h"
 #include "common.h"
 #include "watchdog.h"
@@ -36,7 +37,7 @@
 #include <sys/stat.h>
 
 static pthread_t temp_thread;
-//static pthread_t light_thread;
+static pthread_t light_thread;
 static pthread_t logger_thread;
 static pthread_t watchdog_thread;
 
@@ -67,7 +68,7 @@ static void signal_handler( int signo )
 /*
  * =================================================================================
  * Function:       turn_off_leds
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -126,7 +127,7 @@ int main( int argc, char *argv[] )
    print_header( NULL );
    fprintf( stdout, "Starting Threads! Start Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
-   
+
    struct thread_id_s* threads = malloc( sizeof( struct thread_id_s ) );
 
    led_on( LED2_BRIGHTNESS );
@@ -134,11 +135,13 @@ int main( int argc, char *argv[] )
    set_trigger( LED2_TRIGGER, "timer" );
    set_delay( LED2_DELAYON, 50 );
    /* Attempting to spawn child threads */
-   pthread_create( &temp_thread, NULL, temperature_fn, NULL);
    pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
+   pthread_create( &temp_thread, NULL, temperature_fn, NULL);
+   pthread_create( &light_thread, NULL, light_fn, NULL);
 
    threads->temp_thread = temp_thread;
    threads->logger_thread = logger_thread;
+   threads->light_thread = light_thread;
 
    pthread_create( &watchdog_thread, NULL, watchdog_fn, (void*)threads );
 

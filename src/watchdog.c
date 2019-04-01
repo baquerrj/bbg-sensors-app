@@ -22,6 +22,9 @@
 #include "watchdog.h"
 #include "common.h"
 #include "temperature.h"
+#include "light.h"
+
+
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
@@ -54,10 +57,18 @@ static void sig_handler( int signo )
 {
    if( SIGUSR2 == signo )
    {
-      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n", threads->temp_thread );
+      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
+               threads->temp_thread );
       fflush( stdout );
       pthread_kill( threads->temp_thread, SIGUSR1 );
-      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n", threads->logger_thread );
+
+      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
+               threads->light_thread );
+      fflush( stdout );
+      pthread_kill( threads->light_thread, SIGUSR1 );
+
+      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
+               threads->logger_thread );
       fflush( stdout );
       pthread_kill( threads->logger_thread, SIGUSR1 );
       free( threads );
@@ -81,6 +92,7 @@ void check_threads( union sigval sig )
    request_t request = {0};
    request.id = REQUEST_STATUS;
    retVal = mq_send( thread_msg_q[0], (const char*)&request, sizeof( request ), 0 );
+   retVal = mq_send( thread_msg_q[1], (const char*)&request, sizeof( request ), 0 );
 
    if( 0 > retVal )
    {
@@ -104,8 +116,10 @@ void check_threads( union sigval sig )
 int watchdog_init( void )
 {
    while( 0 == (thread_msg_q[0] = get_temperature_queue()) );
+   while( 0 == (thread_msg_q[1] = get_light_queue()) );
 
    fprintf( stderr, "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[0] );
+   fprintf( stderr, "Watchdog says: Light Queue FD: %d\n", thread_msg_q[1] );
 
    setup_timer( &timerid, &check_threads );
 
