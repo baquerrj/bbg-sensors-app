@@ -23,9 +23,22 @@
 #define  WATCHDOG_H
 
 #include <pthread.h>
+#include <signal.h>
 
+#define WATCHDOG_QUEUE_NAME "/watchdog-queue"
+#define NUM_THREADS 4
 
+typedef enum {
+   THREAD_TEMP = 0,
+   THREAD_LIGHT,
+   THREAD_LOGGER,
+   THREAD_SOCKET,
+   THREAD_MAX
+} thread_e;
 
+volatile int threads_status[NUM_THREADS];
+
+extern pthread_mutex_t alive_mutex;
 
 /*
  * =================================================================================
@@ -37,7 +50,7 @@
  * <+DETAILED+>
  * =================================================================================
  */
-int check_threads( void );
+void check_threads( union sigval sig );
 
 /*
  * =================================================================================
@@ -49,7 +62,7 @@ int check_threads( void );
  * <+DETAILED+>
  * =================================================================================
  */
-int watchdog_init( pthread_t *threads );
+int watchdog_init( void );
 
 /*
  * =================================================================================

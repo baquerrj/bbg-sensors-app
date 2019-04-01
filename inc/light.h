@@ -1,6 +1,6 @@
 /*
  * =================================================================================
- *    @file     temperature.h
+ *    @file     light.h
  *    @brief    
  *
  *  <+DETAILED+>
@@ -18,19 +18,19 @@
  * =================================================================================
  */
 
-#ifndef TEMPERATURE_H
-#define TEMPERATURE_H
+#ifndef LIGHT_H
+#define LIGHT_H
 
 #include "common.h"
 
 #include <mqueue.h>
-#define TEMP_QUEUE_NAME "/temperature-queue"
+#define LIGHT_QUEUE_NAME "/light-queue"
 
 
 
 /*
  * =================================================================================
- * Function:       get_temperature_queue
+ * Function:       get_light_queue
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
@@ -38,11 +38,11 @@
  * <+DETAILED+>
  * =================================================================================
  */
-mqd_t get_temperature_queue( void );
+mqd_t get_light_queue( void );
 
 /*
  * =================================================================================
- * Function:       temp_queue_init
+ * Function:       light_queue_init
  * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
@@ -50,11 +50,11 @@ mqd_t get_temperature_queue( void );
  * <+DETAILED+>
  * =================================================================================
  */
-int temp_queue_init( void );
+int light_queue_init( void );
 
 /*
  * =================================================================================
- * Function:       temperature_fn
+ * Function:       light_fn
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
@@ -62,7 +62,7 @@ int temp_queue_init( void );
  * <+DETAILED+>
  * =================================================================================
  */
-void *temperature_fn( void *arg );
+void *light_fn( void *arg );
 
 
-#endif /* TEMPERATURE_H */
+#endif /* LIGHT_H */

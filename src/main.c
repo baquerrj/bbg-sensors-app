@@ -19,9 +19,11 @@
  */
 
 #include "temperature.h"
+#include "light.h"
 #include "logger.h"
 #include "common.h"
 #include "watchdog.h"
+#include "socket.h"
 #include "led.h"
 
 #include <fcntl.h>
@@ -36,9 +38,11 @@
 #include <sys/stat.h>
 
 static pthread_t temp_thread;
-//static pthread_t light_thread;
+static pthread_t light_thread;
 static pthread_t logger_thread;
-static pthread_t watchdog;
+static pthread_t socket_thread;
+
+static pthread_t watchdog_thread;
 
 static shared_data_t *shm;
 
@@ -58,19 +62,14 @@ static void signal_handler( int signo )
    {
       case SIGINT:
          fprintf( stderr, "Master caught SIGINT!\n" );
-         /* Raise SIGUSR1 signal to kill child thread */
-//         pthread_kill( temp_thread, SIGUSR1 );
-//         pthread_kill( logger_thread, SIGUSR1 );
-         pthread_kill( watchdog, SIGUSR2 );
+         pthread_kill( watchdog_thread, SIGUSR2 );
    }
 }
-
-
 
 /*
  * =================================================================================
  * Function:       turn_off_leds
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -85,7 +84,6 @@ void turn_off_leds( void )
    led_off( LED3_BRIGHTNESS );
    return;
 }
-
 
 /*
  * =================================================================================
@@ -129,7 +127,7 @@ int main( int argc, char *argv[] )
    print_header( NULL );
    fprintf( stdout, "Starting Threads! Start Time: %ld.%ld secs\n",
             time.tv_sec, time.tv_nsec );
-   
+
    struct thread_id_s* threads = malloc( sizeof( struct thread_id_s ) );
 
    led_on( LED2_BRIGHTNESS );
@@ -137,18 +135,19 @@ int main( int argc, char *argv[] )
    set_trigger( LED2_TRIGGER, "timer" );
    set_delay( LED2_DELAYON, 50 );
    /* Attempting to spawn child threads */
-   pthread_create( &temp_thread, NULL, temperature_fn, NULL);
-   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
-//   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
-//            temp_thread, logger_thread );
-   threads->t1 = temp_thread;
-   threads->t2 = logger_thread;
-//   fprintf( stderr, "temp thread = %ld\nlogger_thread = %ld\n",
-//            threads->t1, threads->t2 );
-   pthread_create( &watchdog, NULL, watchdog_fn, (void*)threads );
+   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid );
+   pthread_create( &temp_thread, NULL, temperature_fn, NULL );
+   pthread_create( &light_thread, NULL, light_fn, NULL );
+   pthread_create( &socket_thread, NULL , socket_fn, NULL );
 
+   threads->temp_thread = temp_thread;
+   threads->logger_thread = logger_thread;
+   threads->light_thread = light_thread;
+   threads->socket_thread = socket_thread;
 
-   pthread_join( watchdog, NULL );
+   pthread_create( &watchdog_thread, NULL, watchdog_fn, (void*)threads );
+
+   pthread_join( watchdog_thread, NULL );
 
    clock_gettime(CLOCK_REALTIME, &time);
 

@@ -1,6 +1,6 @@
 /*
  * =================================================================================
- *    @file     temperature.h
+ *    @file     socket.h
  *    @brief    
  *
  *  <+DETAILED+>
@@ -8,7 +8,7 @@
  *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
  *
  *    @internal
- *       Created:  03/09/2019
+ *       Created:  03/31/2019
  *      Revision:  none
  *      Compiler:  gcc
  *  Organization:  University of Colorado: Boulder
@@ -18,19 +18,16 @@
  * =================================================================================
  */
 
-#ifndef TEMPERATURE_H
-#define TEMPERATURE_H
+
+#ifndef  SOCKET_H
+#define  SOCKET_H
+
 
 #include "common.h"
 
-#include <mqueue.h>
-#define TEMP_QUEUE_NAME "/temperature-queue"
-
-
-
 /*
  * =================================================================================
- * Function:       get_temperature_queue
+ * Function:       process_request
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
@@ -38,23 +35,11 @@
  * <+DETAILED+>
  * =================================================================================
  */
-mqd_t get_temperature_queue( void );
+msg_t process_request( msg_t *request );
 
 /*
  * =================================================================================
- * Function:       temp_queue_init
- * @brief
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
- */
-int temp_queue_init( void );
-
-/*
- * =================================================================================
- * Function:       temperature_fn
+ * Function:       socket_init
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
@@ -62,7 +47,20 @@ int temp_queue_init( void );
  * <+DETAILED+>
  * =================================================================================
  */
-void *temperature_fn( void *arg );
+int socket_init( void );
 
 
-#endif /* TEMPERATURE_H */
+/*
+ * =================================================================================
+ * Function:       socket_call_back
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void *socket_fn( void *thread_arg );
+
+
+#endif   /* SOCKET_H */
