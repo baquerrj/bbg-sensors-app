@@ -1,7 +1,7 @@
 /*
  * =================================================================================
  *    @file     common.h
- *    @brief    
+ *    @brief
  *
  *  <+DETAILED+>
  *
@@ -27,10 +27,52 @@
 #include <semaphore.h>
 
 #define SHM_SEGMENT_NAME "/shm-log"
-#define BUFFER_SIZE 2048
+#define SHM_BUFFER_SIZE 2048
+
+#define GEN_BUFFER_SIZE 100
+/******************************************************************************
+ *  Defines types of requests for remote socket task
+ ******************************************************************************/
+typedef enum {
+   REQUEST_BEGIN = 0,
+   REQUEST_LUX,
+   REQUEST_DARK,
+   REQUEST_TEMP,
+   REQUEST_TEMP_C = REQUEST_TEMP,
+   REQUEST_TEMP_K,
+   REQUEST_TEMP_F,
+   REQUEST_CLOSE,
+   REQUEST_KILL,
+   REQUEST_MAX
+} request_e;
 
 /******************************************************************************
- *  
+ *  Defines struct for requests for remote socket task
+ ******************************************************************************/
+typedef struct {
+   request_e id;
+} request_t;
+
+/******************************************************************************
+ *  Defines struct for communicating sensor information
+ ******************************************************************************/
+typedef struct {
+   float data;    /* Can be temperature in Celsius, Fahrenheit, or Kelvin OR
+                     lux output from light sensor */
+   int   night;   /* 1 when it is dark and 0 otherwise */
+} sensor_data_t;
+
+/******************************************************************************
+ *  Defines struct for response for remote socket task
+ ******************************************************************************/
+typedef struct {
+   request_e id;
+   char info[GEN_BUFFER_SIZE];
+   sensor_data_t data;
+} response_t;
+
+/******************************************************************************
+ *
  ******************************************************************************/
 typedef struct {
    char *name;
@@ -50,11 +92,10 @@ typedef struct thread_id_s {
  *  Shared Memory Data Struct
  ******************************************************************************/
 typedef struct {
-   char buffer[BUFFER_SIZE];  /* Buffer for message from thread */
-   char header[BUFFER_SIZE];  /* Buffer for header identifying the thread who wrote to shm */
+   char buffer[SHM_BUFFER_SIZE];  /* Buffer for message from thread */
+   char header[SHM_BUFFER_SIZE];  /* Buffer for header identifying the thread who wrote to shm */
    sem_t w_sem;
    sem_t r_sem;
-
 } shared_data_t;
 
 
@@ -63,7 +104,9 @@ typedef struct {
  *  Exit Enum
  ******************************************************************************/
 typedef enum {
+   EXIT_BEGIN = 0,
    EXIT_CLEAN = 0,
+   EXIT_INIT = -1,
    EXIT_ERROR,
    EXIT_MAX
 } exit_e;
@@ -71,7 +114,7 @@ typedef enum {
 /*
  * =================================================================================
  * Function:       print_header
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -83,7 +126,7 @@ void print_header( char *buffer );
 /*
  * =================================================================================
  * Function:       thread_exit
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -95,7 +138,7 @@ void thread_exit( int exit_status );
 /*
  * =================================================================================
  * Function:       get_shared_memory
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
@@ -108,7 +151,7 @@ void *get_shared_memory( void );
 /*
  * =================================================================================
  * Function:       sems_init
- * @brief  
+ * @brief
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
