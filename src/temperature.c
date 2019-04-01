@@ -18,9 +18,10 @@
  * =================================================================================
  */
 
-
+#include "watchdog.h"
 #include "temperature.h"
 #include "led.h"
+
 #include <errno.h>
 #include <time.h>
 #include <signal.h>
@@ -114,7 +115,8 @@ static void timer_handler( union sigval sig )
 static void cycle( void )
 {
    int retVal = 0;
-   request_t request = {0};
+   msg_t request = {0};
+   msg_t response = {0};
    while( 1 )
    {
       memset( &request, 0, sizeof( request ) );
@@ -134,6 +136,13 @@ static void cycle( void )
             sprintf( shm->buffer, "(Temperature) I am alive!\n" );
             sem_post(&shm->r_sem);
             fprintf( stdout, "(Temperature) I am alive!\n" );
+            response.id = request.id;
+            sprintf( response.info, "(Temperature) I am alive!\n" );
+            retVal = mq_send( request.src, (const char*)&response, sizeof( response ), 0 );
+
+            pthread_mutex_lock( &alive_mutex );
+            threads_status[THREAD_TEMP]--;
+            pthread_mutex_unlock( &alive_mutex );
             break;
          default:
             break;
@@ -161,7 +170,7 @@ int temp_queue_init( void )
    struct mq_attr attr;
    attr.mq_flags = 0;
    attr.mq_maxmsg = MAX_MESSAGES;
-   attr.mq_msgsize = sizeof( request_t );
+   attr.mq_msgsize = sizeof( msg_t );
    attr.mq_curmsgs = 0;
 
    int msg_q = mq_open( TEMP_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
