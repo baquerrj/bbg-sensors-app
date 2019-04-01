@@ -23,6 +23,24 @@
 
 #include "common.h"
 
+#include <mqueue.h>
+#define TEMP_QUEUE_NAME "/temperature-queue"
+
+
+
+/*
+ * =================================================================================
+ * Function:       get_temperature_queue
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+mqd_t get_temperature_queue( void );
+
+
 /*
  * =================================================================================
  * Function:       temperature_fn
@@ -35,16 +53,5 @@
  */
 void *temperature_fn( void *arg );
 
-/*
- * =================================================================================
- * Function:       setup_timer
- * @brief  
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
- */
-int setup_timer( void );
 
 #endif /* TEMPERATURE_H */
