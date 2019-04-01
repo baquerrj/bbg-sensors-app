@@ -33,7 +33,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-struct itimerspec trigger;
 
 #define PORT 8080
 
@@ -49,13 +48,12 @@ static shared_data_t *shm;
  * <+DETAILED+>
  * =================================================================================
  */
-response_t process_request( request_t *request )
+msg_t process_request( msg_t *request )
 {
-   response_t response = {0};
+   msg_t response = {0};
    response.id = request->id;
    return response;
 }
-
 
 /*
  * =================================================================================
@@ -94,12 +92,12 @@ static void cycle( int server )
 
       while( 1 )
       {
-         request_t request = {0};
-         response_t response = {0};
+         msg_t request = {0};
+         msg_t response = {0};
          int bytes = 0;
          while( ( -1 != bytes ) && ( sizeof( request ) > bytes ) )
          {
-            bytes = recv( client, (((char*)&(request))+bytes), sizeof( request ), 0 );
+            bytes = recv( client, ((char*)&request + bytes), sizeof( request ), 0 );
          }
 
          response = process_request( &request );
