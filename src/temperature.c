@@ -76,12 +76,12 @@ static void sig_handler( int signo )
  * <+DETAILED+>
  * =================================================================================
  */
-void cycle( void )
+static void cycle( void )
 {
    static int i = 0;
    while( 1 )
    {
-      static char buffer[BUFFER_SIZE];
+      static char buffer[SHM_BUFFER_SIZE];
       sprintf( buffer, "temp thread cycle[%d]\n", ++i );
 
 
