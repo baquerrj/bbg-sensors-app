@@ -23,6 +23,7 @@
 #include "logger.h"
 #include "common.h"
 #include "watchdog.h"
+#include "socket.h"
 #include "led.h"
 
 #include <fcntl.h>
@@ -39,6 +40,8 @@
 static pthread_t temp_thread;
 static pthread_t light_thread;
 static pthread_t logger_thread;
+static pthread_t socket_thread;
+
 static pthread_t watchdog_thread;
 
 static shared_data_t *shm;
@@ -62,8 +65,6 @@ static void signal_handler( int signo )
          pthread_kill( watchdog_thread, SIGUSR2 );
    }
 }
-
-
 
 /*
  * =================================================================================
@@ -135,16 +136,17 @@ int main( int argc, char *argv[] )
    set_trigger( LED2_TRIGGER, "timer" );
    set_delay( LED2_DELAYON, 50 );
    /* Attempting to spawn child threads */
-   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid);
-   pthread_create( &temp_thread, NULL, temperature_fn, NULL);
-   pthread_create( &light_thread, NULL, light_fn, NULL);
+   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid );
+   pthread_create( &temp_thread, NULL, temperature_fn, NULL );
+   pthread_create( &light_thread, NULL, light_fn, NULL );
+   pthread_create( &socket_thread, NULL , socket_fn, NULL );
 
    threads->temp_thread = temp_thread;
    threads->logger_thread = logger_thread;
    threads->light_thread = light_thread;
+   threads->socket_thread = socket_thread;
 
    pthread_create( &watchdog_thread, NULL, watchdog_fn, (void*)threads );
-
 
    pthread_join( watchdog_thread, NULL );
 
