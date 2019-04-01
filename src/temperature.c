@@ -145,56 +145,6 @@ static void cycle( void )
 
 /*
  * =================================================================================
- * Function:       setup_timer
- * @brief
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
- */
-static int setup_timer( void )
-{
-   int retVal = 0;
-   /* Set up timer */
-   char info[] = "timer woken up!";
-   struct sigevent sev;
-
-   memset(&sev, 0, sizeof(struct sigevent));
-   memset(&trigger, 0, sizeof(struct itimerspec));
-
-   sev.sigev_notify = SIGEV_THREAD;
-   sev.sigev_notify_function = &timer_handler;
-   sev.sigev_value.sival_ptr = &info;
-   sev.sigev_notify_attributes = NULL;
-
-   retVal = timer_create(CLOCK_REALTIME, &sev, &timerid);
-   if( 0 > retVal )
-   {
-      int errnum = errno;
-      fprintf( stderr, "Encountered error creating new timer for temperature thread: (%s)\n",
-               strerror( errnum ) );
-      return retVal;
-   }
-
-   trigger.it_value.tv_sec = 1;
-//   trigger.it_interval.tv_nsec = 100 * 1000000;
-   trigger.it_interval.tv_sec = 1;
-
-   retVal = timer_settime( timerid, 0, &trigger, NULL );
-   if( 0 > retVal )
-   {
-      int errnum = errno;
-      fprintf( stderr, "Encountered error creating new timer for temperature thread: (%s)\n",
-               strerror( errnum ) );
-      return retVal;
-   }
-   return 0;
-}
-
-
-/*
- * =================================================================================
  * Function:       temp_queue_init
  * @brief
  *
@@ -261,8 +211,10 @@ void *temperature_fn( void *arg )
    }
 
    fprintf( stderr, "Temp Queue FD: %d\n", temp_queue );
-   setup_timer();
 
+   setup_timer( &timerid, &timer_handler );
+
+   start_timer( &timerid, 1000000 );
    cycle();
 
    thread_exit( 0 );

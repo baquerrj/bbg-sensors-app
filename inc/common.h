@@ -21,6 +21,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <signal.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -31,6 +32,8 @@
 
 #define GEN_BUFFER_SIZE 100
 #define MAX_MESSAGES 100
+
+#define MICROS_PER_SEC  1000000
 
 /******************************************************************************
  *  Defines types of possible messages
@@ -164,5 +167,32 @@ void *get_shared_memory( void );
  * =================================================================================
  */
 int sems_init( shared_data_t *shm );
+
+
+/*
+ * =================================================================================
+ * Function:       setup_timer
+ * @brief
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int setup_timer( timer_t *id, void (*timer_handler)(union sigval) );
+
+
+/*
+ * =================================================================================
+ * Function:       start_timer
+ * @brief
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int start_timer( timer_t *id, unsigned long usecs );
+
 
 #endif /* COMMON_H */

@@ -194,3 +194,71 @@ int sems_init( shared_data_t *shm )
    }
    return retVal;
 }
+
+
+/*
+ * =================================================================================
+ * Function:       setup_timer
+ * @brief
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int setup_timer( timer_t *id, void (*timer_handler)(union sigval) )
+{
+   int retVal = 0;
+   /* Set up timer */
+   struct sigevent sev;
+
+   memset(&sev, 0, sizeof(struct sigevent));
+
+   sev.sigev_notify = SIGEV_THREAD;
+   sev.sigev_notify_function = timer_handler;
+   sev.sigev_value.sival_ptr = NULL;
+   sev.sigev_notify_attributes = NULL;
+
+   retVal = timer_create( CLOCK_REALTIME, &sev, id );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error creating new timer: (%s)\n",
+               strerror( errnum ) );
+      return retVal;
+   }
+   return retVal;
+}
+
+
+/*
+ * =================================================================================
+ * Function:       start_timer
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int start_timer( timer_t *id, unsigned long usecs )
+{
+   int retVal = 0;
+   struct itimerspec trigger;
+
+   trigger.it_value.tv_sec = usecs / MICROS_PER_SEC;
+   trigger.it_value.tv_nsec = ( usecs % MICROS_PER_SEC ) * 1000;
+   
+   trigger.it_interval.tv_sec = trigger.it_value.tv_sec;
+   trigger.it_interval.tv_nsec = trigger.it_value.tv_nsec;
+
+   retVal = timer_settime( *id, 0, &trigger, NULL );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error starting new timer: (%s)\n",
+               strerror( errnum ) );
+      return retVal;
+   }
+   return retVal;
+}

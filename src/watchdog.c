@@ -93,56 +93,6 @@ void check_threads( union sigval sig )
 
 /*
  * =================================================================================
- * Function:       setup_timer
- * @brief
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
- */
-int setup_timer( void )
-{
-   int retVal = 0;
-   /* Set up timer */
-   char info[] = "timer woken up!";
-   struct sigevent sev;
-
-   memset(&sev, 0, sizeof(struct sigevent));
-   memset(&trigger, 0, sizeof(struct itimerspec));
-
-   sev.sigev_notify = SIGEV_THREAD;
-   sev.sigev_notify_function = &check_threads;
-   sev.sigev_value.sival_ptr = &info;
-   sev.sigev_notify_attributes = NULL;
-
-   retVal = timer_create(CLOCK_REALTIME, &sev, &timerid);
-   if( 0 > retVal )
-   {
-      int errnum = errno;
-      fprintf( stderr, "Encountered error creating new timer for watchdog thread: (%s)\n",
-               strerror( errnum ) );
-      return retVal;
-   }
-
-   trigger.it_value.tv_sec = 1;
-   trigger.it_interval.tv_nsec = 100 * 1000000;
-//   trigger.it_interval.tv_sec = 1;
-
-   retVal = timer_settime( timerid, 0, &trigger, NULL );
-   if( 0 > retVal )
-   {
-      int errnum = errno;
-      fprintf( stderr, "Encountered error creating new timer for watchdog thread: (%s)\n",
-               strerror( errnum ) );
-      return retVal;
-   }
-   return 0;
-}
-
-
-/*
- * =================================================================================
  * Function:       watchdog_init
  * @brief
  *
@@ -156,7 +106,10 @@ int watchdog_init( void )
    while( 0 == (thread_msg_q[0] = get_temperature_queue()) );
 
    fprintf( stderr, "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[0] );
-   setup_timer();
+
+   setup_timer( &timerid, &check_threads );
+
+   start_timer( &timerid, 4000000 );
 
    return 0;
 }
