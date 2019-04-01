@@ -26,6 +26,8 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <semaphore.h>
+#include <mqueue.h>
+
 
 #define SHM_SEGMENT_NAME "/shm-log"
 #define SHM_BUFFER_SIZE 2048
@@ -53,13 +55,6 @@ typedef enum {
 } request_e;
 
 /******************************************************************************
- *  Defines struct for requests for remote socket task
- ******************************************************************************/
-typedef struct {
-   request_e id;
-} request_t;
-
-/******************************************************************************
  *  Defines struct for communicating sensor information
  ******************************************************************************/
 typedef struct {
@@ -73,9 +68,10 @@ typedef struct {
  ******************************************************************************/
 typedef struct {
    request_e id;
+   mqd_t src;
    char info[GEN_BUFFER_SIZE];
    sensor_data_t data;
-} response_t;
+} msg_t;
 
 /******************************************************************************
  *
@@ -95,6 +91,7 @@ typedef struct thread_id_s {
    pthread_t socket_thread;
    pthread_t watchdog_thread;
 } thread_id_s;
+
 
 
 /******************************************************************************
