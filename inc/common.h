@@ -30,8 +30,10 @@
 #define SHM_BUFFER_SIZE 2048
 
 #define GEN_BUFFER_SIZE 100
+#define MAX_MESSAGES 100
+
 /******************************************************************************
- *  Defines types of requests for remote socket task
+ *  Defines types of possible messages
  ******************************************************************************/
 typedef enum {
    REQUEST_BEGIN = 0,
@@ -43,6 +45,7 @@ typedef enum {
    REQUEST_TEMP_F,
    REQUEST_CLOSE,
    REQUEST_KILL,
+   REQUEST_STATUS,
    REQUEST_MAX
 } request_e;
 
@@ -80,11 +83,14 @@ typedef struct {
 } file_t;
 
 /******************************************************************************
- *  Struct to hold arguments passed to threads
+ *  Struct to hold thread identifiers for tasks
  ******************************************************************************/
 typedef struct thread_id_s {
-   pthread_t t1;
-   pthread_t t2;
+   pthread_t temp_thread;
+   pthread_t light_thread;
+   pthread_t logger_thread;
+   pthread_t socket_thread;
+   pthread_t watchdog_thread;
 } thread_id_s;
 
 
@@ -97,7 +103,6 @@ typedef struct {
    sem_t w_sem;
    sem_t r_sem;
 } shared_data_t;
-
 
 
 /******************************************************************************
