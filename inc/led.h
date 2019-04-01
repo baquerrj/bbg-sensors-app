@@ -92,7 +92,7 @@ int set_trigger( const char *led, char *trigger );
  * <+DETAILED+>
  * =================================================================================
  */
-int set_delay_on( const char *led_path, int delay );
+int set_delay( const char *led_path, int delay );
 
 
 /*
