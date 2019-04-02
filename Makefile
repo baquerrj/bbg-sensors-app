@@ -42,7 +42,7 @@ $(RES)/%.o: $(SRC)/%.c
 
 $(PROG): $(OBJS) $(RES)/libcommon.a
 	mkdir -p $(BIN)
-	$(CC) $(CFLAGS) $^ -o $@ -lrt -lmraa -L$(RES) -lcommon
+	$(CC) $(CFLAGS) $^ -o $@ -lrt -lmraa -lm -L$(RES) -lcommon
 
 clean:
 	rm -rf $(BIN)
