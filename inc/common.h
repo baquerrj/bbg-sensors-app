@@ -1,9 +1,8 @@
 /*
  * =================================================================================
  *    @file     common.h
- *    @brief
+ *    @brief   Defines types and functions common between the threads of the application
  *
- *  <+DETAILED+>
  *
  *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
  *
@@ -111,7 +110,7 @@ typedef struct {
 typedef enum {
    EXIT_BEGIN = 0,
    EXIT_CLEAN = 0,
-   EXIT_INIT = -1,
+   EXIT_INIT,
    EXIT_ERROR,
    EXIT_MAX
 } exit_e;
@@ -119,11 +118,12 @@ typedef enum {
 /*
  * =================================================================================
  * Function:       print_header
- * @brief
+ * @brief   Write a string formatted with the TID of the thread calling this function
+ *          and a timestamp to the log buffer
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *buffer  - pointer to where we should copy formatted string to
+ *                     if NULL, we print to stderr
+ * @return  void
  * =================================================================================
  */
 void print_header( char *buffer );
@@ -131,11 +131,10 @@ void print_header( char *buffer );
 /*
  * =================================================================================
  * Function:       thread_exit
- * @brief
+ * @brief   Common exit point for all threads
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   exit_status - reason for exit (signal number)
+ * @return  void
  * =================================================================================
  */
 void thread_exit( int exit_status );
@@ -143,53 +142,49 @@ void thread_exit( int exit_status );
 /*
  * =================================================================================
  * Function:       get_shared_memory
- * @brief
+ * @brief   Sets up shared memory location for logging
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   void
+ * @return  *shm_p - pointer to shared memory object
  * =================================================================================
  */
 void *get_shared_memory( void );
 
-
 /*
  * =================================================================================
  * Function:       sems_init
- * @brief
+ * @brie    Initialize semaphores for shared memory 
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *shm  - pointer to shared memory object
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT
  * =================================================================================
  */
 int sems_init( shared_data_t *shm );
 
+/*
+ * =================================================================================
+ * Function:       timer_setup
+ * @brief   Initializes a timer identified by timer_t id
+ *
+ * @param   *id   - identifier for new timer
+ * @param   *handler - pointer to function to register as the handler for the timer ticks 
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
+ * =================================================================================
+ */
+int timer_setup( timer_t *id, void (*timer_handler)(union sigval) );
+
 
 /*
  * =================================================================================
- * Function:       setup_timer
- * @brief
+ * Function:       timer_start
+ * @brief   Starts the timer with interval usecs
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *id   - identifier for new timer
+ * @param   usecs - timer interval
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
  * =================================================================================
  */
-int setup_timer( timer_t *id, void (*timer_handler)(union sigval) );
-
-
-/*
- * =================================================================================
- * Function:       start_timer
- * @brief
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
- */
-int start_timer( timer_t *id, unsigned long usecs );
+int timer_start( timer_t *id, unsigned long usecs );
 
 
 #endif /* COMMON_H */

@@ -1,9 +1,8 @@
 /*
  * =================================================================================
  *    @file     common.c
- *    @brief
+ *    @brief   Defines types and functions common between the threads of the application
  *
- *  <+DETAILED+>
  *
  *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
  *
@@ -36,14 +35,15 @@
 /*
  * =================================================================================
  * Function:       print_header
- * @brief
+ * @brief   Write a string formatted with the TID of the thread calling this function
+ *          and a timestamp to the log buffer
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *buffer  - pointer to where we should copy formatted string to
+ *                     if NULL, we print to stderr
+ * @return  void
  * =================================================================================
  */
-void print_header( char* buffer )
+void print_header( char *buffer )
 {
 
    struct timespec time;
@@ -72,11 +72,10 @@ void print_header( char* buffer )
 /*
  * =================================================================================
  * Function:       thread_exit
- * @brief
+ * @brief   Common exit point for all threads
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   exit_status - reason for exit (signal number)
+ * @return  void
  * =================================================================================
  */
 void thread_exit( int exit_status )
@@ -102,15 +101,13 @@ void thread_exit( int exit_status )
 }
 
 
-
 /*
  * =================================================================================
  * Function:       get_shared_memory
- * @brief
+ * @brief   Sets up shared memory location for logging
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   void
+ * @return  *shm_p - pointer to shared memory object
  * =================================================================================
  */
 void *get_shared_memory( void )
@@ -161,16 +158,13 @@ void *get_shared_memory( void )
 	return shm_p;
 }
 
-
-
 /*
  * =================================================================================
  * Function:       sems_init
- * @brief
+ * @brie    Initialize semaphores for shared memory 
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *shm  - pointer to shared memory object
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT
  * =================================================================================
  */
 int sems_init( shared_data_t *shm )
@@ -182,7 +176,7 @@ int sems_init( shared_data_t *shm )
       int errnum = errno;
       fprintf( stderr, "Encountered error initializing write semaphore: %s\n",
                strerror( errnum ) );
-      return retVal;
+      return EXIT_INIT;
    }
    retVal = sem_init( &shm->r_sem, 1, 0 );
    if( 0 > retVal )
@@ -190,23 +184,23 @@ int sems_init( shared_data_t *shm )
       int errnum = errno;
       fprintf( stderr, "Encountered error initializing read semaphore: %s\n",
                strerror( errnum ) );
-      return retVal;
+      return EXIT_INIT;
    }
-   return retVal;
+   return EXIT_CLEAN;
 }
 
 
 /*
  * =================================================================================
- * Function:       setup_timer
- * @brief
+ * Function:       timer_setup
+ * @brief   Initializes a timer identified by timer_t id
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *id   - identifier for new timer
+ * @param   *handler - pointer to function to register as the handler for the timer ticks 
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
  * =================================================================================
  */
-int setup_timer( timer_t *id, void (*timer_handler)(union sigval) )
+int timer_setup( timer_t *id, void (*handler)(union sigval) )
 {
    int retVal = 0;
    /* Set up timer */
@@ -215,7 +209,7 @@ int setup_timer( timer_t *id, void (*timer_handler)(union sigval) )
    memset(&sev, 0, sizeof(struct sigevent));
 
    sev.sigev_notify = SIGEV_THREAD;
-   sev.sigev_notify_function = timer_handler;
+   sev.sigev_notify_function = handler;
    sev.sigev_value.sival_ptr = NULL;
    sev.sigev_notify_attributes = NULL;
 
@@ -225,23 +219,22 @@ int setup_timer( timer_t *id, void (*timer_handler)(union sigval) )
       int errnum = errno;
       fprintf( stderr, "Encountered error creating new timer: (%s)\n",
                strerror( errnum ) );
-      return retVal;
+      return EXIT_INIT;
    }
-   return retVal;
+   return EXIT_CLEAN;
 }
-
 
 /*
  * =================================================================================
- * Function:       start_timer
- * @brief  
+ * Function:       timer_start
+ * @brief   Starts the timer with interval usecs
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *id   - identifier for new timer
+ * @param   usecs - timer interval
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
  * =================================================================================
  */
-int start_timer( timer_t *id, unsigned long usecs )
+int timer_start( timer_t *id, unsigned long usecs )
 {
    int retVal = 0;
    struct itimerspec trigger;
@@ -258,7 +251,7 @@ int start_timer( timer_t *id, unsigned long usecs )
       int errnum = errno;
       fprintf( stderr, "Encountered error starting new timer: (%s)\n",
                strerror( errnum ) );
-      return retVal;
+      return EXIT_INIT;
    }
-   return retVal;
+   return EXIT_CLEAN;
 }
