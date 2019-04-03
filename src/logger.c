@@ -41,11 +41,12 @@ static shared_data_t *shm;
 /*
  * =================================================================================
  * Function:       sig_handler
- * @brief  
+ * @brief   Signal handler for logger thread.
+ *          On normal operation, we should be receving SIGUSR1/2 signals from watchdog
+ *          when prompted to exit. So, we close the message queue and timer this thread owns
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   signo - enum with signal number of signal being handled
+ * @return  void
  * =================================================================================
  */
 static void sig_handler( int signo )
@@ -64,15 +65,14 @@ static void sig_handler( int signo )
 }
 
 
-
 /*
  * =================================================================================
  * Function:       logger_fn
- * @brief  Entry point for logger thread
+ * @brief   Entry point for logger thread
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
  * =================================================================================
  */
 void *logger_fn( void *arg )

@@ -28,14 +28,14 @@
 /*
  * =================================================================================
  * Function:       logger_fn
- * @brief  
+ * @brief   Entry point for logger thread
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
  * =================================================================================
  */
-void *logger_fn( void *arg );
+void *logger_fn( void *thread_args );
 
 #endif   /* LOGGER_H */
 
