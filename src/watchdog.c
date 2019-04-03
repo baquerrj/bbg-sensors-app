@@ -1,9 +1,10 @@
 /*
  * =================================================================================
  *    @file     watchdog.c
- *    @brief
+ *    @brief   Watchdog source file:
+ *                the watchdog is responsible for checking that the temperature and
+ *                light sensor threads are alive
  *
- *  <+DETAILED+>
  *
  *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
  *
@@ -20,20 +21,12 @@
 
 
 #include "watchdog.h"
-#include "common.h"
 #include "temperature.h"
 #include "light.h"
 
-
-#include <signal.h>
 #include <errno.h>
 #include <string.h>
-#include <stdlib.h>
 #include <time.h>
-#include <fcntl.h>
-#include <mqueue.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 static timer_t    timerid;
 struct itimerspec trigger;
@@ -44,7 +37,39 @@ static mqd_t watchdog_queue;
 
 pthread_mutex_t alive_mutex;
 
-static void kill_threads( void )
+
+/*
+ * =================================================================================
+ * Function:       sig_handler
+ * @brief   Signal handler for watchdog. On normal operation, we should be receiving
+ *          a SIGUSR2 signal from the main thread prompting us to call pthread_kill
+ *          for the other child threads
+ *
+ * @param   signo - enum with signal number of signal being handled
+ * @return  void
+ * =================================================================================
+ */
+static void sig_handler( int signo )
+{
+   if( SIGUSR2 == signo )
+   {
+      kill_threads();
+      mq_close( watchdog_queue );
+      timer_delete( timerid );
+      thread_exit( 0 );
+   }
+}
+
+/*
+ * =================================================================================
+ * Function:       kill_threads
+ * @brief   Function to kill children threads 
+ *
+ * @param   void
+ * @return  void
+ * =================================================================================
+ */
+void kill_threads( void )
 {
    fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
             threads->temp_thread );
@@ -64,48 +89,15 @@ static void kill_threads( void )
    return;
 }
 
-
-/*
- * =================================================================================
- * Function:       sig_handler
- * @brief
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
- */
-static void sig_handler( int signo )
-{
-   if( SIGUSR2 == signo )
-   {
-      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
-               threads->temp_thread );
-      fflush( stdout );
-      pthread_kill( threads->temp_thread, SIGUSR1 );
-
-      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
-               threads->light_thread );
-      fflush( stdout );
-      pthread_kill( threads->light_thread, SIGUSR1 );
-
-      fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
-               threads->logger_thread );
-      fflush( stdout );
-      pthread_kill( threads->logger_thread, SIGUSR1 );
-      free( threads );
-      thread_exit( 0 );
-   }
-}
-
 /*
  * =================================================================================
  * Function:       check_threads
- * @brief
+ * @brief   Periodically send message via message queue for temperature and sensor threads
+ *          to check for health. This function is registered as the timer hanlder for the
+ *          timer owned by the watchdog
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   sig
+ * @return  void
  * =================================================================================
  */
 void check_threads( union sigval sig )
@@ -150,12 +142,11 @@ void check_threads( union sigval sig )
 
 /*
  * =================================================================================
- * Function:       watchdog+queue_init
- * @brief
+ * Function:       watchdog_queue_init
+ * @brief   Initalize message queue for watchdog
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
  * =================================================================================
  */
 int watchdog_queue_init( void )
@@ -182,11 +173,11 @@ int watchdog_queue_init( void )
 /*
  * =================================================================================
  * Function:       watchdog_init
- * @brief
+ * @brief   Initialize watchdog, calling appropriate functions to do so.
+ *          E.g. calling timer_setup and timer_start to set up timer
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   void
+ * @return  EXIT_CLEAN, otherwise EXIT_INIT
  * =================================================================================
  */
 int watchdog_init( void )
@@ -204,21 +195,22 @@ int watchdog_init( void )
    fprintf( stderr, "Watchdog says: Light Queue FD: %d\n", thread_msg_q[1] );
 
    pthread_mutex_init( &alive_mutex, NULL );
-   setup_timer( &timerid, &check_threads );
+   timer_setup( &timerid, &check_threads );
 
-   start_timer( &timerid, 4000000 );
+   timer_start( &timerid, 4000000 );
 
-   return 0;
+   return EXIT_CLEAN;
 }
 
 /*
  * =================================================================================
  * Function:       watchdog_fn
- * @brief
+ * @brief   Entry point for wachtdog
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   thread_args - void ptr used to pass thread identifiers (pthread_t) for
+ *                      child threads we have to check for health
+ * @return  NULL  - We don't really exit from this function,
+ *                   since the exit point for threads is thread_exit()
  * =================================================================================
  */
 void *watchdog_fn( void *thread_args )
