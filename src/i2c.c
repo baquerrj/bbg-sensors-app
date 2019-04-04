@@ -28,6 +28,41 @@
 /** Keep around a singleton instance of the master handle */
 static i2c_handle_t *my_i2c = NULL;
 
+/*
+ * =================================================================================
+ * Function:       i2c_set
+ * @brief   Write 1 to bit at addr
+ *
+ * @param   slave  - address of i2c slave
+ * @param   addr - memory location to write to
+ * @return  EXIT_CLEAN on success, otherweise one of exit_e
+ * =================================================================================
+ */
+int i2c_set( int slave, int addr )
+{
+   if( NULL == my_i2c )
+   {
+      fprintf( stderr, "I2C master has not been initialized!\n" );
+      return EXIT_INIT;
+   }
+
+   /* take hardware mutex */
+   pthread_mutex_lock( &my_i2c->mutex );
+
+   mraa_result_t retVal = mraa_i2c_address( my_i2c->context, slave );
+   if( 0 != retVal )
+   {
+      mraa_result_print( retVal );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      return EXIT_ERROR;
+   }
+
+   retVal = mraa_i2c_write_byte( my_i2c->context, addr );
+   pthread_mutex_unlock( &my_i2c->mutex );
+
+   return EXIT_CLEAN;
+}
+
 /**
  * =================================================================================
  * Function:       i2c_write_byte

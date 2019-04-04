@@ -30,6 +30,21 @@ typedef struct {
    pthread_mutex_t  mutex;
 } i2c_handle_t;
 
+
+/*
+ * =================================================================================
+ * Function:       i2c_set
+ * @brief   Write 1 to bit at addr
+ *
+ * @param   slave  - address of i2c slave
+ * @param   addr - memory location to write to
+ * @return  EXIT_CLEAN on success, otherweise one of exit_e
+ * =================================================================================
+ */
+int i2c_set( int slave, int addr );
+
+
+
 /**
  * =================================================================================
  * Function:       i2c_write_byte
