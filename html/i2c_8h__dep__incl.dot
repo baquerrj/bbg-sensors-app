@@ -1,0 +1,25 @@
+digraph "inc/i2c.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node3 [label="inc/i2c.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="src/i2c.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$i2c_8c.html"];
+  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="inc/light.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$light_8h.html",tooltip="Interface to APDS9301 Light Sensor. "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="src/light.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$light_8c.html",tooltip="Interface to APDS9301 Light Sensor. "];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="src/main.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8c.html",tooltip="<+DETAILED+> "];
+  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="src/socket.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$socket_8c.html",tooltip="Remote Socket task capable of requesting sensor readings from temperature and light sensor threads..."];
+  Node5 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="src/watchdog.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$watchdog_8c.html",tooltip="Watchdog source file: the watchdog is responsible for checking that the temperature and light sensor ..."];
+  Node3 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="inc/temperature.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$temperature_8h.html",tooltip="Header for temperature sensor thread. "];
+  Node10 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="src/temperature.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$temperature_8c.html",tooltip="Source file implementing temperature.h. "];
+  Node10 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

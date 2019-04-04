@@ -1,0 +1,14 @@
+digraph "inc/light.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node10 [label="inc/light.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="src/light.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$light_8c.html",tooltip="Interface to APDS9301 Light Sensor. "];
+  Node10 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="src/main.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8c.html",tooltip="<+DETAILED+> "];
+  Node10 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="src/socket.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$socket_8c.html",tooltip="Remote Socket task capable of requesting sensor readings from temperature and light sensor threads..."];
+  Node10 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="src/watchdog.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$watchdog_8c.html",tooltip="Watchdog source file: the watchdog is responsible for checking that the temperature and light sensor ..."];
+}
