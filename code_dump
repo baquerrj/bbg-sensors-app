@@ -1,0 +1,3918 @@
+/**
+ * =================================================================================
+ *    @file     i2c.h
+ *    @brief   Interface to I2C Bus of BeagleBone Green using libmraa
+ *             https://iotdk.intel.com/docs/master/mraa/
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/17/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#ifndef  I2C_H
+#define  I2C_H
+
+#include <pthread.h>
+#include "mraa/i2c.h"
+
+
+typedef struct {
+   mraa_i2c_context context;
+   pthread_mutex_t  mutex;
+} i2c_handle_t;
+
+
+/*
+ * =================================================================================
+ * Function:       i2c_set
+ * @brief   Write 1 to bit at addr
+ *
+ * @param   slave  - address of i2c slave
+ * @param   addr - memory location to write to
+ * @return  EXIT_CLEAN on success, otherweise one of exit_e
+ * =================================================================================
+ */
+int i2c_set( int slave, int addr );
+
+
+
+/**
+ * =================================================================================
+ * Function:       i2c_write_byte
+ * @brief   Writes byte to register address
+ *
+ * @param   slave  - address of i2c slave
+ * @param   reg    - address of register to write to
+ * @param   data   - data to write
+ * @return  EXIT_CLEAN on success, otherwise one of exit_e
+ * =================================================================================
+ */
+int i2c_write_byte( int slave, int reg, uint8_t data );
+
+
+/**
+ * =================================================================================
+ * Function:       i2c_write
+ * @brief   Writes data to register address
+ *
+ * @param   slave  - address of i2c slave
+ * @param   reg    - address of register to write to
+ * @param   data   - data to write
+ * @return  EXIT_CLEAN on success, otherwise one of exit_e
+ * =================================================================================
+ */
+int i2c_write( int slave, int reg, uint16_t data );
+
+/**
+ * =================================================================================
+ * Function:       i2c_read
+ * @brief   Reads data from register address
+ *
+ * @param   slave - address of i2c slave
+ * @param   reg   - address to read from
+ * @param   *data - pointer to location to store read data
+ * @param   len   - size of memory to read in bytes
+ * @return  EXIT_CLEAN on success, otherwise one of exit_e
+ * =================================================================================
+ */
+int i2c_read( int slave, int reg, uint8_t *data, size_t len );
+
+/**
+ * =================================================================================
+ * Function:       i2c_init
+ * @brief   Initialize singleton master i2c context
+ *
+ * @param   *i2c - pointer to handle to be master
+ * @return  EXIT_CLEAN on success, otherwise EXIT_INIT
+ * =================================================================================
+ */
+int i2c_init( i2c_handle_t *i2c );
+
+/**
+ * =================================================================================
+ * Function:       i2c_stop
+ * @brief   Stops i2c instance
+ *
+ * @param   *i2c - pointer to i2c context handle
+ * @return  EXIT_CLEAN on success, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int i2c_stop( i2c_handle_t *i2c );
+
+#endif   /* I2C_H */
+/**
+ * =================================================================================
+ *    @file     light.h
+ *    @brief   Interface to APDS9301 Light Sensor
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#ifndef LIGHT_H
+#define LIGHT_H
+
+#include "common.h"
+#include "i2c.h"
+
+#define LIGHT_QUEUE_NAME "/light-queue"
+
+#define APDS9301_ADDRESS         (0x39)
+
+/** Register adddresses */
+#define APDS9301_REG_CMD         (0x80)
+#define APDS9301_REG_CNTRL       (0x80)
+#define APDS9301_REG_TIME        (0x81)
+#define APDS9301_REG_TH_LL       (0x82)
+#define APDS9301_REG_TH_LH       (0x83)
+#define APDS9301_REG_TH_HL       (0x84)
+#define APDS9301_REG_TH_HH       (0x85)
+#define APDS9301_REG_INT_CNTRL   (0x86)
+#define APDS9301_REG_ID          (0x8A)
+#define APDS9301_REG_DLOW_0      (0x8C)
+#define APDS9301_REG_DHIGH_0     (0x8D)
+#define APDS9301_REG_DLOW_1      (0x8E)
+#define APDS9301_REG_DHIGH_1     (0x8F)
+
+/** Helpful constants */
+#define POWER_ON     (0x03)
+#define POWER_OFF    (0x00)
+#define CMD_CLEAR_INTR  (1<<5)
+#define CMD_WORD_ENBL   (1<<6)
+
+/** Defaults */
+#define DEFAULT_GAIN             (0x00)   /** low gain */
+#define DEFAULT_INTEGRATION_TIME (0x02)   /** 402ms integration time */
+#define DEFAULT_INTERRUPT        (0x00)   /** No interrupts */
+
+#define DARK_THRESHOLD           (50)
+
+
+/**
+ * =================================================================================
+ * Function:       get_lux
+ * @brief   Returns last lux reading
+ *
+ * @param   void
+ * @return  last_lux_value - last lux reading we have
+ * =================================================================================
+ */
+float get_lux( void );
+
+/**
+ * =================================================================================
+ * Function:       is_dark
+ * @brief   Returns int speciyfing if it is night or day
+ *
+ * @param   void
+ * @return  night - 0 if it is day, 1 if night, i.e. below DARK_THRESHOLD
+ * =================================================================================
+ */
+int is_dark( void );
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_config
+ * @brief   Set configuration of light sensor. For the APDS9301, the configuration
+ *          is spread out across the: Timing Register, Interrupt Control Register,
+ *          and Control Register. So, I have to write to all of these to set the config
+ *
+ * @param   void
+ * @return  EXIT_CLEAN if successful, otherwise see i2c_write()
+ * =================================================================================
+ */
+int apds9301_set_config( void );
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_integration
+ * @brief   Sets the integration time for APDS9301 by writing a value to bits
+ *          INTEG of the Timing Register
+ *
+ * @param   val   - value to write to timing register
+ * @return  see i2c_write_byte() - if val is not an allowed value, EXIT_ERROR
+ * =================================================================================
+ */
+int apds9301_set_integration( uint8_t val );
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_clear_interrupt
+ * @brief   Clears any pending interrupt for APDS9301 by writing a 1 to the CLEAR bit
+ *          of the Command Register
+ *
+ * @param   void
+ * @return  see i2c_set()
+ * =================================================================================
+ */
+int apds9301_clear_interrupt( void );
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_interrupt
+ * @brief   Enables or disables interrupts for APDS9301 by setting or clearing the
+ *          INTR bits of the Interrupt Control Register
+ *
+ * @param   enable - set if we want to enable interrupts
+ * @return  see i2c_write_byte()
+ * =================================================================================
+ */
+int apds9301_set_interrupt( uint8_t enable );
+
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_gain
+ * @brief   Sets gain for APDS9301 by setting or clearing the GAIN bit of the
+ *          Timing Register
+ *
+ * @param   gain  - set if we want high gain
+ * @return  see i2c_write_byte()
+ * =================================================================================
+ */
+int apds9301_set_gain( uint8_t gain );
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_read_control
+ * @brief   Read contents of Control Register
+ *
+ * @param   *data - where to store contents
+ * @return  see i2c_read()
+ * =================================================================================
+ */
+int apds9301_read_control( uint8_t* data );
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_low
+ * @brief   Write value to low threshold register
+ *
+ * @param   threshold   - value to write
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_write_threshold_low( uint16_t threshold );
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_low
+ * @brief   Read value from low threshold register
+ *
+ * @param   *threshold   - where to write value read
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_read_threshold_low( uint16_t *threshold );
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_high
+ * @brief   Write value to high threshold register
+ *
+ * @param   threshold   - value to write
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_write_threshold_high( uint16_t threshold );
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_high
+ * @brief   Read value from high threshold register
+ *
+ * @param   *threshold   - where to write value read
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_read_threshold_high( uint16_t *threshold );
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_read_id
+ * @brief   Read APDS9301 Identification Register
+ *
+ * @param   *id   - where to write ID from register
+ * @return  EXIT_CLEAN if successful, EXIT_ERROR otherwise
+ * =================================================================================
+ */
+int apds9301_read_id( uint8_t *id );
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_get_lux
+ * @brief   Read ADC Registers and calculate lux in lumen
+ *
+ * @param   *lux  - pointer to location to write decoded lux to
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int apds9301_get_lux( float *lux );
+
+
+/**
+ * =================================================================================
+ * function:       apds9301_read_data0
+ * @brief   Read ADC register for channel 0
+ *
+ * @param   *data - pointer to location to write decoded value to
+ * @return  EXIT_CLEAN if successful, otherwise exit_error
+ * =================================================================================
+ */
+int apds9301_read_data0( uint16_t *data );
+
+/**
+ * =================================================================================
+ * function:       apds9301_read_data1
+ * @brief   Read ADC register for channel 1
+ *
+ * @param   *data - pointer to location to write decoded value to
+ * @return  EXIT_CLEAN if successful, otherwise exit_error
+ * =================================================================================
+ */
+int apds9301_read_data1( uint16_t *data );
+
+/**
+ * =================================================================================
+ * Function:       apds9301_power
+ * @brief   power on (or off) APDS9301 as set by paramater
+ *
+ * @param   on - specifies if sensor is to be powered on or off
+ * @return  see i2c_write_byte()
+ * =================================================================================
+ */
+int apds9301_power( uint16_t on );
+
+/**
+ * =================================================================================
+ * Function:       get_light_queue
+ * @brief   Get file descriptor for light sensor thread.
+ *          Called by watchdog thread in order to be able to send heartbeat check via queue
+ *
+ * @param   void
+ * @return  temp_queue - file descriptor for light sensor thread message queue
+ * =================================================================================
+ */
+mqd_t get_light_queue( void );
+
+/**
+ * =================================================================================
+ * Function:       light_queue_init
+ * @brief   Initialize message queue for light sensor thread
+ *
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
+ * =================================================================================
+ */
+int light_queue_init( void );
+
+/**
+ * =================================================================================
+ * Function:       light_fn
+ * @brief   Entry point for light sensor processing thread
+ *
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function,
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *light_fn( void *thread_args );
+
+
+#endif /* LIGHT_H */
+/**
+ * =================================================================================
+ *    @file     socket.h
+ *    @brief   Remote Socket task capable of requesting sensor readings from
+ *             temperature and light sensor threads
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/31/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#ifndef  SOCKET_H
+#define  SOCKET_H
+
+
+#include "common.h"
+
+/**
+ * =================================================================================
+ * Function:       process_request
+ * @brief   Process a request from remote client
+ *
+ * @param   *request - request from client
+ * @return  response - our response 
+ * =================================================================================
+ */
+msg_t process_request( msg_t *request );
+
+/**
+ *
+ * =================================================================================
+ * Function:       cycle
+ * @brief   Cycle function for remote socket task. Spins in this infinite while-loop
+ *          checking for new connections to make. When it receives a new connection,
+ *          it starts processing requests from the client
+ *
+ * @param   server   - server socket file descriptor
+ * @return  void
+ * =================================================================================
+ */
+int socket_init( void );
+
+/**
+ * =================================================================================
+ * Function:       socket_fn
+ * @brief   Entry point for remote socket thread
+ *
+ * @param   *thread_args   - thread arguments (if any) 
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *socket_fn( void *thread_arg );
+
+
+#endif   /* SOCKET_H */
+/**
+ * =================================================================================
+ *    @file     temperature.h
+ *    @brief   Header for temperature sensor thread 
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#ifndef TEMPERATURE_H
+#define TEMPERATURE_H
+
+#include "common.h"
+#include "i2c.h"
+
+#include <mqueue.h>
+
+#define TEMP_QUEUE_NAME "/temperature-queue"
+
+/** Default address for Temperature Sensor TMP102 */
+#define TMP102_SLAVE       (0x48)
+
+/** Regsiter addresses for TMP102 */
+#define TMP102_REG_TEMP    (0x00)
+#define TMP102_REG_CONFIG  (0x01)
+#define TMP102_TLOW        (0x02)
+#define TMP102_THIGH       (0x03)
+
+/** Default configuration */
+#define TMP102_SHUTDOWN_MODE     (1)
+#define TMP102_THERMOSTAT_MODE   (1)
+#define TMP102_POLARITY          (1)
+#define TMP102_FAULT_QUEUE       (1)
+#define TMP102_RESOLUTION_0      (2)
+#define TMP102_RESOLUTION_1      (4)
+#define TMP102_EXTENDED_MODE     (0)
+#define TMP102_CONVERSION_RATE   (2)
+
+
+typedef struct {
+   uint16_t res_0;
+   uint16_t res_1;
+} conv_res_t;
+
+typedef struct {
+   uint16_t shutdown;
+   uint16_t thermostat;
+} tmp102_mode_t;
+
+typedef struct {
+   tmp102_mode_t mode;     /* shutdown and thermostat modes */
+   uint16_t polarity;      /* polarity */
+   uint16_t fault_queue;   /* fault queue */
+   conv_res_t resolution;  /* converter resolution */
+   uint16_t one_shot;      /* when in shutdown mode, writing 1 starts a single conversion */
+   uint16_t operation;     /* extended vs normal operation */
+   uint16_t alert;         /* alerrt bit */
+   uint16_t conv_rate;     /* conversion rate */
+} tmp102_config_t;
+
+/**
+ * =================================================================================
+ * Function:       get_temperature
+ * @brief   Returns last temperature reading we have
+ *
+ * @param   void
+ * @return  last_temp_value - last temperature reading we have
+ * <+DETAILED+>
+ * =================================================================================
+ */
+float get_temperature( void );
+
+/**
+ * =================================================================================
+ * Function:       tmp102_write_config
+ * @brief   Write configuration register of TMP102 sensor
+ *
+ * @param   *config_reg  - pointer to struct with values to write to configuration register
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int tmp102_write_config( tmp102_config_t *config_reg );
+
+/**
+ * =================================================================================
+ * Function:       tmp102_get_temp
+ * @brief   Read temperature registers fo TMP102 sensor and decode temperature value
+ *
+ * @param   *temperature - pointer to location to write decoded value to
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int tmp102_get_temp( float *temperature );
+
+/**
+ * =================================================================================
+ * Function:       tmp102_write_thigh
+ * @brief   Write value thigh (in celsius) to Thigh register for TMP102 sensor
+ *
+ * @param   thigh - value to write to Thigh register
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int tmp102_write_thigh( float thigh );
+
+/**
+ * =================================================================================
+ * Function:       tmp102_write_tlow
+ * @brief   Write value tlow (in celsius) to Tlow register for TMP102 sensor
+ *
+ * @param   tlow - value to write to Tlow register
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int tmp102_write_tlow( float tlow );
+
+/**
+ * =================================================================================
+ * Function:       tmp102_read_thigh
+ * @brief   Read value of THigh register of TMP102 sensor and store value (in celsius) in thigh
+ *
+ * @param   thigh - pointer to location to store decoded temperature value to
+ * @return  EXIT_CLEAN if successful, EXIT_ERROR otherwise
+ * =================================================================================
+ */
+int tmp102_read_thigh( float *thigh );
+
+/**
+ * =================================================================================
+ * Function:       tmp102_read_tlow
+ * @brief   Read value of TLow register of TMP102 sensor and store value (in celsius) in tlow
+ *
+ * @param   tlow  - pointer to location to store decoded temperature value to
+ * @return  EXIT_CLEAN if successful, EXIT_ERROR otherwise
+ * =================================================================================
+ */
+int tmp102_read_tlow( float *tlow );
+
+/**
+ * =================================================================================
+ * Function:       get_temperature_queue
+ * @brief   Get file descriptor for temperature sensor thread.
+ *          Called by watchdog thread in order to be able to send heartbeat check via queue
+ *
+ * @param   void
+ * @return  temp_queue - file descriptor for temperature sensor thread message queue
+ * =================================================================================
+ */
+mqd_t get_temperature_queue( void );
+
+/**
+ * =================================================================================
+ * Function:       temp_queue_init
+ * @brief   Initialize message queue for temperature sensor thread
+ *
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
+ * =================================================================================
+ */
+int temp_queue_init( void );
+
+/**
+ * =================================================================================
+ * Function:       temperature_fn
+ * @brief   Entry point for temperature sensor processing thread
+ *
+ * @param   thread_args  - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *temperature_fn( void *thread_args );
+
+
+#endif /* TEMPERATURE_H */
+/**
+ * =================================================================================
+ *    @file     watchdog.h
+ *    @brief   Watchdog thread header 
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/15/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#ifndef  WATCHDOG_H
+#define  WATCHDOG_H
+
+#include "common.h"
+
+#include <mqueue.h>
+
+#define WATCHDOG_QUEUE_NAME "/watchdog-queue"
+#define NUM_THREADS 4
+
+typedef enum {
+   THREAD_TEMP = 0,
+   THREAD_LIGHT,
+   THREAD_LOGGER,
+   THREAD_SOCKET,
+   THREAD_MAX
+} thread_e;
+
+volatile int threads_status[NUM_THREADS];
+
+extern pthread_mutex_t alive_mutex;
+
+/**
+ * =================================================================================
+ * Function:       kill_threads
+ * @brief   Function to kill children threads 
+ *
+ * @param   void
+ * @return  void
+ * =================================================================================
+ */
+void kill_threads( void );
+
+/**
+ * =================================================================================
+ * Function:       check_threads
+ * @brief   Periodically send message via message queue for temperature and sensor threads
+ *          to check for health. This function is registered as the timer hanlder for the
+ *          timer owned by the watchdog
+ *
+ * @param   sig
+ * @return  void
+ * =================================================================================
+ */
+void check_threads( union sigval sig );
+
+/**
+ * =================================================================================
+ * Function:       watchdog_queue_init
+ * @brief   Initalize message queue for watchdog
+ *
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
+ * =================================================================================
+ */
+int watchdog_queue_init( void );
+
+/**
+ * =================================================================================
+ * Function:       watchdog_init
+ * @brief   Initialize watchdog, calling appropriate functions to do so.
+ *          E.g. calling timer_setup and timer_start to set up timer
+ *
+ * @param   void
+ * @return  EXIT_CLEAN, otherwise EXIT_INIT
+ * =================================================================================
+ */
+int watchdog_init( void );
+
+/**
+ * =================================================================================
+ * Function:       watchdog_fn
+ * @brief   Entry point for wachtdog
+ *
+ * @param   thread_args - void ptr used to pass thread identifiers (pthread_t) for
+ *                      child threads we have to check for health
+ * @return  NULL  - We don't really exit from this function,
+ *                   since the exit point for threads is thread_exit()
+ * =================================================================================
+ */
+void *watchdog_fn( void *thread_args );
+
+#endif   /* WATCHDOG_H */
+/**
+ * =================================================================================
+ *    @file     led.h
+ *    @brief   Interface to USR LEDs of BeagleBone Green
+ *    http://derekmolloy.ie/beaglebone-controlling-the-on-board-leds-using-c/
+ *
+ *  Define macros for interacting with user LEDs of BeagleBone Green.
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/31/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#ifndef  LED_H
+#define  LED_H
+
+#define LED0_PATH    "/sys/class/leds/beaglebone:green:heartbeat"
+#define LED1_PATH    "/sys/class/leds/beaglebone:green:mmc0"
+#define LED2_PATH    "/sys/class/leds/beaglebone:green:usr2"
+#define LED3_PATH    "/sys/class/leds/beaglebone:green:usr3"
+
+
+#define LED_BRIGHTNESS(LED_PATH) (LED_PATH"/brightness") 
+#define LED_TRIGGER(LED_PATH)    (LED_PATH"/trigger") 
+#define LED_DELAYON(LED_PATH)    (LED_PATH"/delay_on")
+#define LED_DELAYOFF(LED_PATH)   (LED_PATH"/delay_off")
+
+
+#define LED0_BRIGHTNESS LED_BRIGHTNESS(LED0_PATH)
+#define LED1_BRIGHTNESS LED_BRIGHTNESS(LED1_PATH)
+#define LED2_BRIGHTNESS LED_BRIGHTNESS(LED2_PATH)
+#define LED3_BRIGHTNESS LED_BRIGHTNESS(LED3_PATH)
+
+#define LED0_TRIGGER LED_TRIGGER(LED0_PATH)
+#define LED1_TRIGGER LED_TRIGGER(LED1_PATH)
+#define LED2_TRIGGER LED_TRIGGER(LED2_PATH)
+#define LED3_TRIGGER LED_TRIGGER(LED3_PATH)
+
+#define LED0_DELAYON LED_DELAYON(LED0_PATH)
+#define LED1_DELAYON LED_DELAYON(LED1_PATH)
+#define LED2_DELAYON LED_DELAYON(LED2_PATH)
+#define LED3_DELAYON LED_DELAYON(LED3_PATH)
+
+#define LED0_DELAYOFF LED_DELAYOFF(LED0_PATH)
+#define LED1_DELAYOFF LED_DELAYOFF(LED1_PATH)
+#define LED2_DELAYOFF LED_DELAYOFF(LED2_PATH)
+#define LED3_DELAYOFF LED_DELAYOFF(LED3_PATH)
+
+#include <stdio.h>
+
+
+
+/**
+ * =================================================================================
+ * Function:       get_status
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void get_status( const char *led );
+
+/**
+ * =================================================================================
+ * Function:       get_trigger
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int set_trigger( const char *led, char *trigger );
+
+/**
+ * =================================================================================
+ * Function:       set_delay
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int set_delay( const char *led_path, int delay );
+
+
+/**
+ * =================================================================================
+ * Function:       led_on
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void led_on( const char *led );
+
+
+/**
+ * =================================================================================
+ * Function:       led_off
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void led_off( const char *led );
+
+
+/**
+ * =================================================================================
+ * Function:       led_toggle
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void led_toggle( const char* led );
+
+
+
+#endif   /* LED_H */
+/**
+ * =================================================================================
+ *    @file     common.h
+ *    @brief   Defines types and functions common between the threads of the application
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#ifndef COMMON_H
+#define COMMON_H
+
+#include <signal.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <semaphore.h>
+#include <mqueue.h>
+
+
+#define SHM_SEGMENT_NAME "/shm-log"
+#define SHM_BUFFER_SIZE 2048
+
+#define GEN_BUFFER_SIZE 100
+#define MAX_MESSAGES 100
+
+#define MICROS_PER_SEC  1000000
+
+/*******************************************************************************
+ *  Defines types of possible messages
+ ******************************************************************************/
+typedef enum {
+   REQUEST_BEGIN = 0,
+   REQUEST_LUX,
+   REQUEST_DARK,
+   REQUEST_TEMP,
+   REQUEST_TEMP_C = REQUEST_TEMP,
+   REQUEST_TEMP_K,
+   REQUEST_TEMP_F,
+   REQUEST_CLOSE,
+   REQUEST_KILL,
+   REQUEST_STATUS,
+   REQUEST_MAX
+} request_e;
+
+/*******************************************************************************
+ *  Defines struct for communicating sensor information
+ ******************************************************************************/
+typedef struct {
+   float data;    /** Can be temperature in Celsius, Fahrenheit, or Kelvin OR
+                     lux output from light sensor */
+   int   night;   /** 1 when it is dark and 0 otherwise */
+} sensor_data_t;
+
+/*******************************************************************************
+ *  Defines struct for response for remote socket task
+ ******************************************************************************/
+typedef struct {
+   request_e id;
+   mqd_t src;
+   char info[GEN_BUFFER_SIZE];
+   sensor_data_t data;
+} msg_t;
+
+/*******************************************************************************
+ *
+ ******************************************************************************/
+typedef struct {
+   char *name;
+   FILE *fid;
+} file_t;
+
+/*******************************************************************************
+ *  Struct to hold thread identifiers for tasks
+ ******************************************************************************/
+typedef struct thread_id_s {
+   pthread_t temp_thread;
+   pthread_t light_thread;
+   pthread_t logger_thread;
+   pthread_t socket_thread;
+   pthread_t watchdog_thread;
+} thread_id_s;
+
+
+
+/*******************************************************************************
+ *  Shared Memory Data Struct
+ ******************************************************************************/
+typedef struct {
+   char buffer[SHM_BUFFER_SIZE];  /** Buffer for message from thread */
+   char header[SHM_BUFFER_SIZE];  /** Buffer for header identifying the thread who wrote to shm */
+   sem_t w_sem;
+   sem_t r_sem;
+} shared_data_t;
+
+
+/*******************************************************************************
+ *  Exit Enum
+ ******************************************************************************/
+typedef enum {
+   EXIT_BEGIN = 0,
+   EXIT_CLEAN = 0,
+   EXIT_INIT,
+   EXIT_ERROR,
+   EXIT_MAX
+} exit_e;
+
+/**
+ * =================================================================================
+ * Function:       print_header
+ * @brief   Write a string formatted with the TID of the thread calling this function
+ *          and a timestamp to the log buffer
+ *
+ * @param   *buffer  - pointer to where we should copy formatted string to
+ *                     if NULL, we print to stderr
+ * @return  void
+ * =================================================================================
+ */
+void print_header( char *buffer );
+
+/**
+ * =================================================================================
+ * Function:       thread_exit
+ * @brief   Common exit point for all threads
+ *
+ * @param   exit_status - reason for exit (signal number)
+ * @return  void
+ * =================================================================================
+ */
+void thread_exit( int exit_status );
+
+/**
+ * =================================================================================
+ * Function:       get_shared_memory
+ * @brief   Sets up shared memory location for logging
+ *
+ * @param   void
+ * @return  *shm_p - pointer to shared memory object
+ * =================================================================================
+ */
+void *get_shared_memory( void );
+
+/**
+ * =================================================================================
+ * Function:       sems_init
+ * @brie    Initialize semaphores for shared memory 
+ *
+ * @param   *shm  - pointer to shared memory object
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT
+ * =================================================================================
+ */
+int sems_init( shared_data_t *shm );
+
+/**
+ * =================================================================================
+ * Function:       timer_setup
+ * @brief   Initializes a timer identified by timer_t id
+ *
+ * @param   *id   - identifier for new timer
+ * @param   *handler - pointer to function to register as the handler for the timer ticks 
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
+ * =================================================================================
+ */
+int timer_setup( timer_t *id, void (*timer_handler)(union sigval) );
+
+
+/**
+ * =================================================================================
+ * Function:       timer_start
+ * @brief   Starts the timer with interval usecs
+ *
+ * @param   *id   - identifier for new timer
+ * @param   usecs - timer interval
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
+ * =================================================================================
+ */
+int timer_start( timer_t *id, unsigned long usecs );
+
+
+#endif /* COMMON_H */
+/**
+ * =================================================================================
+ *    @file     logger.h
+ *    @brief    
+ *
+ *  <+DETAILED+>
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/13/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#ifndef  LOGGER_H
+#define  LOGGER_H
+
+#include "common.h"
+
+
+/**
+ * =================================================================================
+ * Function:       logger_fn
+ * @brief   Entry point for logger thread
+ *
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *logger_fn( void *thread_args );
+
+#endif   /* LOGGER_H */
+
+
+/**
+ * =================================================================================
+ *    @file     temperature.c
+ *    @brief   Source file implementing temperature.h
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#include "watchdog.h"
+#include "temperature.h"
+#include "led.h"
+
+#include <errno.h>
+#include <time.h>
+#include <string.h>
+
+static timer_t    timerid;
+struct itimerspec trigger;
+
+static i2c_handle_t i2c_tmp102;
+static float last_temp_value = -5;
+static mqd_t temp_queue;
+static shared_data_t *shm;
+
+const tmp102_config_t tmp102_default_config = {
+   .mode = {                                 /* shutdown and thermostat modes */
+      .shutdown = TMP102_SHUTDOWN_MODE,
+      .thermostat = TMP102_THERMOSTAT_MODE
+   },
+   .polarity = TMP102_POLARITY,              /* polarity */
+   .fault_queue = TMP102_FAULT_QUEUE,        /* fault queue */
+   .resolution = {                           /* converter resolution */
+      .res_0 = TMP102_RESOLUTION_0,
+      .res_1 = TMP102_RESOLUTION_1
+   },
+   .one_shot = 1,                            /* when in shutdown mode, writing 1 starts a single conversion */
+   .operation = TMP102_EXTENDED_MODE,        /* extended vs normal operation */
+   .alert = 1,                               /* alter bit */
+   .conv_rate = TMP102_CONVERSION_RATE       /* conversion rate */
+};
+
+
+
+/**
+ * =================================================================================
+ * Function:       get_temperature
+ * @brief   Returns last temperature reading we have
+ *
+ * @param   void
+ * @return  last_temp_value - last temperature reading we have
+ * <+DETAILED+>
+ * =================================================================================
+ */
+float get_temperature( void )
+{
+   return last_temp_value;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       tmp102_write_config
+ * @brief   Write configuration register of TMP102 sensor
+ *
+ * @param   *config_reg  - pointer to struct with values to write to configuration register
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int tmp102_write_config( tmp102_config_t *config_reg )
+{
+   int retVal = i2c_write( TMP102_SLAVE, TMP102_REG_CONFIG, *((uint16_t*)&config_reg) );
+
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       tmp102_get_temp
+ * @brief   Read temperature registers fo TMP102 sensor and decode temperature value
+ *
+ * @param   *temperature - pointer to location to write decoded value to
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int tmp102_get_temp( float *temperature )
+{
+   uint8_t buffer[2] = {0};
+   int retVal = i2c_read( TMP102_SLAVE, TMP102_REG_TEMP, buffer, sizeof( buffer ) );
+   if( 0 > retVal )
+   {
+      return EXIT_ERROR;
+   }
+
+   uint16_t tmp = 0;
+   tmp = 0xfff & ( ((uint16_t)buffer[0] << 4 ) | (buffer[1] >> 4 ) ); /* buffer[0] = MSB(15:8)
+                                                                        buffer[1] = LSB(7:4) */
+   if( 0x800 & tmp )
+   {
+      tmp = ( (~tmp ) + 1 ) & 0xfff;
+      *temperature = -1.0 * (float)tmp * 0.0625;
+   }
+   else
+   {
+      *temperature = ((float)tmp) * 0.0625;
+   }
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       tmp102_write_thigh
+ * @brief   Write value thigh (in celsius) to Thigh register for TMP102 sensor
+ *
+ * @param   thigh - value to write to Thigh register
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int tmp102_write_thigh( float thigh )
+{
+   if( (-56.0 > thigh) || (151.0 < thigh) )
+   {
+      thigh = 80.0;
+   }
+
+   thigh /= 0.0625;
+   uint16_t tmp;
+
+   if( 0 > thigh )
+   {
+      tmp = ( (uint16_t)thigh << 4 );
+      tmp &= 0x7fff;
+   }
+   else
+   {
+      thigh *= -1;
+      tmp = (uint16_t)thigh;
+      tmp = ~(tmp) + 1;
+      tmp = tmp << 4;
+   }
+
+   int retVal = i2c_write( TMP102_SLAVE, TMP102_THIGH, tmp );
+   if( 0 > retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Could not write value to THigh register!\n" );
+      sem_post(&shm->r_sem);
+      return EXIT_ERROR;
+   }
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       tmp102_write_tlow
+ * @brief   Write value tlow (in celsius) to Tlow register for TMP102 sensor
+ *
+ * @param   tlow - value to write to Tlow register
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int tmp102_write_tlow( float tlow )
+{
+   if( (-56.0 > tlow) || (151.0 < tlow ) )
+   {
+      tlow = 75.0;
+   }
+
+   tlow /= 0.0625;
+   uint16_t tmp;
+
+   if( 0 < tlow )
+   {
+      tmp = ( (uint16_t)tlow << 4 );
+      tmp &= 0x7fff;
+   }
+   else
+   {
+      tlow *= -1;
+      tmp = (uint16_t)tlow;
+      tmp = ~(tmp) + 1;
+      tmp = tmp << 4;
+   }
+
+   int retVal = i2c_write( TMP102_SLAVE, TMP102_TLOW, tmp );
+   if( 0 > retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Could not write value to TLow register!\n" );
+      sem_post(&shm->r_sem);
+      return EXIT_ERROR;
+   }
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       tmp102_read_thigh
+ * @brief   Read value of THigh register of TMP102 sensor and store value (in celsius) in thigh
+ *
+ * @param   thigh - pointer to location to store decoded temperature value to
+ * @return  EXIT_CLEAN if successful, EXIT_ERROR otherwise
+ * =================================================================================
+ */
+int tmp102_read_thigh( float *thigh )
+{
+   uint16_t tmp = 0;
+
+   int retVal = i2c_read( TMP102_SLAVE, TMP102_THIGH, (uint8_t*)&tmp, sizeof( tmp ) );
+   if( 0 > retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Could not read from TLow register!\n" );
+      sem_post(&shm->r_sem);
+      return EXIT_ERROR;
+   }
+
+   if( tmp & 0x800 )
+   {
+      tmp = ~(tmp) + 1;
+      *thigh = -1 * ( (float)tmp * 0.0625 );
+   }
+   else
+   {
+      *thigh = (float)tmp * 0.0625;
+   }
+
+   return EXIT_CLEAN;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       tmp102_read_tlow
+ * @brief   Read value of TLow register of TMP102 sensor and store value (in celsius) in tlow
+ *
+ * @param   tlow  - pointer to location to store decoded temperature value to
+ * @return  EXIT_CLEAN if successful, EXIT_ERROR otherwise
+ * =================================================================================
+ */
+int tmp102_read_tlow( float *tlow )
+{
+   uint16_t tmp = 0;
+
+   int retVal = i2c_read( TMP102_SLAVE, TMP102_TLOW, (uint8_t*)&tmp, sizeof( tmp ) );
+   if( 0 > retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Could not read from TLow register!\n" );
+      sem_post(&shm->r_sem);
+      return retVal;
+   }
+
+   if( tmp & 0x800 )
+   {
+      tmp = ~(tmp) + 1;
+      *tlow = -1 * (float)tmp * 0.0625;
+   }
+   else
+   {
+      *tlow = (float)tmp * 0.0625;
+   }
+
+   return retVal;
+}
+
+
+
+/**
+ * =================================================================================
+ * Function:       sig_handler
+ * @brief   Signal handler for temperature sensor thread.
+ *          On normal operation, we should be receving SIGUSR1/2 signals from watchdog
+ *          when prompted to exit. So, we close the message queue and timer this thread owns
+ *
+ * @param   signo - enum with signal number of signal being handled
+ * @return  void
+ * =================================================================================
+ */
+static void sig_handler( int signo )
+{
+   if( signo == SIGUSR1 )
+   {
+      printf("Received SIGUSR1! Exiting...\n");
+      mq_close( temp_queue );
+      timer_delete( timerid );
+      i2c_stop( &i2c_tmp102 );
+      thread_exit( signo );
+   }
+   else if( signo == SIGUSR2 )
+   {
+      printf("Received SIGUSR2! Exiting...\n");
+      mq_close( temp_queue );
+      timer_delete( timerid );
+      i2c_stop( &i2c_tmp102 );
+      thread_exit( signo );
+   }
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       timer_handler
+ * @brief   Timer handler function for temperature sensor thread
+ *          When woken up by the timer, get temperature and write state to shared memory
+ *
+ * @param   sig
+ * @return  void
+ * =================================================================================
+ */
+static void timer_handler( union sigval sig )
+{
+   static int i = 0;
+   led_toggle( LED0_BRIGHTNESS );
+   sem_wait(&shm->w_sem);
+   
+   print_header(shm->header);
+   float temperature;
+   int retVal = tmp102_get_temp( &temperature );
+   i++;
+   if( retVal )
+   {
+      sprintf( shm->buffer, "cycle[%d]: %0.5f Celsius\n", i, temperature );
+   }
+   else
+   {
+      sprintf( shm->buffer, "cycle[%d]: could not get temperature reading!\n", i );
+   }
+
+   sem_post(&shm->r_sem);
+   led_toggle( LED0_BRIGHTNESS );
+   return;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       cycle
+ * @brief   Cycle function for temperature sensor thread
+ *          We wait in this while loop checking for requests from watchdog for health status
+ *
+ * @param   void
+ * @return  void 
+ * =================================================================================
+ */
+static void cycle( void )
+{
+   int retVal = 0;
+   msg_t request = {0};
+   msg_t response = {0};
+   while( 1 )
+   {
+      memset( &request, 0, sizeof( request ) );
+      retVal = mq_receive( temp_queue, (char*)&request, sizeof( request ), NULL );
+      if( 0 > retVal )
+      {
+         int errnum = errno;
+         sem_wait(&shm->w_sem);
+         sprintf( shm->buffer, "ERROR: Encountered error receiving from message queue %s: (%s)\n",
+                  TEMP_QUEUE_NAME, strerror( errnum ) );
+         sem_post(&shm->r_sem);
+         continue;
+      }
+      switch( request.id )
+      {
+         case REQUEST_STATUS:
+            sem_wait(&shm->w_sem);
+            print_header(shm->header);
+            sprintf( shm->buffer, "(Temperature) I am alive!\n" );
+            sem_post(&shm->r_sem);
+            fprintf( stdout, "(Temperature) I am alive!\n" );
+            response.id = request.id;
+            sprintf( response.info, "(Temperature) I am alive!\n" );
+            retVal = mq_send( request.src, (const char*)&response, sizeof( response ), 0 );
+
+            pthread_mutex_lock( &alive_mutex );
+            threads_status[THREAD_TEMP]--;
+            pthread_mutex_unlock( &alive_mutex );
+            break;
+         default:
+            break;
+      }
+   }
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       get_temperature_queue
+ * @brief   Get file descriptor for temperature sensor thread.
+ *          Called by watchdog thread in order to be able to send heartbeat check via queue
+ *
+ * @param   void
+ * @return  temp_queue - file descriptor for temperature sensor thread message queue
+ * =================================================================================
+ */
+mqd_t get_temperature_queue( void )
+{
+   return temp_queue;
+}
+
+/**
+ * =================================================================================
+ * Function:       temp_queue_init
+ * @brief   Initialize message queue for temperature sensor thread
+ *
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
+ * =================================================================================
+ */
+int temp_queue_init( void )
+{
+   /* unlink first in case we hadn't shut down cleanly last time */
+   mq_unlink( TEMP_QUEUE_NAME );
+
+   struct mq_attr attr;
+   attr.mq_flags = 0;
+   attr.mq_maxmsg = MAX_MESSAGES;
+   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_curmsgs = 0;
+
+   int msg_q = mq_open( TEMP_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   if( 0 > msg_q )
+   {
+      int errnum = errno;
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "ERROR: Encountered error creating message queue %s: (%s)\n",
+               TEMP_QUEUE_NAME, strerror( errnum ) );
+      sem_post(&shm->r_sem);     
+   }
+   return msg_q;
+}
+
+/**
+ * =================================================================================
+ * Function:       temperature_fn
+ * @brief   Entry point for temperature sensor processing thread
+ *
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *temperature_fn( void *thread_args )
+{
+   /* Get time that thread was spawned */
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+   shm = get_shared_memory();
+
+   /* Write initial state to shared memory */
+   sem_wait(&shm->w_sem);
+   print_header(shm->header);
+   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+   /* Signal to logger that shared memory has been updated */
+   sem_post(&shm->r_sem);
+
+   signal(SIGUSR1, sig_handler);
+   signal(SIGUSR2, sig_handler);
+
+   temp_queue = temp_queue_init();
+   if( 0 > temp_queue )
+   {
+      thread_exit( EXIT_INIT );
+   }
+
+   int retVal = i2c_init( &i2c_tmp102 );
+   if( EXIT_INIT == retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "ERROR: Failed to initialize I2C for temperature sensor!\n" );
+      sem_post(&shm->r_sem);
+      thread_exit( EXIT_INIT );
+   }
+
+   timer_setup( &timerid, &timer_handler );
+
+   timer_start( &timerid, 1000000 );
+   cycle();
+
+   thread_exit( 0 );
+   return NULL;
+}
+/**
+ * =================================================================================
+ *    @file     led.c
+ *    @brief    
+ *
+ *  <+DETAILED+>
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/31/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#include "led.h"
+
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+/**
+ * =================================================================================
+ * Function:       get_status
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void get_status( const char *led )
+{
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       get_trigger
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int set_trigger( const char *led, char* trigger )
+{
+   FILE *fp = fopen( led, "w+" );
+   if( NULL == fp )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error trying to set trigger %s for %s (%s)\n",
+               trigger, led, strerror ( errnum ) );
+      return -1;
+   }
+   fprintf( fp, "%s", trigger );
+   fclose( fp );
+   return 0;
+}
+
+/**
+ * =================================================================================
+ * Function:       set_delay
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int set_delay( const char *led, int delay )
+{
+   FILE *fp = fopen( led, "w+" );
+   if( NULL == fp )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encuntered error trying to set delay for %s (%s)\nAre you sure LED is in correct configuration?\n",
+               led, strerror ( errnum ) );
+      return -1;
+   }
+   fprintf( fp, "%u", delay );
+   fclose( fp );
+   return delay;
+}
+
+/**
+ * =================================================================================
+ * Function:       led_on
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void led_on( const char* led )
+{
+   FILE *fp;
+   fp = fopen( led, "w+" );
+   fprintf( fp, "1" );
+   fclose( fp );
+   return;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       led_off
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void led_off( const char* led )
+{
+   FILE *fp;
+   fp = fopen( led, "w+" );
+   fprintf( fp, "0" );
+   fclose( fp );
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       led_toggle
+ * @brief  
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void led_toggle( const char* led )
+{
+   FILE *fp;
+   fp = fopen( led, "rt" );
+   fseek( fp, 0, SEEK_END );
+   long size = ftell( fp );
+   rewind( fp );
+
+   char *value = (char*) malloc( sizeof(char) * size );
+   fread( value, 1, size, fp );
+   fclose( fp );
+   switch( *value )
+   {
+      case '0':
+         led_on( led );
+         break;
+      case '1':
+         led_off( led );
+         break;
+      default:
+         break;
+   }
+   return;
+}
+
+
+/**
+ * =================================================================================
+ *    @file     i2c.c
+ *    @brief
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/17/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+
+#include "i2c.h"
+#include "common.h"
+
+#include <errno.h>
+#include <string.h>
+
+/** Keep around a singleton instance of the master handle */
+static i2c_handle_t *my_i2c = NULL;
+
+/*
+ * =================================================================================
+ * Function:       i2c_set
+ * @brief   Write 1 to bit at addr
+ *
+ * @param   slave  - address of i2c slave
+ * @param   addr - memory location to write to
+ * @return  EXIT_CLEAN on success, otherweise one of exit_e
+ * =================================================================================
+ */
+int i2c_set( int slave, int addr )
+{
+   if( NULL == my_i2c )
+   {
+      fprintf( stderr, "I2C master has not been initialized!\n" );
+      return EXIT_INIT;
+   }
+
+   /* take hardware mutex */
+   pthread_mutex_lock( &my_i2c->mutex );
+
+   mraa_result_t retVal = mraa_i2c_address( my_i2c->context, slave );
+   if( 0 != retVal )
+   {
+      mraa_result_print( retVal );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      return EXIT_ERROR;
+   }
+
+   retVal = mraa_i2c_write_byte( my_i2c->context, addr );
+   pthread_mutex_unlock( &my_i2c->mutex );
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       i2c_write_byte
+ * @brief   Writes byte to register address
+ *
+ * @param   slave  - address of i2c slave
+ * @param   reg    - address of register to write to
+ * @param   data   - data to write
+ * @return  EXIT_CLEAN on success, otherwise one of exit_e
+ * =================================================================================
+ */
+int i2c_write_byte( int slave, int reg, uint8_t data )
+{
+   if( NULL == my_i2c )
+   {
+      fprintf( stderr, "I2C master has not been initialized!\n" );
+      return EXIT_INIT;
+   }
+
+   /* take hardware mutex */
+   pthread_mutex_lock( &my_i2c->mutex );
+
+   mraa_result_t retVal = mraa_i2c_address( my_i2c->context, slave );
+   if( 0 != retVal )
+   {
+      mraa_result_print( retVal );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      return EXIT_ERROR;
+   }
+
+   retVal = mraa_i2c_write_byte_data( my_i2c->context, data, reg );
+   pthread_mutex_unlock( &my_i2c->mutex );
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       i2c_write
+ * @brief   Writes data to register address
+ *
+ * @param   slave  - address of i2c slave
+ * @param   reg    - address of register to write to
+ * @param   data   - data to write
+ * @return  EXIT_CLEAN on success, otherwise one of exit_e
+ * =================================================================================
+ */
+int i2c_write( int slave, int reg, uint16_t data )
+{
+   if( NULL == my_i2c )
+   {
+      fprintf( stderr, "I2C master has not been initialized!\n" );
+      return EXIT_INIT;
+   }
+
+   /* take hardware mutex */
+   pthread_mutex_lock( &my_i2c->mutex );
+
+   mraa_result_t retVal = mraa_i2c_address( my_i2c->context, slave );
+   if( 0 != retVal )
+   {
+      mraa_result_print( retVal );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      return EXIT_ERROR;
+   }
+
+   retVal = mraa_i2c_write_word_data( my_i2c->context, data, reg );
+   pthread_mutex_unlock( &my_i2c->mutex );
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       i2c_read
+ * @brief   Reads data from register address
+ *
+ * @param   slave - address of i2c slave
+ * @param   reg   - address to read from
+ * @param   *data - pointer to location to store read data
+ * @param   len   - size of memory to read in bytes
+ * @return  EXIT_CLEAN on success, otherwise one of exit_e
+ * =================================================================================
+ */
+int i2c_read( int slave, int reg, uint8_t *data, size_t len )
+{
+   if( NULL == my_i2c )
+   {
+      fprintf( stderr, "I2C master has not been initialized!\n" );
+      return EXIT_INIT;
+   }
+
+   pthread_mutex_lock( &my_i2c->mutex );
+
+   mraa_result_t retVal = mraa_i2c_address( my_i2c->context, slave );
+   if( 0 != retVal )
+   {
+      mraa_result_print( retVal );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      return EXIT_ERROR;
+   }
+
+   if( len )
+   {
+      retVal = mraa_i2c_read_bytes_data( my_i2c->context, reg, data, len );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      if( len != retVal )
+      {
+         fprintf( stderr, "Could not read all data from register!\n" );
+         return EXIT_ERROR;
+      }
+   }
+   else
+   {
+      /* only read one byte */
+      retVal = mraa_i2c_read_byte_data( my_i2c->context, reg );
+      pthread_mutex_unlock( &my_i2c->mutex );
+      if( -1 != retVal )
+      {
+         *data  = retVal;
+      }
+   }
+
+   return EXIT_CLEAN;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       i2c_init
+ * @brief   Initialize singleton master i2c context
+ *
+ * @param   *i2c - pointer to handle to be master
+ * @return  EXIT_CLEAN on success, otherwise EXIT_INIT
+ * =================================================================================
+ */
+int i2c_init( i2c_handle_t *i2c )
+{
+   if( NULL != my_i2c )
+   {
+      i2c = my_i2c;
+      return EXIT_CLEAN;
+   }
+
+   if( NULL != i2c )
+   {
+      i2c->context = mraa_i2c_init_raw( 2 );
+
+      if( NULL == i2c->context )
+      {
+         int errnum = errno;
+         fprintf( stderr, "Failed to initialize I2C master instance: (%s)\n",
+                  strerror( errnum ) );
+         my_i2c = NULL;
+         return EXIT_INIT;
+      }
+
+      int retVal = pthread_mutex_init( &i2c->mutex, NULL );
+      if( 0 > retVal )
+      {
+         int errnum = errno;
+         fprintf( stderr, "Failed to initialize mutex for I2C master instance: (%s)\n",
+                  strerror( errnum ) );
+         my_i2c = NULL;
+         retVal = mraa_i2c_stop( i2c->context );
+         if( 0 > retVal )
+         {
+            mraa_result_print( retVal );
+         }
+         return EXIT_INIT;
+      }
+      my_i2c = i2c;
+   }
+   return EXIT_CLEAN;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       i2c_stop
+ * @brief   Stops i2c instance
+ *
+ * @param   *i2c - pointer to i2c context handle
+ * @return  EXIT_CLEAN on success, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int i2c_stop( i2c_handle_t *i2c )
+{
+   if( NULL == my_i2c )
+   {
+      return EXIT_CLEAN;
+   }
+   else if( NULL == i2c )
+   {
+      return EXIT_CLEAN;
+   }
+
+   if( my_i2c != i2c )
+   {
+      return EXIT_ERROR;
+   }
+
+   while( EBUSY  == pthread_mutex_destroy( &i2c->mutex ) );
+
+   mraa_result_t retVal = mraa_i2c_stop( i2c->context );
+   if( 0 > retVal )
+   {
+      mraa_result_print( retVal );
+      return EXIT_ERROR;
+   }
+
+   my_i2c = NULL;
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ *    @file     common.c
+ *    @brief   Defines types and functions common between the threads of the application
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#include "common.h"
+#include <errno.h>
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <fcntl.h>
+#include <sys/syscall.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+
+
+void print_header( char *buffer )
+{
+
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+
+   if( NULL == buffer )
+   {
+      fprintf( stderr, "\n=====================================================\n" );
+      fprintf( stderr, "Thread [%d]: %ld.%ld secs\n",
+               (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
+      fflush( stderr );
+   }
+   else if( NULL != buffer )
+   {
+      char tmp[100]  = "\n=====================================================\n";
+      char tmp2[100];
+      sprintf( tmp2, "Thread [%d]: %ld.%ld secs\n",
+               (pid_t)syscall(SYS_gettid), time.tv_sec, time.tv_nsec );
+      strcat( tmp, tmp2 );
+      strcpy( buffer, tmp );
+   }
+   return;
+}
+
+void thread_exit( int exit_status )
+{
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+
+   switch( exit_status )
+   {
+      case SIGUSR1:
+         fprintf( stdout, "Caught SIGUSR1 Signal! Exiting...\n");
+         break;
+      case SIGUSR2:
+         fprintf( stdout, "Caught SIGUSR2 Signal! Exiting...\n");
+         break;
+      default:
+         break;
+   }
+   fprintf( stdout, "Goodbye World! End Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+
+   pthread_exit(EXIT_SUCCESS);
+}
+
+void *get_shared_memory( void )
+{
+   struct shared_data *shm_p;
+
+   int shm_fd = shm_open( SHM_SEGMENT_NAME, O_CREAT | O_EXCL | O_RDWR, 0666 );
+   if( 0 > shm_fd )
+   {
+      int errnum = errno;
+      if( EEXIST == errnum )
+      {
+		   /* Already exists: open again without O_CREAT */
+		   shm_fd = shm_open(SHM_SEGMENT_NAME, O_RDWR, 0);
+	   }
+      else
+      {
+         fprintf( stderr, "Encountered error opening shared memory: %s\n",
+                  strerror( errnum ) );
+         exit(EXIT_FAILURE);
+      }
+   }
+   else
+   {
+      fprintf( stdout, "Creating shared memory and setting size to %u bytes\n",
+               sizeof( shared_data_t ) );
+
+      if( 0 > ftruncate( shm_fd, sizeof( shared_data_t )) )
+      {
+         int errnum = errno;
+         fprintf( stderr, "Encountered error setting size of shared memroy: %s\n",
+                  strerror( errnum ) );
+         exit(EXIT_FAILURE);
+      }
+   }
+
+	/* Map the shared memory */
+	shm_p = mmap(NULL, sizeof( shared_data_t ), PROT_READ | PROT_WRITE,
+		     MAP_SHARED, shm_fd, 0);
+
+   if( NULL == shm_p )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error memory mapping shared memory: %s\n",
+               strerror( errnum ) );
+		exit(EXIT_FAILURE);
+	}
+	return shm_p;
+}
+
+
+int sems_init( shared_data_t *shm )
+{
+   int retVal = 0;
+   retVal = sem_init( &shm->w_sem, 1, 1 );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error initializing write semaphore: %s\n",
+               strerror( errnum ) );
+      return EXIT_INIT;
+   }
+   retVal = sem_init( &shm->r_sem, 1, 0 );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error initializing read semaphore: %s\n",
+               strerror( errnum ) );
+      return EXIT_INIT;
+   }
+   return EXIT_CLEAN;
+}
+
+
+
+int timer_setup( timer_t *id, void (*handler)(union sigval) )
+{
+   int retVal = 0;
+   /* Set up timer */
+   struct sigevent sev;
+
+   memset(&sev, 0, sizeof(struct sigevent));
+
+   sev.sigev_notify = SIGEV_THREAD;
+   sev.sigev_notify_function = handler;
+   sev.sigev_value.sival_ptr = NULL;
+   sev.sigev_notify_attributes = NULL;
+
+   retVal = timer_create( CLOCK_REALTIME, &sev, id );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error creating new timer: (%s)\n",
+               strerror( errnum ) );
+      return EXIT_INIT;
+   }
+   return EXIT_CLEAN;
+}
+
+
+int timer_start( timer_t *id, unsigned long usecs )
+{
+   int retVal = 0;
+   struct itimerspec trigger;
+
+   trigger.it_value.tv_sec = usecs / MICROS_PER_SEC;
+   trigger.it_value.tv_nsec = ( usecs % MICROS_PER_SEC ) * 1000;
+   
+   trigger.it_interval.tv_sec = trigger.it_value.tv_sec;
+   trigger.it_interval.tv_nsec = trigger.it_value.tv_nsec;
+
+   retVal = timer_settime( *id, 0, &trigger, NULL );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error starting new timer: (%s)\n",
+               strerror( errnum ) );
+      return EXIT_INIT;
+   }
+   return EXIT_CLEAN;
+}
+/**
+ * =================================================================================
+ *    @file     light.c
+ *    @brief   Interface to APDS9301 Light Sensor
+ *
+ *  <+DETAILED+>
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#include "watchdog.h"
+#include "light.h"
+#include "led.h"
+
+#include <errno.h>
+#include <time.h>
+#include <string.h>
+#include <math.h>
+
+static timer_t    timerid;
+struct itimerspec trigger;
+
+static i2c_handle_t i2c_apds9301;
+static float last_lux_value = -5;
+static mqd_t light_queue;
+static shared_data_t *shm;
+
+/**
+ * =================================================================================
+ * Function:       sig_handler
+ * @brief   Signal handler for light sensor thread.
+ *          On normal operation, we should be receving SIGUSR1/2 signals from watchdog
+ *          when prompted to exit. So, we close the message queue and timer this thread owns
+ *
+ * @param   signo - enum with signal number of signal being handled
+ * @return  void
+ * =================================================================================
+ */
+static void sig_handler( int signo )
+{
+   if( signo == SIGUSR1 )
+   {
+      printf("Received SIGUSR1! Exiting...\n");
+      mq_close( light_queue );
+      timer_delete( timerid );
+      apds9301_power( POWER_OFF );
+      i2c_stop( &i2c_apds9301 );
+      thread_exit( signo );
+   }
+   else if( signo == SIGUSR2 )
+   {
+      printf("Received SIGUSR2! Exiting...\n");
+      mq_close( light_queue );
+      timer_delete( timerid );
+      apds9301_power( POWER_OFF );
+      i2c_stop( &i2c_apds9301 );
+      thread_exit( signo );
+   }
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       timer_handler
+ * @brief   Timer handler function for light sensor thread
+ *          When woken up by the timer, get lux reading and write state to shared memory
+ *
+ * @param   sig
+ * @return  void
+ * =================================================================================
+ */
+static void timer_handler( union sigval sig )
+{
+   static int i = 0;
+   led_toggle( LED1_BRIGHTNESS );
+   sem_wait(&shm->w_sem);
+
+   print_header(shm->header);
+   float lux = -5;
+   int retVal = apds9301_get_lux( &lux );
+
+   i++;
+   if( retVal )
+   {
+      /* save new lux value */
+      last_lux_value = lux;
+      if( DARK_THRESHOLD > lux )
+      {
+         sprintf( shm->buffer, "cycle[%d]: State: %s, Lux: %0.5f\n",
+                  i, "NIGHT", lux );
+      }
+      else
+      {
+         sprintf( shm->buffer, "cycle[%d]: State: %s, Lux: %0.5f\n",
+                  i, "DAY", lux );
+      }
+   }
+   else
+   {
+      sprintf( shm->buffer, "cycle[%d]: could not get light reading!\n", i );
+   }
+
+   sem_post(&shm->r_sem);
+   led_toggle( LED1_BRIGHTNESS );
+   return;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       get_lux
+ * @brief   Returns last lux reading
+ *
+ * @param   void
+ * @return  last_lux_value - last lux reading we have
+ * =================================================================================
+ */
+float get_lux( void )
+{
+   return last_lux_value;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       is_dark
+ * @brief   Returns int speciyfing if it is night or day
+ *
+ * @param   void
+ * @return  night - 0 if it is day, 1 if night, i.e. below DARK_THRESHOLD
+ * =================================================================================
+ */
+int is_dark( void )
+{
+   int dark = 0;
+   if( DARK_THRESHOLD > last_lux_value )
+   {
+      dark = 1;
+   }
+   return dark;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_config
+ * @brief   Set configuration of light sensor. For the APDS9301, the configuration
+ *          is spread out across the: Timing Register, Interrupt Control Register,
+ *          and Control Register. So, I have to write to all of these to set the config
+ *
+ * @param   void
+ * @return  EXIT_CLEAN if successful, otherwise see i2c_write()
+ * =================================================================================
+ */
+int apds9301_set_config( void )
+{
+   int retVal = apds9301_set_gain( DEFAULT_GAIN );
+   if( retVal )
+   {
+      return retVal;
+   }
+   else
+   {
+      retVal = apds9301_set_interrupt( DEFAULT_INTERRUPT );
+      if( retVal )
+      {
+         return retVal;
+      }
+      else
+      {
+         retVal = apds9301_set_integration( DEFAULT_INTEGRATION_TIME );
+         if( retVal )
+         {
+            return retVal;
+         }
+      }
+   }
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_integration
+ * @brief   Sets the integration time for APDS9301 by writing a value to bits
+ *          INTEG of the Timing Register
+ *
+ * @param   val   - value to write to timing register
+ * @return  see i2c_write_byte() - if val is not an allowed value, EXIT_ERROR
+ * =================================================================================
+ */
+int apds9301_set_integration( uint8_t val )
+{
+   if( 3 < val )
+   {
+      /* invalid value */
+      return EXIT_ERROR;
+   }
+   uint8_t data;
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_TIME, &data, sizeof( data ) );
+
+   if( retVal )
+   {
+      return EXIT_ERROR;
+   }
+
+   data &= ~(0b11);  /* clears lower 2 bits of TIMING REG */
+   data |= val;
+
+   retVal = i2c_write_byte( APDS9301_ADDRESS, APDS9301_REG_TIME, data );
+
+   return retVal;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_clear_interrupt
+ * @brief   Clears any pending interrupt for APDS9301 by writing a 1 to the CLEAR bit
+ *          of the Command Register
+ *
+ * @param   void
+ * @return  see i2c_set()
+ * =================================================================================
+ */
+int apds9301_clear_interrupt( void )
+{
+   uint8_t clear = APDS9301_REG_CMD | CMD_CLEAR_INTR;
+
+   int retVal = i2c_set( APDS9301_ADDRESS, clear );
+
+   return retVal;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_interrupt
+ * @brief   Enables or disables interrupts for APDS9301 by setting or clearing the
+ *          INTR bits of the Interrupt Control Register
+ *
+ * @param   enable - set if we want to enable interrupts
+ * @return  see i2c_write_byte()
+ * =================================================================================
+ */
+int apds9301_set_interrupt( uint8_t enable )
+{
+   uint8_t data;
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_INT_CNTRL, &data, sizeof( data ) );
+   if( retVal )
+   {
+      return EXIT_ERROR;
+   }
+
+   if( enable )
+   {
+      data |= (1<<4);
+   }
+   else
+   {
+      data &= ~(1<<4);
+   }
+
+   retVal = i2c_write_byte( APDS9301_ADDRESS, APDS9301_REG_INT_CNTRL, data );
+
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_set_gain
+ * @brief   Sets gain for APDS9301 by setting or clearing the GAIN bit of the
+ *          Timing Register
+ *
+ * @param   gain  - set if we want high gain
+ * @return  see i2c_write_byte()
+ * =================================================================================
+ */
+int apds9301_set_gain( uint8_t gain )
+{
+   uint8_t data;
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_TIME, &data, sizeof( data ) );
+   if( retVal )
+   {
+      return EXIT_ERROR;
+   }
+
+   /* if gain != 0, high gain */
+   if( gain )
+   {
+      data |= (1<<4);
+   }
+   else
+   {
+      data &= ~(1<<4);
+   }
+
+   retVal = i2c_write_byte( APDS9301_ADDRESS, APDS9301_REG_TIME, data );
+
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_read_control
+ * @brief   Read contents of Control Register
+ *
+ * @param   *data - where to store contents
+ * @return  see i2c_read()
+ * =================================================================================
+ */
+int apds9301_read_control( uint8_t* data )
+{
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_CNTRL, data, sizeof( *data ) );
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_low
+ * @brief   Write value to low threshold register
+ *
+ * @param   threshold   - value to write
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_write_threshold_low( uint16_t threshold )
+{
+   int retVal = i2c_write( APDS9301_ADDRESS, APDS9301_REG_TH_LL, threshold );
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_low
+ * @brief   Read value from low threshold register
+ *
+ * @param   *threshold   - where to write value read
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_read_threshold_low( uint16_t *threshold )
+{
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_TH_LL, (uint8_t*)threshold, sizeof( *threshold ) );
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_high
+ * @brief   Write value to high threshold register
+ *
+ * @param   threshold   - value to write
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_write_threshold_high( uint16_t threshold )
+{
+   int retVal = i2c_write( APDS9301_ADDRESS, APDS9301_REG_TH_HL, threshold );
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_write_threshold_high
+ * @brief   Read value from high threshold register
+ *
+ * @param   *threshold   - where to write value read
+ * @return  see i2c_write()
+ * =================================================================================
+ */
+int apds9301_read_threshold_high( uint16_t *threshold )
+{
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_TH_HL, (uint8_t*)threshold, sizeof( *threshold ) );
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_read_id
+ * @brief   Read APDS9301 Identification Register
+ *
+ * @param   *id   - where to write ID from register
+ * @return  see i2c_read()
+ * =================================================================================
+ */
+int apds9301_read_id( uint8_t *id )
+{
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_ID, id, sizeof( *id ) );
+   return retVal;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_get_lux
+ * @brief   Read ADC Registers and calculate lux in lumen using equations from
+ *          APDS9301 datasheet
+ *
+ * @param   *lux  - pointer to location to write decoded lux to
+ * @return  EXIT_CLEAN if successful, otherwise EXIT_ERROR
+ * =================================================================================
+ */
+int apds9301_get_lux( float *lux )
+{
+   float ratio = 0;
+   uint16_t data0 = 0;
+   uint16_t data1 = 0;
+
+   int retVal = apds9301_read_data0( &data0 );
+   if( EXIT_CLEAN != retVal )
+   {
+      return EXIT_ERROR;
+   }
+
+   retVal = apds9301_read_data1( &data1 );
+   if( EXIT_CLEAN != retVal )
+   {
+      return EXIT_ERROR;
+   }
+
+   if( 0 == data0 )
+   {
+      ratio = 0.0;
+   }
+   else
+   {
+      ratio = (float)data1 / (float)data0;
+   }
+
+   if( (0 < ratio) && (0.50 >= ratio) )
+   {
+      *lux = 0.0304*data0 - 0.062*data0*(pow(ratio, 1.4));
+	}
+	else if( (0.50 < ratio) && (0.61 >= ratio) )
+	{
+		*lux = 0.0224*data0 - 0.031*data1;
+	}
+	else if( (0.61 < ratio) && (0.80 >= ratio) )
+	{
+		*lux = 0.0128*data0 - 0.0153*data1;
+	}
+	else if( (0.80 < ratio) && (1.30 >= ratio) )
+	{
+		*lux = 0.00146*data0 - 0.00112*data1;
+	}
+	else if( 1.30 < ratio )
+	{
+		*lux = 0;
+   }
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * function:       apds9301_read_data0
+ * @brief   Read ADC register for channel 0
+ *
+ * @param   *data - pointer to location to write decoded value to
+ * @return  EXIT_CLEAN if successful, otherwise exit_error
+ * =================================================================================
+ */
+int apds9301_read_data0( uint16_t *data )
+{
+   uint8_t low  = 0;
+   uint8_t high = 0;
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_DLOW_0, &low, 0 );
+
+   if( EXIT_CLEAN != retVal )
+   {
+     return EXIT_ERROR;
+   }
+
+   retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_DHIGH_0, &high, 0 );
+
+   if( EXIT_CLEAN == retVal )
+   {
+      *data = ( low | (high << 8 ) );
+   }
+   else
+   {
+      return EXIT_ERROR;
+   }
+   return EXIT_CLEAN;
+}
+/**
+ * =================================================================================
+ * function:       apds9301_read_data1
+ * @brief   Read ADC register for channel 1
+ *
+ * @param   *data - pointer to location to write decoded value to
+ * @return  EXIT_CLEAN if successful, otherwise exit_error
+ * =================================================================================
+ */
+int apds9301_read_data1( uint16_t *data )
+{
+   uint8_t low  = 0;
+   uint8_t high = 0;
+   int retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_DLOW_1, &low, 0 );
+
+   if( EXIT_CLEAN != retVal )
+   {
+     return EXIT_ERROR;
+   }
+
+   retVal = i2c_read( APDS9301_ADDRESS, APDS9301_REG_DHIGH_1, &high, 0 );
+
+   if( EXIT_CLEAN == retVal )
+   {
+      *data = ( low | (high << 8 ) );
+   }
+   else
+   {
+      return EXIT_ERROR;
+   }
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       apds9301_power
+ * @brief   power on (or off) APDS9301 as set by paramater
+ *
+ * @param   on - specifies if sensor is to be powered on or off
+ * @return  see i2c_write_byte()
+ * =================================================================================
+ */
+int apds9301_power( uint16_t on )
+{
+   int retVal = 0;
+   if( on )
+   {
+      /* power on */
+      retVal = i2c_write_byte( APDS9301_ADDRESS, APDS9301_REG_CNTRL, POWER_ON );
+   }
+   else
+   {
+      /* power off */
+      retVal = i2c_write_byte( APDS9301_ADDRESS, APDS9301_REG_CNTRL, POWER_OFF );
+   }
+
+   return retVal;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       cycle
+ * @brief   Cycle function for light sensor thread
+ *          We wait in this while loop checking for requests from watchdog for health status
+ *
+ * @param   void
+ * @return  void
+ * =================================================================================
+ */
+static void cycle( void )
+{
+   int retVal = 0;
+   msg_t request = {0};
+   msg_t response = {0};
+   while( 1 )
+   {
+      memset( &request, 0, sizeof( request ) );
+      retVal = mq_receive( light_queue, (char*)&request, sizeof( request ), NULL );
+      if( 0 > retVal )
+      {
+         int errnum = errno;
+         fprintf( stderr, "Encountered error receiving from message queue %s: (%s)\n",
+                  LIGHT_QUEUE_NAME, strerror( errnum ) );
+         continue;
+      }
+      switch( request.id )
+      {
+         case REQUEST_STATUS:
+            sem_wait(&shm->w_sem);
+            print_header(shm->header);
+            sprintf( shm->buffer, "(Light) I am alive!\n" );
+            sem_post(&shm->r_sem);
+            fprintf( stdout, "(Light) I am alive!\n" );
+            response.id = request.id;
+            sprintf( response.info, "(Light) I am alive!\n" );
+            retVal = mq_send( request.src, (const char*)&response, sizeof( response ), 0 );
+
+            pthread_mutex_lock( &alive_mutex );
+            threads_status[THREAD_LIGHT]--;
+            pthread_mutex_unlock( &alive_mutex );
+            break;
+         default:
+            break;
+      }
+   }
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       get_light_queue
+ * @brief   Get file descriptor for light sensor thread.
+ *          Called by watchdog thread in order to be able to send heartbeat check via queue
+ *
+ * @param   void
+ * @return  temp_queue - file descriptor for light sensor thread message queue
+ * =================================================================================
+ */
+mqd_t get_light_queue( void )
+{
+   return light_queue;
+}
+
+/**
+ * =================================================================================
+ * Function:       light_queue_init
+ * @brief   Initialize message queue for light sensor thread
+ *
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
+ * =================================================================================
+ */
+int light_queue_init( void )
+{
+   /* unlink first in case we hadn't shut down cleanly last time */
+   mq_unlink( LIGHT_QUEUE_NAME );
+
+   struct mq_attr attr;
+   attr.mq_flags = 0;
+   attr.mq_maxmsg = MAX_MESSAGES;
+   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_curmsgs = 0;
+
+   int msg_q = mq_open( LIGHT_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   if( 0 > msg_q )
+   {
+      int errnum = errno;
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Encountered error creating message queue %s: (%s)\n",
+               LIGHT_QUEUE_NAME, strerror( errnum ) );
+      sem_post(&shm->r_sem);
+   }
+   return msg_q;
+}
+
+/**
+ * =================================================================================
+ * Function:       light_fn
+ * @brief   Entry point for light sensor processing thread
+ *
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function,
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *light_fn( void *thread_args )
+{
+   /* Get time that thread was spawned */
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+   shm = get_shared_memory();
+
+   /* Write initial state to shared memory */
+   sem_wait(&shm->w_sem);
+   print_header(shm->header);
+   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+   /* Signal to logger that shared memory has been updated */
+   sem_post(&shm->r_sem);
+
+   signal(SIGUSR1, sig_handler);
+   signal(SIGUSR2, sig_handler);
+
+   light_queue = light_queue_init();
+   if( 0 > light_queue )
+   {
+      thread_exit( EXIT_INIT );
+   }
+
+   int retVal = i2c_init( &i2c_apds9301 );
+   if( EXIT_INIT == retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "ERROR: Failed to initialize I2C for light sensor!\n" );
+      sem_post(&shm->r_sem);
+      thread_exit( EXIT_INIT );
+   }
+   retVal = apds9301_power( POWER_ON );
+   if( retVal )
+   {
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "ERROR: Failed to power on light sensor!\n" );
+      sem_post(&shm->r_sem);
+      thread_exit( EXIT_INIT );
+   }
+
+   timer_setup( &timerid, &timer_handler );
+
+   timer_start( &timerid, 5000000 );
+   cycle();
+
+   thread_exit( 0 );
+   return NULL;
+}
+/**
+ * =================================================================================
+ *    @file     main.c
+ *    @brief
+ *
+ *  <+DETAILED+>
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/09/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#include "temperature.h"
+#include "light.h"
+#include "logger.h"
+#include "common.h"
+#include "watchdog.h"
+#include "socket.h"
+#include "led.h"
+
+#include <fcntl.h>
+#include <signal.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+/** /sys includes */
+#include <sys/syscall.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+static pthread_t temp_thread;
+static pthread_t light_thread;
+static pthread_t logger_thread;
+static pthread_t socket_thread;
+
+static pthread_t watchdog_thread;
+
+static shared_data_t *shm;
+
+/**
+ * =================================================================================
+ * Function:       signal_handler
+ * @brief
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+static void signal_handler( int signo )
+{
+   switch( signo )
+   {
+      case SIGINT:
+         fprintf( stderr, "Master caught SIGINT!\n" );
+         pthread_kill( watchdog_thread, SIGUSR2 );
+   }
+}
+
+/**
+ * =================================================================================
+ * Function:       turn_off_leds
+ * @brief
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+void turn_off_leds( void )
+{
+   led_off( LED0_BRIGHTNESS );
+   led_off( LED1_BRIGHTNESS );
+   led_off( LED2_BRIGHTNESS );
+   led_off( LED3_BRIGHTNESS );
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       main
+ * @brief
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ * =================================================================================
+ */
+int main( int argc, char *argv[] )
+{
+   signal( SIGINT, signal_handler );
+   static file_t *log;
+   printf( "Number of arguments %d\n", argc );
+   if( argc > 1 )
+   {
+      log = malloc( sizeof( file_t ) );
+      log->fid = fopen( argv[1], "w" );
+      log->name = argv[1];
+      printf( "Opened file %s\n", argv[1] );
+   }
+   else
+   {
+      fprintf( stderr, "Name of log file required!\n" );
+      return 1;
+   }
+
+   /* Initialize Shared Memory */
+   shm = get_shared_memory();
+   if( 0  > sems_init( shm ) )
+   {
+      fprintf( stderr, "Encountered error initializing semaphores!\n" );
+      return 1;
+   }
+
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+
+   print_header( NULL );
+   fprintf( stdout, "Starting Threads! Start Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+
+   struct thread_id_s* threads = malloc( sizeof( struct thread_id_s ) );
+
+   led_on( LED2_BRIGHTNESS );
+
+   set_trigger( LED2_TRIGGER, "timer" );
+   set_delay( LED2_DELAYON, 50 );
+   /* Attempting to spawn child threads */
+   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid );
+   pthread_create( &temp_thread, NULL, temperature_fn, NULL );
+   pthread_create( &light_thread, NULL, light_fn, NULL );
+   pthread_create( &socket_thread, NULL , socket_fn, NULL );
+
+   threads->temp_thread = temp_thread;
+   threads->logger_thread = logger_thread;
+   threads->light_thread = light_thread;
+   threads->socket_thread = socket_thread;
+
+   pthread_create( &watchdog_thread, NULL, watchdog_fn, (void*)threads );
+
+   pthread_join( watchdog_thread, NULL );
+
+   clock_gettime(CLOCK_REALTIME, &time);
+
+
+   print_header( NULL );
+   fprintf( stdout, "All threads exited! Main thread exiting... " );
+   fprintf( stdout, "End Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+
+   free( log );
+   free( threads );
+   munmap( shm, sizeof( shared_data_t ) );
+   shm_unlink( SHM_SEGMENT_NAME );
+   turn_off_leds();
+   return 0;
+}
+/**
+ * =================================================================================
+ *    @file     watchdog.c
+ *    @brief   Watchdog source file:
+ *                the watchdog is responsible for checking that the temperature and
+ *                light sensor threads are alive
+ *
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/15/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+
+#include "watchdog.h"
+#include "temperature.h"
+#include "light.h"
+
+#include <errno.h>
+#include <string.h>
+#include <time.h>
+
+static timer_t    timerid;
+struct itimerspec trigger;
+
+static struct thread_id_s* threads;
+static mqd_t thread_msg_q[NUM_THREADS];
+static mqd_t watchdog_queue;
+
+pthread_mutex_t alive_mutex;
+
+
+/**
+ * =================================================================================
+ * Function:       sig_handler
+ * @brief   Signal handler for watchdog. On normal operation, we should be receiving
+ *          a SIGUSR2 signal from the main thread prompting us to call pthread_kill
+ *          for the other child threads
+ *
+ * @param   signo - enum with signal number of signal being handled
+ * @return  void
+ * =================================================================================
+ */
+static void sig_handler( int signo )
+{
+   if( SIGUSR2 == signo )
+   {
+      kill_threads();
+      mq_close( watchdog_queue );
+      timer_delete( timerid );
+      thread_exit( 0 );
+   }
+}
+
+/**
+ * =================================================================================
+ * Function:       kill_threads
+ * @brief   Function to kill children threads 
+ *
+ * @param   void
+ * @return  void
+ * =================================================================================
+ */
+void kill_threads( void )
+{
+   fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
+            threads->temp_thread );
+   fflush( stdout );
+   pthread_kill( threads->temp_thread, SIGUSR1 );
+
+   fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
+            threads->light_thread );
+   fflush( stdout );
+   pthread_kill( threads->light_thread, SIGUSR1 );
+
+   fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
+            threads->logger_thread );
+   fflush( stdout );
+   pthread_kill( threads->logger_thread, SIGUSR1 );
+   free( threads );
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       check_threads
+ * @brief   Periodically send message via message queue for temperature and sensor threads
+ *          to check for health. This function is registered as the timer hanlder for the
+ *          timer owned by the watchdog
+ *
+ * @param   sig
+ * @return  void
+ * =================================================================================
+ */
+void check_threads( union sigval sig )
+{
+   int retVal = 0;
+   msg_t request = {0};
+   request.id = REQUEST_STATUS;
+   request.src = watchdog_queue;
+
+   if( (0 == threads_status[THREAD_TEMP]) && (0 == threads_status[THREAD_LIGHT] ) )
+   {
+      pthread_mutex_lock( &alive_mutex );
+      threads_status[THREAD_TEMP]++;
+      threads_status[THREAD_LIGHT]++;
+      pthread_mutex_unlock( &alive_mutex );
+      retVal = mq_send( thread_msg_q[THREAD_TEMP], (const char*)&request, sizeof( request ), 0 );
+      if( 0 > retVal )
+      {
+         int errnum = errno;
+         fprintf( stderr, "Encountered error sending status request from watchdog: (%s)\n",
+                  strerror( errnum ) );
+      }
+      retVal = mq_send( thread_msg_q[THREAD_LIGHT], (const char*)&request, sizeof( request ), 0 );
+      if( 0 > retVal )
+      {
+         int errnum = errno;
+         fprintf( stderr, "Encountered error sending status request from watchdog: (%s)\n",
+                  strerror( errnum ) );
+      }
+   }
+   else
+   {
+      fprintf( stderr, "One of the threads did not return!\n" );
+      fprintf( stderr, "thread_status[THREAD_TEMP] = %d\nthread_status[THREAD_LIGHT] = %d\n",
+               threads_status[THREAD_TEMP], threads_status[THREAD_LIGHT] );
+      kill_threads();
+      thread_exit( EXIT_ERROR );
+   }
+
+   return;
+}
+
+/**
+ * =================================================================================
+ * Function:       watchdog_queue_init
+ * @brief   Initalize message queue for watchdog
+ *
+ * @param   void
+ * @return  msg_q - file descriptor for initialized message queue
+ * =================================================================================
+ */
+int watchdog_queue_init( void )
+{
+   /* unlink first in case we hadn't shut down cleanly last time */
+   mq_unlink( WATCHDOG_QUEUE_NAME );
+
+   struct mq_attr attr;
+   attr.mq_flags = 0;
+   attr.mq_maxmsg = MAX_MESSAGES;
+   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_curmsgs = 0;
+
+   int msg_q = mq_open( WATCHDOG_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   if( 0 > msg_q )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error creating message queue %s: (%s)\n",
+               WATCHDOG_QUEUE_NAME, strerror( errnum ) );
+   }
+   return msg_q;
+}
+
+/**
+ * =================================================================================
+ * Function:       watchdog_init
+ * @brief   Initialize watchdog, calling appropriate functions to do so.
+ *          E.g. calling timer_setup and timer_start to set up timer
+ *
+ * @param   void
+ * @return  EXIT_CLEAN, otherwise EXIT_INIT
+ * =================================================================================
+ */
+int watchdog_init( void )
+{
+   watchdog_queue = watchdog_queue_init();
+   if( 0 > watchdog_queue )
+   {
+      thread_exit( EXIT_INIT );
+   }
+
+   while( 0 == (thread_msg_q[THREAD_TEMP] = get_temperature_queue()) );
+   while( 0 == (thread_msg_q[THREAD_LIGHT] = get_light_queue()) );
+
+   fprintf( stderr, "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[0] );
+   fprintf( stderr, "Watchdog says: Light Queue FD: %d\n", thread_msg_q[1] );
+
+   pthread_mutex_init( &alive_mutex, NULL );
+   timer_setup( &timerid, &check_threads );
+
+   timer_start( &timerid, 4000000 );
+
+   return EXIT_CLEAN;
+}
+
+/**
+ * =================================================================================
+ * Function:       watchdog_fn
+ * @brief   Entry point for wachtdog
+ *
+ * @param   thread_args - void ptr used to pass thread identifiers (pthread_t) for
+ *                      child threads we have to check for health
+ * @return  NULL  - We don't really exit from this function,
+ *                   since the exit point for threads is thread_exit()
+ * =================================================================================
+ */
+void *watchdog_fn( void *thread_args )
+{
+   signal( SIGUSR2, sig_handler );
+   exit_e retVal = EXIT_ERROR;
+   if( NULL == thread_args )
+   {
+      print_header( NULL );
+      fprintf( stderr, "Encountered null pointer!\n" );
+      pthread_exit(&retVal);
+   }
+   else
+   {
+      threads = malloc( sizeof( struct thread_id_s ) );
+      threads = (struct thread_id_s*)thread_args;
+   }
+
+   watchdog_init();
+
+   while(1);
+   return NULL;
+}
+
+/**
+ * =================================================================================
+ *    @file     socket.c
+ *    @brief   Remote Socket task capable of requesting sensor readings from
+ *             temperature and light sensor threads
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/31/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#include "socket.h"
+#include "common.h"
+#include "light.h"
+#include "temperature.h"
+
+#include <string.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <time.h>
+#include <signal.h>
+#include <unistd.h>
+#include <semaphore.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+
+static shared_data_t *shm;
+
+/**
+ * =================================================================================
+ * Function:       process_request
+ * @brief   Process a request from remote client
+ *
+ * @param   *request - request from client
+ * @return  response - our response
+ * =================================================================================
+ */
+msg_t process_request( msg_t *request )
+{
+   msg_t response = {0};
+   switch( request->id )
+   {
+      case REQUEST_LUX:
+         response.id = request->id;
+         response.data.data = get_lux();
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Lux: %.5f\n",
+                  response.data.data );
+         sem_post(&shm->r_sem);
+         break;
+      case REQUEST_DARK:
+         response.id = request->id;
+         response.data.night = is_dark();
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Day or Night: %s\n",
+                  (response.data.night == 0) ? "day" : "night");
+         sem_post(&shm->r_sem);
+         break;
+      case REQUEST_TEMP:
+         response.id = request->id;
+         response.data.data = get_temperature();
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Temperature: %.5f C\n",
+                  response.data.data );
+         sem_post(&shm->r_sem);
+         break;
+      case REQUEST_TEMP_K:
+         response.id = request->id;
+         response.data.data = get_temperature() + 273.15;
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Temperature: %.5f K\n",
+                  response.data.data );
+         sem_post(&shm->r_sem);
+         break;
+       case REQUEST_TEMP_F:
+         response.id = request->id;
+         response.data.data = (get_temperature() *1.80) + 32.0;
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Temperature: %.5f F\n",
+                  response.data.data );
+         sem_post(&shm->r_sem);
+         break;
+      case REQUEST_CLOSE:
+         response.id = request->id;
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Close Connection\n" );
+         sem_post(&shm->r_sem);
+         break;
+      case REQUEST_KILL:
+         response.id = request->id;
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Request Kill Application\n" );
+         sem_post(&shm->r_sem);
+         break;
+      default:
+         sem_wait(&shm->w_sem);
+         print_header(shm->header);
+         sprintf( shm->buffer, "Invalid Request\n" );
+         sem_post(&shm->r_sem);
+         break;
+   }
+
+   return response;
+}
+
+/**
+ * =================================================================================
+ * Function:       cycle
+ * @brief   Cycle function for remote socket task. Spins in this infinite while-loop
+ *          checking for new connections to make. When it receives a new connection,
+ *          it starts processing requests from the client
+ *
+ * @param   server   - server socket file descriptor
+ * @return  void
+ * =================================================================================
+ */
+static void cycle( int server )
+{
+   const char *client_info;
+   int client = 1;
+   char ip[20] = {0};
+   struct sockaddr_in addr;
+   int addrlen = sizeof( addr );
+
+   /* Buffer to copy status to shared memory for logger */
+   //char *status;
+   while( 1 )
+   {
+      int kill = 0;
+      client = accept( server, (struct sockaddr*)&addr, (socklen_t*)&addrlen );
+      if( 0 > client )
+      {
+         int errnum = errno;
+
+         fprintf( stderr, "Could not accept new connection (%s)\n",
+                  strerror( errnum ) );
+         continue;
+      }
+
+      client_info = inet_ntop( AF_INET, &addr.sin_addr, ip, sizeof( ip ) );
+      fprintf( stdout, "New connection accepted: %s\n", client_info );
+
+      while( 1 )
+      {
+         msg_t request = {0};
+         msg_t response = {0};
+         int bytes = 0;
+         while( ( -1 != bytes ) && ( sizeof( request ) > bytes ) )
+         {
+            bytes = recv( client, ((char*)&request + bytes), sizeof( request ), 0 );
+         }
+
+         response = process_request( &request );
+
+         if( REQUEST_CLOSE == response.id )
+         {
+            break;
+         }
+         if( REQUEST_KILL == response.id )
+         {
+            kill = 1;
+            break;
+         }
+
+         /* Send out response to client */
+         bytes = send( client, (char*)&response, sizeof( response ), 0 );
+         if( sizeof( response ) > bytes )
+         {
+            if( -1 == bytes )
+            {
+               int errnum = errno;
+               fprintf( stderr, "Encountered error sending data to client: (%s)\n",
+                        strerror( errnum ) );
+               break;
+            }
+            else
+            {
+               fprintf( stderr, "Could not transmit all data: %u out of %u bytes sent.\n",
+                        bytes, sizeof( response ) );
+               break;
+            }
+         }
+         fprintf( stdout, "%u out of %u bytes sent.\n",
+                  bytes, sizeof( response ) );
+      }
+
+      client_info = inet_ntop( AF_INET, &addr.sin_addr, ip, sizeof( ip ) );
+      close( client );
+      fprintf( stdout, "Client connection closed: %s\n", client_info );
+
+      if( 1 == kill )
+      {
+         close( server );
+         fprintf( stdout, "Closed server.\n" );
+         break;
+      }
+   }
+   return;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       socket_init
+ * @brief   Initliaze the server socket
+ *
+ * @param   void
+ * @return  server - file descriptor for newly created socket for server
+ * =================================================================================
+ */
+int socket_init( void )
+{
+   int retVal = 0;
+   int opt = 1;
+   struct sockaddr_in addr;
+
+   int server = socket( AF_INET, SOCK_STREAM, 0 );
+   if( 0 == server )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error creating new socket (%s)\n",
+               strerror( errnum ) );
+      return -1;
+   }
+
+   retVal = setsockopt( server, SOL_SOCKET, SO_REUSEPORT | SO_REUSEADDR, &(opt), sizeof(opt) );
+   if( 0 != retVal )
+   {
+      int errnum = errno;
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Encountered error setting socket options (%s)\n",
+               strerror( errnum ) );
+      sem_post(&shm->r_sem);
+      return -1;
+   }
+
+   addr.sin_family = AF_INET;
+   addr.sin_addr.s_addr = INADDR_ANY;
+   addr.sin_port = htons( PORT );
+
+   /* Attempt to bind socket to address */
+   retVal = bind( server, (struct sockaddr*)&addr, sizeof( addr ) );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Encountered error binding the new socket (%s)\n",
+               strerror( errnum ) );
+      sem_post(&shm->r_sem);
+      return -1;
+   }
+
+   /* Try to listen */
+   retVal = listen( server, 10 );
+   if( 0 > retVal )
+   {
+      int errnum = errno;
+      sem_wait(&shm->w_sem);
+      print_header(shm->header);
+      sprintf( shm->buffer, "Encountered error listening with new socket (%s)\n",
+               strerror( errnum ) );
+      sem_post(&shm->r_sem);
+      return -1;
+   }
+
+   sem_wait(&shm->w_sem);
+   print_header(shm->header);
+   sprintf( shm->buffer, "Created new socket [%d]!\n", server );
+   sem_post(&shm->r_sem);
+
+   return server;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       socket_fn
+ * @brief   Entry point for remote socket thread
+ *
+ * @param   *thread_args   - thread arguments (if any)
+ * @return  NULL  - We don't really exit from this function,
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *socket_fn( void *thread_args )
+{
+   /* Get time that thread was spawned */
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+
+   /* Get pointer to shared memory struct */
+   shm = get_shared_memory();
+
+   int server = socket_init();
+   if( -1 == server )
+   {
+      fprintf( stderr, "Failed to set up server!\n" );
+      thread_exit( EXIT_INIT );
+   }
+
+   /* Write initial state to shared memory */
+   sem_wait(&shm->w_sem);
+   print_header(shm->header);
+   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
+            time.tv_sec, time.tv_nsec );
+   /* Signal to logger that shared memory has been updated */
+   sem_post(&shm->r_sem);
+
+   cycle( server );
+
+   thread_exit( EXIT_CLEAN );
+   return NULL;
+}
+
+
+
+/**
+ * =================================================================================
+ *    @file     logger.c
+ *    @brief    Takes care of logging for other threads
+ *
+ *  This logger works in background to log the state of other threads to a common file.
+ *  It is responsible for reading the shared memory segment written to by the sensor
+ *  threads. It sleeps waiting for a semaphore to be posted by another thread signaling
+ *  that new data has been written to shared memory and that it should read it.
+ *
+ *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+ *
+ *    @internal
+ *       Created:  03/13/2019
+ *      Revision:  none
+ *      Compiler:  gcc
+ *  Organization:  University of Colorado: Boulder
+ *
+ *  This source code is released for free distribution under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation.
+ * =================================================================================
+ */
+
+#include "led.h"
+#include "logger.h"
+#include <errno.h>
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <fcntl.h>
+#include <sys/syscall.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+struct itimerspec trigger;
+static FILE *log;
+static shared_data_t *shm;
+
+/**
+ * =================================================================================
+ * Function:       sig_handler
+ * @brief   Signal handler for logger thread.
+ *          On normal operation, we should be receving SIGUSR1/2 signals from watchdog
+ *          when prompted to exit. So, we close the message queue and timer this thread owns
+ *
+ * @param   signo - enum with signal number of signal being handled
+ * @return  void
+ * =================================================================================
+ */
+static void sig_handler( int signo )
+{
+   if( signo == SIGUSR1 )
+   {
+      printf("Received SIGUSR1! Exiting...\n");
+      thread_exit( signo );
+   }
+   else if( signo == SIGUSR2 )
+   {
+      printf("Received SIGUSR2! Exiting...\n");
+      thread_exit( signo );
+   }
+   return;
+}
+
+
+/**
+ * =================================================================================
+ * Function:       logger_fn
+ * @brief   Entry point for logger thread
+ *
+ * @param   thread_args - void ptr to arguments used to initialize thread
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
+ * =================================================================================
+ */
+void *logger_fn( void *arg )
+{
+   struct timespec time;
+   clock_gettime(CLOCK_REALTIME, &time);
+   static int failure = 1;
+
+   signal(SIGUSR1, sig_handler);
+   signal(SIGUSR2, sig_handler);
+
+   /* Initialize thread */
+   if( NULL == arg )
+   {
+      fprintf( stderr, "Thread requires name of log file!\n" );
+      pthread_exit(&failure);
+   }
+
+   log = (FILE *)arg;
+   if( NULL == log )
+   {
+      perror( "Encountered error opening log file" );
+      pthread_exit(&failure);
+   }
+
+   shm = get_shared_memory();
+   if( NULL == shm )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error memory mapping shared memory: %s\n",
+               strerror( errnum ) );
+   }
+
+
+   shared_data_t *buf = malloc( sizeof( shared_data_t ) );
+   if( NULL == buf )
+   {
+      int errnum = errno;
+      fprintf( stderr, "Encountered error allocating memory for local buffer %s\n",
+               strerror( errnum ) );
+   }
+
+   while( 1 )
+   {
+      sem_wait(&shm->r_sem);
+      memcpy( buf, shm, sizeof(*shm) );
+         
+      fprintf( log, "%s\n%s", buf->header, buf->buffer );
+      fflush( log );
+
+      led_toggle( LED3_BRIGHTNESS ); 
+      sem_post(&shm->w_sem);
+   }
+
+   return NULL;
+}
+
+
+#  
+#  =================================================================================
+#     @file     Makefile
+#     @brief    
+#  
+#   Makefile for BeagleBone Green Temperature and Light Application
+#  
+#     @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
+#  
+#     @internal
+#        Created:  04/01/2019
+#       Revision:  none
+#       Compiler:  gcc
+#   Organization:  University of Colorado: Boulder
+#  
+#   This source code is released for free distribution under the terms of the
+#   GNU General Public License as published by the Free Software Foundation.
+#  =================================================================================
+#  
+
+
+
+CFLAGS = -Wall -g3 -pthread -I./inc
+BIN 	:= ./bin
+SRC 	:= ./src
+RES	:= ./res
+SRCS  := $(wildcard $(SRC)/*.c)
+OBJS  := $(patsubst $(SRC)/%.c, $(RES)/%.o, $(SRCS))
+PROG  := ./bin/prog
+
+all: $(PROG)
+
+run: $(PROG)
+	./$(PROG) /tmp/log
+
+$(RES)/libcommon.a: $(RES)/common.o
+	$(AR) rc $@ $^
+
+$(RES)/%.o: $(SRC)/%.c
+	mkdir -p $(RES)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(PROG): $(OBJS) $(RES)/libcommon.a
+	mkdir -p $(BIN)
+	$(CC) $(CFLAGS) $^ -o $@ -lrt -lmraa -lm -L$(RES) -lcommon
+
+clean:
+	rm -rf $(BIN)
+	rm -rf $(RES)
