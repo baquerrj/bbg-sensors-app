@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="structshared__data__t" kind="struct" language="C++" prot="public">
+    <compoundname>shared_data_t</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structshared__data__t_1a0785f67f48f4515c201b188929557e02" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char shared_data_t::buffer[SHM_BUFFER_SIZE]</definition>
+        <argsstring>[SHM_BUFFER_SIZE]</argsstring>
+        <name>buffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="100" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char shared_data_t::header[SHM_BUFFER_SIZE]</definition>
+        <argsstring>[SHM_BUFFER_SIZE]</argsstring>
+        <name>header</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buffer for message from thread </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="101" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="101" bodyend="-1"/>
+        <referencedby refid="light_8h_1a1a3ec39083c9a030ae43f0e8bd3ea71d" compoundref="light_8c" startline="662" endline="712">light_fn</referencedby>
+        <referencedby refid="socket_8h_1a94c4f68644ffd04fff83f946dae4d59c" compoundref="socket_8c" startline="229" endline="292">socket_init</referencedby>
+        <referencedby refid="temperature_8h_1ae0afede2f0dcd1931da5bed09ae70cd4" compoundref="temperature_8c" startline="462" endline="503">temperature_fn</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" prot="public" static="no" mutable="no">
+        <type>sem_t</type>
+        <definition>sem_t shared_data_t::w_sem</definition>
+        <argsstring></argsstring>
+        <name>w_sem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buffer for header identifying the thread who wrote to shm </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="102" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="102" bodyend="-1"/>
+        <referencedby refid="light_8h_1a1a3ec39083c9a030ae43f0e8bd3ea71d" compoundref="light_8c" startline="662" endline="712">light_fn</referencedby>
+        <referencedby refid="socket_8h_1a94c4f68644ffd04fff83f946dae4d59c" compoundref="socket_8c" startline="229" endline="292">socket_init</referencedby>
+        <referencedby refid="temperature_8h_1ae0afede2f0dcd1931da5bed09ae70cd4" compoundref="temperature_8c" startline="462" endline="503">temperature_fn</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structshared__data__t_1a1886c737155efff3666b5b5e22bb7b2a" prot="public" static="no" mutable="no">
+        <type>sem_t</type>
+        <definition>sem_t shared_data_t::r_sem</definition>
+        <argsstring></argsstring>
+        <name>r_sem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="103" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="99" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="99" bodyend="104"/>
+    <listofallmembers>
+      <member refid="structshared__data__t_1a0785f67f48f4515c201b188929557e02" prot="public" virt="non-virtual"><scope>shared_data_t</scope><name>buffer</name></member>
+      <member refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" prot="public" virt="non-virtual"><scope>shared_data_t</scope><name>header</name></member>
+      <member refid="structshared__data__t_1a1886c737155efff3666b5b5e22bb7b2a" prot="public" virt="non-virtual"><scope>shared_data_t</scope><name>r_sem</name></member>
+      <member refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" prot="public" virt="non-virtual"><scope>shared_data_t</scope><name>w_sem</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,453 @@
+\begin{theindex}
+
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/common.\+h}, 
+		\hyperpage{11}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/i2c.\+h}, 
+		\hyperpage{11}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/led.\+h}, 
+		\hyperpage{16}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/light.\+h}, 
+		\hyperpage{20}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/logger.\+h}, 
+		\hyperpage{35}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/socket.\+h}, 
+		\hyperpage{37}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/temperature.\+h}, 
+		\hyperpage{41}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/watchdog.\+h}, 
+		\hyperpage{51}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/common.\+c}, 
+		\hyperpage{56}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/i2c.\+c}, 
+		\hyperpage{61}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/led.\+c}, 
+		\hyperpage{66}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/light.\+c}, 
+		\hyperpage{70}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/logger.\+c}, 
+		\hyperpage{87}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/main.\+c}, 
+		\hyperpage{90}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/socket.\+c}, 
+		\hyperpage{94}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/temperature.\+c}, 
+		\hyperpage{99}
+  \item {/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/watchdog.\+c}, 
+		\hyperpage{110}
+
+  \indexspace
+
+  \item {A\+P\+D\+S9301\+\_\+\+R\+E\+G\+\_\+\+C\+MD}
+    \subitem {light.\+h}, \hyperpage{22}
+  \item {apds9301\+\_\+clear\+\_\+interrupt}
+    \subitem {light.\+c}, \hyperpage{71}
+    \subitem {light.\+h}, \hyperpage{23}
+  \item {apds9301\+\_\+get\+\_\+lux}
+    \subitem {light.\+c}, \hyperpage{73}
+    \subitem {light.\+h}, \hyperpage{23}
+  \item {apds9301\+\_\+power}
+    \subitem {light.\+c}, \hyperpage{74}
+    \subitem {light.\+h}, \hyperpage{24}
+  \item {apds9301\+\_\+read\+\_\+control}
+    \subitem {light.\+c}, \hyperpage{74}
+    \subitem {light.\+h}, \hyperpage{25}
+  \item {apds9301\+\_\+read\+\_\+data0}
+    \subitem {light.\+c}, \hyperpage{75}
+    \subitem {light.\+h}, \hyperpage{26}
+  \item {apds9301\+\_\+read\+\_\+data1}
+    \subitem {light.\+c}, \hyperpage{75}
+    \subitem {light.\+h}, \hyperpage{26}
+  \item {apds9301\+\_\+read\+\_\+id}
+    \subitem {light.\+c}, \hyperpage{76}
+    \subitem {light.\+h}, \hyperpage{27}
+  \item {apds9301\+\_\+read\+\_\+threshold\+\_\+high}
+    \subitem {light.\+c}, \hyperpage{77}
+    \subitem {light.\+h}, \hyperpage{28}
+  \item {apds9301\+\_\+read\+\_\+threshold\+\_\+low}
+    \subitem {light.\+c}, \hyperpage{77}
+    \subitem {light.\+h}, \hyperpage{28}
+  \item {apds9301\+\_\+set\+\_\+config}
+    \subitem {light.\+c}, \hyperpage{78}
+    \subitem {light.\+h}, \hyperpage{29}
+  \item {apds9301\+\_\+set\+\_\+gain}
+    \subitem {light.\+c}, \hyperpage{78}
+    \subitem {light.\+h}, \hyperpage{29}
+  \item {apds9301\+\_\+set\+\_\+integration}
+    \subitem {light.\+c}, \hyperpage{79}
+    \subitem {light.\+h}, \hyperpage{30}
+  \item {apds9301\+\_\+set\+\_\+interrupt}
+    \subitem {light.\+c}, \hyperpage{80}
+    \subitem {light.\+h}, \hyperpage{31}
+  \item {apds9301\+\_\+write\+\_\+threshold\+\_\+high}
+    \subitem {light.\+c}, \hyperpage{80}
+    \subitem {light.\+h}, \hyperpage{31}
+  \item {apds9301\+\_\+write\+\_\+threshold\+\_\+low}
+    \subitem {light.\+c}, \hyperpage{81}
+    \subitem {light.\+h}, \hyperpage{32}
+
+  \indexspace
+
+  \item {check\+\_\+threads}
+    \subitem {watchdog.\+c}, \hyperpage{111}
+    \subitem {watchdog.\+h}, \hyperpage{52}
+  \item {common.\+c}
+    \subitem {get\+\_\+shared\+\_\+memory}, \hyperpage{56}
+    \subitem {print\+\_\+header}, \hyperpage{57}
+    \subitem {sems\+\_\+init}, \hyperpage{58}
+    \subitem {thread\+\_\+exit}, \hyperpage{59}
+    \subitem {timer\+\_\+setup}, \hyperpage{59}
+    \subitem {timer\+\_\+start}, \hyperpage{60}
+  \item {conv\+\_\+res\+\_\+t}, \hyperpage{7}
+  \item {cycle}
+    \subitem {light.\+c}, \hyperpage{81}
+    \subitem {socket.\+c}, \hyperpage{95}
+    \subitem {temperature.\+c}, \hyperpage{101}
+
+  \indexspace
+
+  \item {D\+E\+F\+A\+U\+L\+T\+\_\+\+G\+A\+IN}
+    \subitem {light.\+h}, \hyperpage{22}
+
+  \indexspace
+
+  \item {file\+\_\+t}, \hyperpage{7}
+
+  \indexspace
+
+  \item {get\+\_\+light\+\_\+queue}
+    \subitem {light.\+c}, \hyperpage{82}
+    \subitem {light.\+h}, \hyperpage{32}
+  \item {get\+\_\+lux}
+    \subitem {light.\+c}, \hyperpage{83}
+    \subitem {light.\+h}, \hyperpage{33}
+  \item {get\+\_\+shared\+\_\+memory}
+    \subitem {common.\+c}, \hyperpage{56}
+  \item {get\+\_\+status}
+    \subitem {led.\+c}, \hyperpage{66}
+    \subitem {led.\+h}, \hyperpage{17}
+  \item {get\+\_\+temperature}
+    \subitem {temperature.\+c}, \hyperpage{102}
+    \subitem {temperature.\+h}, \hyperpage{43}
+  \item {get\+\_\+temperature\+\_\+queue}
+    \subitem {temperature.\+c}, \hyperpage{102}
+    \subitem {temperature.\+h}, \hyperpage{44}
+
+  \indexspace
+
+  \item {header}
+    \subitem {shared\+\_\+data\+\_\+t}, \hyperpage{9}
+
+  \indexspace
+
+  \item {i2c.\+c}
+    \subitem {i2c\+\_\+init}, \hyperpage{61}
+    \subitem {i2c\+\_\+read}, \hyperpage{62}
+    \subitem {i2c\+\_\+stop}, \hyperpage{63}
+    \subitem {i2c\+\_\+write}, \hyperpage{64}
+    \subitem {i2c\+\_\+write\+\_\+byte}, \hyperpage{64}
+    \subitem {my\+\_\+i2c}, \hyperpage{65}
+  \item {i2c.\+h}
+    \subitem {i2c\+\_\+init}, \hyperpage{12}
+    \subitem {i2c\+\_\+read}, \hyperpage{13}
+    \subitem {i2c\+\_\+stop}, \hyperpage{14}
+    \subitem {i2c\+\_\+write}, \hyperpage{14}
+    \subitem {i2c\+\_\+write\+\_\+byte}, \hyperpage{15}
+  \item {i2c\+\_\+handle\+\_\+t}, \hyperpage{7}
+  \item {i2c\+\_\+init}
+    \subitem {i2c.\+c}, \hyperpage{61}
+    \subitem {i2c.\+h}, \hyperpage{12}
+  \item {i2c\+\_\+read}
+    \subitem {i2c.\+c}, \hyperpage{62}
+    \subitem {i2c.\+h}, \hyperpage{13}
+  \item {i2c\+\_\+stop}
+    \subitem {i2c.\+c}, \hyperpage{63}
+    \subitem {i2c.\+h}, \hyperpage{14}
+  \item {i2c\+\_\+write}
+    \subitem {i2c.\+c}, \hyperpage{64}
+    \subitem {i2c.\+h}, \hyperpage{14}
+  \item {i2c\+\_\+write\+\_\+byte}
+    \subitem {i2c.\+c}, \hyperpage{64}
+    \subitem {i2c.\+h}, \hyperpage{15}
+  \item {is\+\_\+dark}
+    \subitem {light.\+c}, \hyperpage{83}
+    \subitem {light.\+h}, \hyperpage{33}
+
+  \indexspace
+
+  \item {kill\+\_\+threads}
+    \subitem {watchdog.\+c}, \hyperpage{112}
+    \subitem {watchdog.\+h}, \hyperpage{53}
+
+  \indexspace
+
+  \item {led.\+c}
+    \subitem {get\+\_\+status}, \hyperpage{66}
+    \subitem {led\+\_\+off}, \hyperpage{67}
+    \subitem {led\+\_\+on}, \hyperpage{67}
+    \subitem {led\+\_\+toggle}, \hyperpage{68}
+    \subitem {set\+\_\+delay}, \hyperpage{68}
+    \subitem {set\+\_\+trigger}, \hyperpage{69}
+  \item {led.\+h}
+    \subitem {get\+\_\+status}, \hyperpage{17}
+    \subitem {led\+\_\+off}, \hyperpage{17}
+    \subitem {led\+\_\+on}, \hyperpage{18}
+    \subitem {led\+\_\+toggle}, \hyperpage{18}
+    \subitem {set\+\_\+delay}, \hyperpage{19}
+    \subitem {set\+\_\+trigger}, \hyperpage{20}
+  \item {led\+\_\+off}
+    \subitem {led.\+c}, \hyperpage{67}
+    \subitem {led.\+h}, \hyperpage{17}
+  \item {led\+\_\+on}
+    \subitem {led.\+c}, \hyperpage{67}
+    \subitem {led.\+h}, \hyperpage{18}
+  \item {led\+\_\+toggle}
+    \subitem {led.\+c}, \hyperpage{68}
+    \subitem {led.\+h}, \hyperpage{18}
+  \item {light.\+c}
+    \subitem {apds9301\+\_\+clear\+\_\+interrupt}, \hyperpage{71}
+    \subitem {apds9301\+\_\+get\+\_\+lux}, \hyperpage{73}
+    \subitem {apds9301\+\_\+power}, \hyperpage{74}
+    \subitem {apds9301\+\_\+read\+\_\+control}, \hyperpage{74}
+    \subitem {apds9301\+\_\+read\+\_\+data0}, \hyperpage{75}
+    \subitem {apds9301\+\_\+read\+\_\+data1}, \hyperpage{75}
+    \subitem {apds9301\+\_\+read\+\_\+id}, \hyperpage{76}
+    \subitem {apds9301\+\_\+read\+\_\+threshold\+\_\+high}, 
+		\hyperpage{77}
+    \subitem {apds9301\+\_\+read\+\_\+threshold\+\_\+low}, 
+		\hyperpage{77}
+    \subitem {apds9301\+\_\+set\+\_\+config}, \hyperpage{78}
+    \subitem {apds9301\+\_\+set\+\_\+gain}, \hyperpage{78}
+    \subitem {apds9301\+\_\+set\+\_\+integration}, \hyperpage{79}
+    \subitem {apds9301\+\_\+set\+\_\+interrupt}, \hyperpage{80}
+    \subitem {apds9301\+\_\+write\+\_\+threshold\+\_\+high}, 
+		\hyperpage{80}
+    \subitem {apds9301\+\_\+write\+\_\+threshold\+\_\+low}, 
+		\hyperpage{81}
+    \subitem {cycle}, \hyperpage{81}
+    \subitem {get\+\_\+light\+\_\+queue}, \hyperpage{82}
+    \subitem {get\+\_\+lux}, \hyperpage{83}
+    \subitem {is\+\_\+dark}, \hyperpage{83}
+    \subitem {light\+\_\+fn}, \hyperpage{84}
+    \subitem {light\+\_\+queue\+\_\+init}, \hyperpage{85}
+    \subitem {sig\+\_\+handler}, \hyperpage{85}
+    \subitem {timer\+\_\+handler}, \hyperpage{86}
+  \item {light.\+h}
+    \subitem {A\+P\+D\+S9301\+\_\+\+R\+E\+G\+\_\+\+C\+MD}, 
+		\hyperpage{22}
+    \subitem {apds9301\+\_\+clear\+\_\+interrupt}, \hyperpage{23}
+    \subitem {apds9301\+\_\+get\+\_\+lux}, \hyperpage{23}
+    \subitem {apds9301\+\_\+power}, \hyperpage{24}
+    \subitem {apds9301\+\_\+read\+\_\+control}, \hyperpage{25}
+    \subitem {apds9301\+\_\+read\+\_\+data0}, \hyperpage{26}
+    \subitem {apds9301\+\_\+read\+\_\+data1}, \hyperpage{26}
+    \subitem {apds9301\+\_\+read\+\_\+id}, \hyperpage{27}
+    \subitem {apds9301\+\_\+read\+\_\+threshold\+\_\+high}, 
+		\hyperpage{28}
+    \subitem {apds9301\+\_\+read\+\_\+threshold\+\_\+low}, 
+		\hyperpage{28}
+    \subitem {apds9301\+\_\+set\+\_\+config}, \hyperpage{29}
+    \subitem {apds9301\+\_\+set\+\_\+gain}, \hyperpage{29}
+    \subitem {apds9301\+\_\+set\+\_\+integration}, \hyperpage{30}
+    \subitem {apds9301\+\_\+set\+\_\+interrupt}, \hyperpage{31}
+    \subitem {apds9301\+\_\+write\+\_\+threshold\+\_\+high}, 
+		\hyperpage{31}
+    \subitem {apds9301\+\_\+write\+\_\+threshold\+\_\+low}, 
+		\hyperpage{32}
+    \subitem {D\+E\+F\+A\+U\+L\+T\+\_\+\+G\+A\+IN}, \hyperpage{22}
+    \subitem {get\+\_\+light\+\_\+queue}, \hyperpage{32}
+    \subitem {get\+\_\+lux}, \hyperpage{33}
+    \subitem {is\+\_\+dark}, \hyperpage{33}
+    \subitem {light\+\_\+fn}, \hyperpage{34}
+    \subitem {light\+\_\+queue\+\_\+init}, \hyperpage{35}
+    \subitem {P\+O\+W\+E\+R\+\_\+\+ON}, \hyperpage{22}
+  \item {light\+\_\+fn}
+    \subitem {light.\+c}, \hyperpage{84}
+    \subitem {light.\+h}, \hyperpage{34}
+  \item {light\+\_\+queue\+\_\+init}
+    \subitem {light.\+c}, \hyperpage{85}
+    \subitem {light.\+h}, \hyperpage{35}
+  \item {logger.\+c}
+    \subitem {logger\+\_\+fn}, \hyperpage{88}
+    \subitem {sig\+\_\+handler}, \hyperpage{89}
+  \item {logger.\+h}
+    \subitem {logger\+\_\+fn}, \hyperpage{36}
+  \item {logger\+\_\+fn}
+    \subitem {logger.\+c}, \hyperpage{88}
+    \subitem {logger.\+h}, \hyperpage{36}
+
+  \indexspace
+
+  \item {main}
+    \subitem {main.\+c}, \hyperpage{90}
+  \item {main.\+c}
+    \subitem {main}, \hyperpage{90}
+    \subitem {signal\+\_\+handler}, \hyperpage{92}
+    \subitem {temp\+\_\+thread}, \hyperpage{94}
+    \subitem {turn\+\_\+off\+\_\+leds}, \hyperpage{93}
+  \item {msg\+\_\+t}, \hyperpage{8}
+  \item {my\+\_\+i2c}
+    \subitem {i2c.\+c}, \hyperpage{65}
+
+  \indexspace
+
+  \item {night}
+    \subitem {sensor\+\_\+data\+\_\+t}, \hyperpage{8}
+
+  \indexspace
+
+  \item {P\+O\+W\+E\+R\+\_\+\+ON}
+    \subitem {light.\+h}, \hyperpage{22}
+  \item {print\+\_\+header}
+    \subitem {common.\+c}, \hyperpage{57}
+  \item {process\+\_\+request}
+    \subitem {socket.\+c}, \hyperpage{96}
+    \subitem {socket.\+h}, \hyperpage{38}
+
+  \indexspace
+
+  \item {sems\+\_\+init}
+    \subitem {common.\+c}, \hyperpage{58}
+  \item {sensor\+\_\+data\+\_\+t}, \hyperpage{8}
+    \subitem {night}, \hyperpage{8}
+  \item {set\+\_\+delay}
+    \subitem {led.\+c}, \hyperpage{68}
+    \subitem {led.\+h}, \hyperpage{19}
+  \item {set\+\_\+trigger}
+    \subitem {led.\+c}, \hyperpage{69}
+    \subitem {led.\+h}, \hyperpage{20}
+  \item {shared\+\_\+data\+\_\+t}, \hyperpage{8}
+    \subitem {header}, \hyperpage{9}
+    \subitem {w\+\_\+sem}, \hyperpage{9}
+  \item {sig\+\_\+handler}
+    \subitem {light.\+c}, \hyperpage{85}
+    \subitem {logger.\+c}, \hyperpage{89}
+    \subitem {temperature.\+c}, \hyperpage{103}
+    \subitem {watchdog.\+c}, \hyperpage{113}
+  \item {signal\+\_\+handler}
+    \subitem {main.\+c}, \hyperpage{92}
+  \item {socket.\+c}
+    \subitem {cycle}, \hyperpage{95}
+    \subitem {process\+\_\+request}, \hyperpage{96}
+    \subitem {socket\+\_\+fn}, \hyperpage{97}
+    \subitem {socket\+\_\+init}, \hyperpage{98}
+  \item {socket.\+h}
+    \subitem {process\+\_\+request}, \hyperpage{38}
+    \subitem {socket\+\_\+fn}, \hyperpage{39}
+    \subitem {socket\+\_\+init}, \hyperpage{40}
+  \item {socket\+\_\+fn}
+    \subitem {socket.\+c}, \hyperpage{97}
+    \subitem {socket.\+h}, \hyperpage{39}
+  \item {socket\+\_\+init}
+    \subitem {socket.\+c}, \hyperpage{98}
+    \subitem {socket.\+h}, \hyperpage{40}
+
+  \indexspace
+
+  \item {T\+M\+P102\+\_\+\+R\+E\+G\+\_\+\+T\+E\+MP}
+    \subitem {temperature.\+h}, \hyperpage{43}
+  \item {T\+M\+P102\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+M\+O\+DE}
+    \subitem {temperature.\+h}, \hyperpage{43}
+  \item {T\+M\+P102\+\_\+\+S\+L\+A\+VE}
+    \subitem {temperature.\+h}, \hyperpage{43}
+  \item {temp\+\_\+queue\+\_\+init}
+    \subitem {temperature.\+c}, \hyperpage{103}
+    \subitem {temperature.\+h}, \hyperpage{44}
+  \item {temp\+\_\+thread}
+    \subitem {main.\+c}, \hyperpage{94}
+  \item {temperature.\+c}
+    \subitem {cycle}, \hyperpage{101}
+    \subitem {get\+\_\+temperature}, \hyperpage{102}
+    \subitem {get\+\_\+temperature\+\_\+queue}, \hyperpage{102}
+    \subitem {sig\+\_\+handler}, \hyperpage{103}
+    \subitem {temp\+\_\+queue\+\_\+init}, \hyperpage{103}
+    \subitem {temperature\+\_\+fn}, \hyperpage{104}
+    \subitem {timer\+\_\+handler}, \hyperpage{105}
+    \subitem {tmp102\+\_\+default\+\_\+config}, \hyperpage{110}
+    \subitem {tmp102\+\_\+get\+\_\+temp}, \hyperpage{106}
+    \subitem {tmp102\+\_\+read\+\_\+thigh}, \hyperpage{106}
+    \subitem {tmp102\+\_\+read\+\_\+tlow}, \hyperpage{107}
+    \subitem {tmp102\+\_\+write\+\_\+config}, \hyperpage{108}
+    \subitem {tmp102\+\_\+write\+\_\+thigh}, \hyperpage{108}
+    \subitem {tmp102\+\_\+write\+\_\+tlow}, \hyperpage{109}
+  \item {temperature.\+h}
+    \subitem {get\+\_\+temperature}, \hyperpage{43}
+    \subitem {get\+\_\+temperature\+\_\+queue}, \hyperpage{44}
+    \subitem {T\+M\+P102\+\_\+\+R\+E\+G\+\_\+\+T\+E\+MP}, 
+		\hyperpage{43}
+    \subitem {T\+M\+P102\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+M\+O\+DE}, 
+		\hyperpage{43}
+    \subitem {T\+M\+P102\+\_\+\+S\+L\+A\+VE}, \hyperpage{43}
+    \subitem {temp\+\_\+queue\+\_\+init}, \hyperpage{44}
+    \subitem {temperature\+\_\+fn}, \hyperpage{45}
+    \subitem {tmp102\+\_\+get\+\_\+temp}, \hyperpage{46}
+    \subitem {tmp102\+\_\+read\+\_\+thigh}, \hyperpage{47}
+    \subitem {tmp102\+\_\+read\+\_\+tlow}, \hyperpage{47}
+    \subitem {tmp102\+\_\+write\+\_\+config}, \hyperpage{49}
+    \subitem {tmp102\+\_\+write\+\_\+thigh}, \hyperpage{49}
+    \subitem {tmp102\+\_\+write\+\_\+tlow}, \hyperpage{50}
+  \item {temperature\+\_\+fn}
+    \subitem {temperature.\+c}, \hyperpage{104}
+    \subitem {temperature.\+h}, \hyperpage{45}
+  \item {thread\+\_\+exit}
+    \subitem {common.\+c}, \hyperpage{59}
+  \item {thread\+\_\+id\+\_\+s}, \hyperpage{9}
+  \item {timer\+\_\+handler}
+    \subitem {light.\+c}, \hyperpage{86}
+    \subitem {temperature.\+c}, \hyperpage{105}
+  \item {timer\+\_\+setup}
+    \subitem {common.\+c}, \hyperpage{59}
+  \item {timer\+\_\+start}
+    \subitem {common.\+c}, \hyperpage{60}
+  \item {tmp102\+\_\+config\+\_\+t}, \hyperpage{9}
+  \item {tmp102\+\_\+default\+\_\+config}
+    \subitem {temperature.\+c}, \hyperpage{110}
+  \item {tmp102\+\_\+get\+\_\+temp}
+    \subitem {temperature.\+c}, \hyperpage{106}
+    \subitem {temperature.\+h}, \hyperpage{46}
+  \item {tmp102\+\_\+mode\+\_\+t}, \hyperpage{10}
+  \item {tmp102\+\_\+read\+\_\+thigh}
+    \subitem {temperature.\+c}, \hyperpage{106}
+    \subitem {temperature.\+h}, \hyperpage{47}
+  \item {tmp102\+\_\+read\+\_\+tlow}
+    \subitem {temperature.\+c}, \hyperpage{107}
+    \subitem {temperature.\+h}, \hyperpage{47}
+  \item {tmp102\+\_\+write\+\_\+config}
+    \subitem {temperature.\+c}, \hyperpage{108}
+    \subitem {temperature.\+h}, \hyperpage{49}
+  \item {tmp102\+\_\+write\+\_\+thigh}
+    \subitem {temperature.\+c}, \hyperpage{108}
+    \subitem {temperature.\+h}, \hyperpage{49}
+  \item {tmp102\+\_\+write\+\_\+tlow}
+    \subitem {temperature.\+c}, \hyperpage{109}
+    \subitem {temperature.\+h}, \hyperpage{50}
+  \item {turn\+\_\+off\+\_\+leds}
+    \subitem {main.\+c}, \hyperpage{93}
+
+  \indexspace
+
+  \item {w\+\_\+sem}
+    \subitem {shared\+\_\+data\+\_\+t}, \hyperpage{9}
+  \item {watchdog.\+c}
+    \subitem {check\+\_\+threads}, \hyperpage{111}
+    \subitem {kill\+\_\+threads}, \hyperpage{112}
+    \subitem {sig\+\_\+handler}, \hyperpage{113}
+    \subitem {watchdog\+\_\+fn}, \hyperpage{113}
+    \subitem {watchdog\+\_\+init}, \hyperpage{114}
+    \subitem {watchdog\+\_\+queue\+\_\+init}, \hyperpage{115}
+  \item {watchdog.\+h}
+    \subitem {check\+\_\+threads}, \hyperpage{52}
+    \subitem {kill\+\_\+threads}, \hyperpage{53}
+    \subitem {watchdog\+\_\+fn}, \hyperpage{54}
+    \subitem {watchdog\+\_\+init}, \hyperpage{54}
+    \subitem {watchdog\+\_\+queue\+\_\+init}, \hyperpage{55}
+  \item {watchdog\+\_\+fn}
+    \subitem {watchdog.\+c}, \hyperpage{113}
+    \subitem {watchdog.\+h}, \hyperpage{54}
+  \item {watchdog\+\_\+init}
+    \subitem {watchdog.\+c}, \hyperpage{114}
+    \subitem {watchdog.\+h}, \hyperpage{54}
+  \item {watchdog\+\_\+queue\+\_\+init}
+    \subitem {watchdog.\+c}, \hyperpage{115}
+    \subitem {watchdog.\+h}, \hyperpage{55}
+
+\end{theindex}

@@ -1,0 +1,688 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="common_8h" kind="file" language="C++">
+    <compoundname>common.h</compoundname>
+    <includes local="no">signal.h</includes>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">pthread.h</includes>
+    <includes local="no">unistd.h</includes>
+    <includes local="no">semaphore.h</includes>
+    <includes local="no">mqueue.h</includes>
+    <includedby refid="common_8c" local="yes">/home/baquerrj/boulder/ecen5013/project_1/src/common.c</includedby>
+    <includedby refid="i2c_8c" local="yes">/home/baquerrj/boulder/ecen5013/project_1/src/i2c.c</includedby>
+    <includedby refid="watchdog_8h" local="yes">/home/baquerrj/boulder/ecen5013/project_1/inc/watchdog.h</includedby>
+    <includedby refid="light_8h" local="yes">/home/baquerrj/boulder/ecen5013/project_1/inc/light.h</includedby>
+    <includedby refid="logger_8h" local="yes">/home/baquerrj/boulder/ecen5013/project_1/inc/logger.h</includedby>
+    <includedby refid="temperature_8h" local="yes">/home/baquerrj/boulder/ecen5013/project_1/inc/temperature.h</includedby>
+    <includedby refid="main_8c" local="yes">/home/baquerrj/boulder/ecen5013/project_1/src/main.c</includedby>
+    <includedby refid="socket_8h" local="yes">/home/baquerrj/boulder/ecen5013/project_1/inc/socket.h</includedby>
+    <includedby refid="socket_8c" local="yes">/home/baquerrj/boulder/ecen5013/project_1/src/socket.c</includedby>
+    <incdepgraph>
+      <node id="6">
+        <label>mqueue.h</label>
+      </node>
+      <node id="0">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/common.h</label>
+        <link refid="common_8h"/>
+        <childnode refid="1" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>pthread.h</label>
+      </node>
+      <node id="4">
+        <label>unistd.h</label>
+      </node>
+      <node id="5">
+        <label>semaphore.h</label>
+      </node>
+      <node id="1">
+        <label>signal.h</label>
+      </node>
+      <node id="2">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="14">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/watchdog.c</label>
+        <link refid="watchdog_8c"/>
+      </node>
+      <node id="11">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/light.c</label>
+        <link refid="light_8c"/>
+      </node>
+      <node id="10">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/watchdog.h</label>
+        <link refid="watchdog_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/socket.h</label>
+        <link refid="socket_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/common.h</label>
+        <link refid="common_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/main.c</label>
+        <link refid="main_8c"/>
+      </node>
+      <node id="16">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/socket.c</label>
+        <link refid="socket_8c"/>
+      </node>
+      <node id="18">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/logger.c</label>
+        <link refid="logger_8c"/>
+      </node>
+      <node id="9">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/i2c.c</label>
+        <link refid="i2c_8c"/>
+      </node>
+      <node id="8">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/common.c</label>
+        <link refid="common_8c"/>
+      </node>
+      <node id="15">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/light.h</label>
+        <link refid="light_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/temperature.h</label>
+        <link refid="temperature_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c</label>
+        <link refid="temperature_8c"/>
+      </node>
+      <node id="17">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/inc/logger.h</label>
+        <link refid="logger_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structsensor__data__t" prot="public">sensor_data_t</innerclass>
+    <innerclass refid="structmsg__t" prot="public">msg_t</innerclass>
+    <innerclass refid="structfile__t" prot="public">file_t</innerclass>
+    <innerclass refid="structthread__id__s" prot="public">thread_id_s</innerclass>
+    <innerclass refid="structshared__data__t" prot="public">shared_data_t</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="common_8h_1ad3340c34c3f103666d4586f219259af3" prot="public" static="no">
+        <name>SHM_SEGMENT_NAME</name>
+        <initializer>&quot;/shm-log&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="31" column="9" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="common_8h_1a572be0dffaf777d236cf8499fbf56ea5" prot="public" static="no">
+        <name>SHM_BUFFER_SIZE</name>
+        <initializer>2048</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="32" column="9" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="common_8h_1a8de0a1c7dee33c085b5d9491338f842f" prot="public" static="no">
+        <name>GEN_BUFFER_SIZE</name>
+        <initializer>100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="34" column="9" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="common_8h_1a1f02f60afb419aa25921dcd8ae49f807" prot="public" static="no">
+        <name>MAX_MESSAGES</name>
+        <initializer>100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="35" column="9" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="common_8h_1a81bcea712b48d6bf8f7193e3de40404b" prot="public" static="no">
+        <name>MICROS_PER_SEC</name>
+        <initializer>1000000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="37" column="9" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="common_8h_1a8f728ffbef412037d447405d576d7c25" prot="public" static="no">
+        <name>request_e</name>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a9960796af2e90da33cad622dad332e18" prot="public">
+          <name>REQUEST_BEGIN</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a822c23ed626b6d3d4fe6ed7c6b457852" prot="public">
+          <name>REQUEST_LUX</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a3dd27e77e481fd12f36c1d29b01170c9" prot="public">
+          <name>REQUEST_DARK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a1224e1fb56238f9cb00152074175b214" prot="public">
+          <name>REQUEST_TEMP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a9e1d939abc824c706888e23bdac5915f" prot="public">
+          <name>REQUEST_TEMP_C</name>
+          <initializer>= REQUEST_TEMP</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a207f0984d68f263b3ba19f04b1ce727c" prot="public">
+          <name>REQUEST_TEMP_K</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25ab98a623fb82bc9b0ef0a897a9a7fb986" prot="public">
+          <name>REQUEST_TEMP_F</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a3dbd8c85b00e764a651f48eb2393db7a" prot="public">
+          <name>REQUEST_CLOSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a53d73e6e741d066e86f42906c2f970e3" prot="public">
+          <name>REQUEST_KILL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a884a2143dcb65446f013d9412db59623" prot="public">
+          <name>REQUEST_STATUS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a8f728ffbef412037d447405d576d7c25a1c9145e54d5e71f0c646b2463a310f6a" prot="public">
+          <name>REQUEST_MAX</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="42" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="42" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="enum" id="common_8h_1a4c8ed171c9970e46abdf682297457d45" prot="public" static="no">
+        <name>exit_e</name>
+        <enumvalue id="common_8h_1a4c8ed171c9970e46abdf682297457d45ad2e5497c72d3303dbc388836fe0acd87" prot="public">
+          <name>EXIT_BEGIN</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a4c8ed171c9970e46abdf682297457d45a5db65e74a01aec0fbfb24220bf5db895" prot="public">
+          <name>EXIT_CLEAN</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a4c8ed171c9970e46abdf682297457d45a35ec2411ee23e729e0877a9f7c07da17" prot="public">
+          <name>EXIT_INIT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a4c8ed171c9970e46abdf682297457d45a119bfd091f155208216778951ed40b27" prot="public">
+          <name>EXIT_ERROR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="common_8h_1a4c8ed171c9970e46abdf682297457d45a933e73afcb9911e8994b6fb3a6367897" prot="public">
+          <name>EXIT_MAX</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="110" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="110" bodyend="116"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="common_8h_1a3947a4b2fa8d63c9a1a9a28976f79cbb" prot="public" static="no">
+        <type>struct <ref refid="structthread__id__s" kindref="compound">thread_id_s</ref></type>
+        <definition>typedef struct thread_id_s  thread_id_s</definition>
+        <argsstring></argsstring>
+        <name>thread_id_s</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="92" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="common_8h_1a8f714d490a7f06c3a43cfea239e2770f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void print_header</definition>
+        <argsstring>(char *buffer)</argsstring>
+        <name>print_header</name>
+        <param>
+          <type>char *</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+<para>Write a string formatted with the TID of the thread calling this function and a timestamp to the log buffer. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: print_header <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>*buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to where we should copy formatted string to if NULL, we print to stderr <heading level="1">void </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="129" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/common.c" bodystart="35" bodyend="58"/>
+        <referencedby refid="light_8h_1a1a3ec39083c9a030ae43f0e8bd3ea71d" compoundref="light_8c" startline="662" endline="712">light_fn</referencedby>
+        <referencedby refid="socket_8h_1a94c4f68644ffd04fff83f946dae4d59c" compoundref="socket_8c" startline="229" endline="292">socket_init</referencedby>
+        <referencedby refid="temperature_8h_1ae0afede2f0dcd1931da5bed09ae70cd4" compoundref="temperature_8c" startline="462" endline="503">temperature_fn</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="common_8h_1a760f8eb17501e01a6673e2ec911ba1cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void thread_exit</definition>
+        <argsstring>(int exit_status)</argsstring>
+        <name>thread_exit</name>
+        <param>
+          <type>int</type>
+          <declname>exit_status</declname>
+        </param>
+        <briefdescription>
+<para>Common exit point for all threads. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: thread_exit <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exit_status</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- reason for exit (signal number) <heading level="1">void </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="140" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/common.c" bodystart="60" bodyend="80"/>
+        <referencedby refid="logger_8c_1a366471b5822de7615f33cbe5eab9726a" compoundref="logger_8c" startline="52" endline="65">sig_handler</referencedby>
+        <referencedby refid="socket_8h_1aa92c508deb9f9da37d03c119f834f0d9" compoundref="socket_8c" startline="305" endline="333">socket_fn</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="common_8h_1ae426f169cff2eb748a7d509bda02c686" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void* get_shared_memory</definition>
+        <argsstring>(void)</argsstring>
+        <name>get_shared_memory</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Sets up shared memory location for logging. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: get_shared_memory <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>void</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><heading level="1">*shm_p - pointer to shared memory object </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="151" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/common.c" bodystart="82" bodyend="128"/>
+        <referencedby refid="light_8h_1a1a3ec39083c9a030ae43f0e8bd3ea71d" compoundref="light_8c" startline="662" endline="712">light_fn</referencedby>
+        <referencedby refid="socket_8h_1aa92c508deb9f9da37d03c119f834f0d9" compoundref="socket_8c" startline="305" endline="333">socket_fn</referencedby>
+        <referencedby refid="temperature_8h_1ae0afede2f0dcd1931da5bed09ae70cd4" compoundref="temperature_8c" startline="462" endline="503">temperature_fn</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="common_8h_1a8e1ee6092ec482d5556b2100d64b8c74" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int sems_init</definition>
+        <argsstring>(shared_data_t *shm)</argsstring>
+        <name>sems_init</name>
+        <param>
+          <type><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref> *</type>
+          <declname>shm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: sems_init  Initialize semaphores for shared memory</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>*shm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to shared memory object <heading level="1">EXIT_CLEAN if successful, otherwise EXIT_INIT </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="162" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/common.c" bodystart="131" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="common_8h_1a7bc3784d4fdb323e1761a141c72d2f49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int timer_setup</definition>
+        <argsstring>(timer_t *id, void(*timer_handler)(union sigval))</argsstring>
+        <name>timer_setup</name>
+        <param>
+          <type>timer_t *</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>void(*)(union sigval)</type>
+          <declname>timer_handler</declname>
+        </param>
+        <briefdescription>
+<para>Initializes a timer identified by timer_t id. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: timer_setup <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>*id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- identifier for new timer </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>*handler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to function to register as the handler for the timer ticks <heading level="1">EXIT_CLEAN if successful, otherwise EXIT_INIT </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="174" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/common.c" bodystart="155" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="common_8h_1a207644f53334379d5fcb82b78bafff36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int timer_start</definition>
+        <argsstring>(timer_t *id, unsigned long usecs)</argsstring>
+        <name>timer_start</name>
+        <param>
+          <type>timer_t *</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>unsigned long</type>
+          <declname>usecs</declname>
+        </param>
+        <briefdescription>
+<para>Starts the timer with interval usecs. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: timer_start <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>*id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- identifier for new timer </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>usecs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- timer interval <heading level="1">EXIT_CLEAN if successful, otherwise EXIT_INIT </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="187" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/common.c" bodystart="180" bodyend="200"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines types and functions common between the threads of the application. </para>    </briefdescription>
+    <detaileddescription>
+<para>=================================================================================</para><para><simplesect kind="author"><para>Roberto Baquerizo (baquerrj), <ulink url="mailto:roba8460@colorado.edu">roba8460@colorado.edu</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="20"><highlight class="preprocessor">#ifndef<sp/>COMMON_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>COMMON_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;signal.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;pthread.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unistd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;semaphore.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;mqueue.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHM_SEGMENT_NAME<sp/>&quot;/shm-log&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHM_BUFFER_SIZE<sp/>2048</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GEN_BUFFER_SIZE<sp/>100</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAX_MESSAGES<sp/>100</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MICROS_PER_SEC<sp/><sp/>1000000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/>Defines<sp/>types<sp/>of<sp/>possible<sp/>messages</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/>REQUEST_BEGIN<sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/>REQUEST_LUX,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/>REQUEST_DARK,</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/>REQUEST_TEMP,</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/>REQUEST_TEMP_C<sp/>=<sp/>REQUEST_TEMP,</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/>REQUEST_TEMP_K,</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/>REQUEST_TEMP_F,</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/>REQUEST_CLOSE,</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/>REQUEST_KILL,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/>REQUEST_STATUS,</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/>REQUEST_MAX</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">}<sp/>request_e;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>Defines<sp/>struct<sp/>for<sp/>communicating<sp/>sensor<sp/>information</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="structsensor__data__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>data;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="62" refid="structsensor__data__t_1a237c02f9c5f1662b2c0736c795736ca2" refkind="member"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><ref refid="structsensor__data__t_1a237c02f9c5f1662b2c0736c795736ca2" kindref="member">night</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}<sp/><ref refid="structsensor__data__t" kindref="compound">sensor_data_t</ref>;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/>Defines<sp/>struct<sp/>for<sp/>response<sp/>for<sp/>remote<sp/>socket<sp/>task</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="structmsg__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/>request_e<sp/>id;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/>mqd_t<sp/>src;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>info[GEN_BUFFER_SIZE];</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><ref refid="structsensor__data__t" kindref="compound">sensor_data_t</ref><sp/>data;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}<sp/><ref refid="structmsg__t" kindref="compound">msg_t</ref>;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="structfile__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*name;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/>FILE<sp/>*fid;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}<sp/><ref refid="structfile__t" kindref="compound">file_t</ref>;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/><sp/>Struct<sp/>to<sp/>hold<sp/>thread<sp/>identifiers<sp/>for<sp/>tasks</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="structthread__id__s" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structthread__id__s" kindref="compound">thread_id_s</ref><sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/>pthread_t<sp/><ref refid="main_8c_1a848fadc9c9438eb5b94d6be9e31af217" kindref="member">temp_thread</ref>;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/>pthread_t<sp/>light_thread;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/>pthread_t<sp/>logger_thread;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/>pthread_t<sp/>socket_thread;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/>pthread_t<sp/>watchdog_thread;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}<sp/><ref refid="structthread__id__s" kindref="compound">thread_id_s</ref>;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/>Shared<sp/>Memory<sp/>Data<sp/>Struct</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="structshared__data__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>buffer[SHM_BUFFER_SIZE];<sp/><sp/></highlight></codeline>
+<codeline lineno="101" refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" refkind="member"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>header[SHM_BUFFER_SIZE];<sp/><sp/></highlight></codeline>
+<codeline lineno="102" refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" refkind="member"><highlight class="normal"><sp/><sp/><sp/>sem_t<sp/><ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/>sem_t<sp/>r_sem;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">}<sp/><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref>;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="comment">/*******************************************************************************</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/>Exit<sp/>Enum</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/>EXIT_BEGIN<sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/>EXIT_CLEAN<sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/>EXIT_INIT,</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/>EXIT_ERROR,</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/>EXIT_MAX</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}<sp/>exit_e;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="common_8h_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*buffer<sp/>);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="common_8h_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>exit_status<sp/>);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="common_8h_1ae426f169cff2eb748a7d509bda02c686" kindref="member">get_shared_memory</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="common_8h_1a8e1ee6092ec482d5556b2100d64b8c74" kindref="member">sems_init</ref>(<sp/><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref><sp/>*shm<sp/>);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="common_8h_1a7bc3784d4fdb323e1761a141c72d2f49" kindref="member">timer_setup</ref>(<sp/>timer_t<sp/>*</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*<ref refid="light_8c_1a4f3aa3fb3750262d938e191252db81fb" kindref="member">timer_handler</ref>)(</highlight><highlight class="keyword">union</highlight><highlight class="normal"><sp/>sigval)<sp/>);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="common_8h_1a207644f53334379d5fcb82b78bafff36" kindref="member">timer_start</ref>(<sp/>timer_t<sp/>*</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>usecs<sp/>);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>COMMON_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir">
+    <compoundname>/home/baquerrj/boulder/ecen5013/project_1/src</compoundname>
+    <innerfile refid="common_8c">common.c</innerfile>
+    <innerfile refid="i2c_8c">i2c.c</innerfile>
+    <innerfile refid="led_8c">led.c</innerfile>
+    <innerfile refid="light_8c">light.c</innerfile>
+    <innerfile refid="logger_8c">logger.c</innerfile>
+    <innerfile refid="main_8c">main.c</innerfile>
+    <innerfile refid="socket_8c">socket.c</innerfile>
+    <innerfile refid="temperature_8c">temperature.c</innerfile>
+    <innerfile refid="watchdog_8c">watchdog.c</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/src/"/>
+  </compounddef>
+</doxygen>

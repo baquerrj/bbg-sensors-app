@@ -1,0 +1,926 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="temperature_8c" kind="file" language="C++">
+    <compoundname>temperature.c</compoundname>
+    <includes refid="watchdog_8h" local="yes">watchdog.h</includes>
+    <includes refid="temperature_8h" local="yes">temperature.h</includes>
+    <includes refid="led_8h" local="yes">led.h</includes>
+    <includes local="no">errno.h</includes>
+    <includes local="no">time.h</includes>
+    <includes local="no">string.h</includes>
+    <incdepgraph>
+      <node id="241">
+        <label>mraa/i2c.h</label>
+      </node>
+      <node id="231">
+        <label>watchdog.h</label>
+        <link refid="watchdog_8h"/>
+        <childnode refid="232" relation="include">
+        </childnode>
+        <childnode refid="238" relation="include">
+        </childnode>
+      </node>
+      <node id="243">
+        <label>errno.h</label>
+      </node>
+      <node id="238">
+        <label>mqueue.h</label>
+      </node>
+      <node id="232">
+        <label>common.h</label>
+        <link refid="common_8h"/>
+        <childnode refid="233" relation="include">
+        </childnode>
+        <childnode refid="234" relation="include">
+        </childnode>
+        <childnode refid="235" relation="include">
+        </childnode>
+        <childnode refid="236" relation="include">
+        </childnode>
+        <childnode refid="237" relation="include">
+        </childnode>
+        <childnode refid="238" relation="include">
+        </childnode>
+      </node>
+      <node id="240">
+        <label>i2c.h</label>
+        <link refid="i2c_8h"/>
+        <childnode refid="235" relation="include">
+        </childnode>
+        <childnode refid="241" relation="include">
+        </childnode>
+      </node>
+      <node id="235">
+        <label>pthread.h</label>
+      </node>
+      <node id="245">
+        <label>string.h</label>
+      </node>
+      <node id="239">
+        <label>temperature.h</label>
+        <link refid="temperature_8h"/>
+        <childnode refid="232" relation="include">
+        </childnode>
+        <childnode refid="240" relation="include">
+        </childnode>
+        <childnode refid="238" relation="include">
+        </childnode>
+      </node>
+      <node id="236">
+        <label>unistd.h</label>
+      </node>
+      <node id="237">
+        <label>semaphore.h</label>
+      </node>
+      <node id="233">
+        <label>signal.h</label>
+      </node>
+      <node id="230">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c</label>
+        <link refid="temperature_8c"/>
+        <childnode refid="231" relation="include">
+        </childnode>
+        <childnode refid="239" relation="include">
+        </childnode>
+        <childnode refid="242" relation="include">
+        </childnode>
+        <childnode refid="243" relation="include">
+        </childnode>
+        <childnode refid="244" relation="include">
+        </childnode>
+        <childnode refid="245" relation="include">
+        </childnode>
+      </node>
+      <node id="244">
+        <label>time.h</label>
+      </node>
+      <node id="234">
+        <label>stdio.h</label>
+      </node>
+      <node id="242">
+        <label>led.h</label>
+        <link refid="led_8h"/>
+        <childnode refid="234" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="temperature_8c_1a7c22bf62313ce4f2bbe148ca7ba2abd3" prot="public" static="yes" mutable="no">
+        <type>timer_t</type>
+        <definition>timer_t timerid</definition>
+        <argsstring></argsstring>
+        <name>timerid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="28" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="temperature_8c_1a3dfce1828c167eae81a00615b18296df" prot="public" static="no" mutable="no">
+        <type>struct itimerspec</type>
+        <definition>struct itimerspec trigger</definition>
+        <argsstring></argsstring>
+        <name>trigger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="28" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="temperature_8c_1a82fa9da819416d4a96db95fb0557190b" prot="public" static="yes" mutable="no">
+        <type><ref refid="structi2c__handle__t" kindref="compound">i2c_handle_t</ref></type>
+        <definition>i2c_handle_t i2c_tmp102</definition>
+        <argsstring></argsstring>
+        <name>i2c_tmp102</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="31" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="temperature_8c_1a2e60d9e9c490a5f92c19fa664e1633dd" prot="public" static="yes" mutable="no">
+        <type>float</type>
+        <definition>float last_temp_value</definition>
+        <argsstring></argsstring>
+        <name>last_temp_value</name>
+        <initializer>= -5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="32" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="temperature_8c_1a03f2a9c06ed019d5ba167521a180cfa3" prot="public" static="yes" mutable="no">
+        <type>mqd_t</type>
+        <definition>mqd_t temp_queue</definition>
+        <argsstring></argsstring>
+        <name>temp_queue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="33" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="temperature_8c_1a0595a9426215e130f99f34805ad48965" prot="public" static="yes" mutable="no">
+        <type><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref> *</type>
+        <definition>shared_data_t* shm</definition>
+        <argsstring></argsstring>
+        <name>shm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="34" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="temperature_8c_1a56a31c1041686d35848cae16ffc6e478" prot="public" static="no" mutable="no">
+        <type>const <ref refid="structtmp102__config__t" kindref="compound">tmp102_config_t</ref></type>
+        <definition>const tmp102_config_t tmp102_default_config</definition>
+        <argsstring></argsstring>
+        <name>tmp102_default_config</name>
+        <initializer>= {
+   .mode = {                                 
+      .shutdown = <ref refid="temperature_8h_1a26deb1cdb6af48dfb3246342d9434321" kindref="member">TMP102_SHUTDOWN_MODE</ref>,
+      .thermostat = TMP102_THERMOSTAT_MODE
+   },
+   .polarity = TMP102_POLARITY,              
+   .fault_queue = TMP102_FAULT_QUEUE,        
+   .resolution = {                           
+      .res_0 = TMP102_RESOLUTION_0,
+      .res_1 = TMP102_RESOLUTION_1
+   },
+   .one_shot = 1,                            
+   .operation = TMP102_EXTENDED_MODE,        
+   .alert = 1,                               
+   .conv_rate = TMP102_CONVERSION_RATE       
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="36" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="temperature_8c_1a47f06fefabeb93c38acaface0c1f0a1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float get_temperature</definition>
+        <argsstring>(void)</argsstring>
+        <name>get_temperature</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Returns last temperature reading we have. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: get_temperature <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>void</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>last_temp_value - last temperature reading we have <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="65" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="65" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1acd7ca9077d8d9806394cf01abdc944e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int tmp102_write_config</definition>
+        <argsstring>(tmp102_config_t *config_reg)</argsstring>
+        <name>tmp102_write_config</name>
+        <param>
+          <type><ref refid="structtmp102__config__t" kindref="compound">tmp102_config_t</ref> *</type>
+          <declname>config_reg</declname>
+        </param>
+        <briefdescription>
+<para>Write configuration register of TMP102 sensor. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: tmp102_write_config <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>*config_reg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to struct with values to write to configuration register <heading level="1">see <ref refid="i2c_8c_1a3b5f6dfe9cedb7ea92f9076cfc25c472" kindref="member">i2c_write()</ref> </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="80" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="80" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1ae8c3bd4aa2bae886c806126b137260cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int tmp102_get_temp</definition>
+        <argsstring>(float *temperature)</argsstring>
+        <name>tmp102_get_temp</name>
+        <param>
+          <type>float *</type>
+          <declname>temperature</declname>
+        </param>
+        <briefdescription>
+<para>Read temperature registers fo TMP102 sensor and decode temperature value. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: tmp102_get_temp <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>*temperature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to location to write decoded value to <heading level="1">EXIT_CLEAN if successful, otherwise EXIT_ERROR </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="96" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="96" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a3981b7fa33f651b8ccb69c57a367d2a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int tmp102_write_thigh</definition>
+        <argsstring>(float thigh)</argsstring>
+        <name>tmp102_write_thigh</name>
+        <param>
+          <type>float</type>
+          <declname>thigh</declname>
+        </param>
+        <briefdescription>
+<para>Write value thigh (in celsius) to Thigh register for TMP102 sensor. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: tmp102_write_thigh <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thigh</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- value to write to Thigh register <heading level="1">EXIT_CLEAN if successful, otherwise EXIT_ERROR </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="130" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="130" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a1f00b98eda6de0f346820505fe01d35a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int tmp102_write_tlow</definition>
+        <argsstring>(float tlow)</argsstring>
+        <name>tmp102_write_tlow</name>
+        <param>
+          <type>float</type>
+          <declname>tlow</declname>
+        </param>
+        <briefdescription>
+<para>Write value tlow (in celsius) to Tlow register for TMP102 sensor. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: tmp102_write_tlow <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tlow</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- value to write to Tlow register <heading level="1">EXIT_CLEAN if successful, otherwise EXIT_ERROR </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="175" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="175" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a4d0f60419e315719e9ae80690a40240f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int tmp102_read_thigh</definition>
+        <argsstring>(float *thigh)</argsstring>
+        <name>tmp102_read_thigh</name>
+        <param>
+          <type>float *</type>
+          <declname>thigh</declname>
+        </param>
+        <briefdescription>
+<para>Read value of THigh register of TMP102 sensor and store value (in celsius) in thigh. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: tmp102_read_thigh <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thigh</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to location to store decoded temperature value to <heading level="1">EXIT_CLEAN if successful, EXIT_ERROR otherwise </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="220" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="220" bodyend="245"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1abd5568ce7a9d3c7f0c13bea9138b5bec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int tmp102_read_tlow</definition>
+        <argsstring>(float *tlow)</argsstring>
+        <name>tmp102_read_tlow</name>
+        <param>
+          <type>float *</type>
+          <declname>tlow</declname>
+        </param>
+        <briefdescription>
+<para>Read value of TLow register of TMP102 sensor and store value (in celsius) in tlow. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: tmp102_read_tlow <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tlow</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- pointer to location to store decoded temperature value to <heading level="1">EXIT_CLEAN if successful, EXIT_ERROR otherwise </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="257" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="257" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a366471b5822de7615f33cbe5eab9726a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void sig_handler</definition>
+        <argsstring>(int signo)</argsstring>
+        <name>sig_handler</name>
+        <param>
+          <type>int</type>
+          <declname>signo</declname>
+        </param>
+        <briefdescription>
+<para>Signal handler for temperature sensor thread. On normal operation, we should be receving SIGUSR1/2 signals from watchdog when prompted to exit. So, we close the message queue and timer this thread owns. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: sig_handler <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>signo</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- enum with signal number of signal being handled <heading level="1">void </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="297" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="297" bodyend="316"/>
+        <referencedby refid="temperature_8h_1ae0afede2f0dcd1931da5bed09ae70cd4" compoundref="temperature_8c" startline="462" endline="503">temperature_fn</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a4f3aa3fb3750262d938e191252db81fb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void timer_handler</definition>
+        <argsstring>(union sigval sig)</argsstring>
+        <name>timer_handler</name>
+        <param>
+          <type>union sigval</type>
+          <declname>sig</declname>
+        </param>
+        <briefdescription>
+<para>Timer handler function for temperature sensor thread When woken up by the timer, get temperature and write state to shared memory. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: timer_handler <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><heading level="1">void </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="328" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="328" bodyend="350"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a17b9e7a92cacdbc3b7220d968b204525" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void cycle</definition>
+        <argsstring>(void)</argsstring>
+        <name>cycle</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Cycle function for temperature sensor thread We wait in this while loop checking for requests from watchdog for health status. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: cycle <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>void</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><heading level="1">void </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="363" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="363" bodyend="402"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a4fb20f64bbc451d19252c2748bad1cb6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>mqd_t</type>
+        <definition>mqd_t get_temperature_queue</definition>
+        <argsstring>(void)</argsstring>
+        <name>get_temperature_queue</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Get file descriptor for temperature sensor thread. Called by watchdog thread in order to be able to send heartbeat check via queue. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: get_temperature_queue <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>void</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><heading level="1">temp_queue - file descriptor for temperature sensor thread message queue </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="414" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="414" bodyend="417"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1a8eabbde1b6f330ffc5ccc89d30064138" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int temp_queue_init</definition>
+        <argsstring>(void)</argsstring>
+        <name>temp_queue_init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Initialize message queue for temperature sensor thread. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: temp_queue_init <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>void</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><heading level="1">msg_q - file descriptor for initialized message queue </heading>
+</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="428" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="428" bodyend="450"/>
+      </memberdef>
+      <memberdef kind="function" id="temperature_8c_1ae0afede2f0dcd1931da5bed09ae70cd4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void* temperature_fn</definition>
+        <argsstring>(void *thread_args)</argsstring>
+        <name>temperature_fn</name>
+        <param>
+          <type>void *</type>
+          <declname>thread_args</declname>
+        </param>
+        <briefdescription>
+<para>Entry point for temperature sensor processing thread. </para>        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: temperature_fn <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread_args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- void ptr to arguments used to initialize thread </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>NULL - We don&apos;t really exit from this function, <heading level="1">since the exit point is <ref refid="common_8c_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit()</ref> </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" line="462" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c" bodystart="462" bodyend="503"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Source file implementing <ref refid="temperature_8h" kindref="compound">temperature.h</ref>. </para>    </briefdescription>
+    <detaileddescription>
+<para>=================================================================================</para><para><simplesect kind="author"><para>Roberto Baquerizo (baquerrj), <ulink url="mailto:roba8460@colorado.edu">roba8460@colorado.edu</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="20"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="watchdog_8h" kindref="compound">watchdog.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="temperature_8h" kindref="compound">temperature.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="led_8h" kindref="compound">led.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;errno.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;time.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>timer_t<sp/><sp/><sp/><sp/>timerid;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">itimerspec<sp/>trigger;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structi2c__handle__t" kindref="compound">i2c_handle_t</ref><sp/>i2c_tmp102;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>last_temp_value<sp/>=<sp/>-5;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>mqd_t<sp/>temp_queue;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref><sp/>*shm;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structtmp102__config__t" kindref="compound">tmp102_config_t</ref><sp/>tmp102_default_config<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/>.mode<sp/>=<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>shutdown<sp/>and<sp/>thermostat<sp/>modes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.shutdown<sp/>=<sp/><ref refid="temperature_8h_1a26deb1cdb6af48dfb3246342d9434321" kindref="member">TMP102_SHUTDOWN_MODE</ref>,</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.thermostat<sp/>=<sp/>TMP102_THERMOSTAT_MODE</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/>.polarity<sp/>=<sp/>TMP102_POLARITY,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>polarity<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/>.fault_queue<sp/>=<sp/>TMP102_FAULT_QUEUE,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>fault<sp/>queue<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/>.resolution<sp/>=<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>converter<sp/>resolution<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.res_0<sp/>=<sp/>TMP102_RESOLUTION_0,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.res_1<sp/>=<sp/>TMP102_RESOLUTION_1</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/>.one_shot<sp/>=<sp/>1,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>when<sp/>in<sp/>shutdown<sp/>mode,<sp/>writing<sp/>1<sp/>starts<sp/>a<sp/>single<sp/>conversion<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/>.operation<sp/>=<sp/>TMP102_EXTENDED_MODE,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>extended<sp/>vs<sp/>normal<sp/>operation<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/>.alert<sp/>=<sp/>1,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>alter<sp/>bit<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/>.conv_rate<sp/>=<sp/>TMP102_CONVERSION_RATE<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>conversion<sp/>rate<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="temperature_8h_1a47f06fefabeb93c38acaface0c1f0a1d" refkind="member"><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a47f06fefabeb93c38acaface0c1f0a1d" kindref="member">get_temperature</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>)</highlight></codeline>
+<codeline lineno="66"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>last_temp_value;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="temperature_8h_1acd7ca9077d8d9806394cf01abdc944e4" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1acd7ca9077d8d9806394cf01abdc944e4" kindref="member">tmp102_write_config</ref>(<sp/><ref refid="structtmp102__config__t" kindref="compound">tmp102_config_t</ref><sp/>*config_reg<sp/>)</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1a3b5f6dfe9cedb7ea92f9076cfc25c472" kindref="member">i2c_write</ref>(<sp/><ref refid="temperature_8h_1a52b51038057cc25cb63a5cc9c1b3a2c0" kindref="member">TMP102_SLAVE</ref>,<sp/>TMP102_REG_CONFIG,<sp/>*((uint16_t*)&amp;config_reg)<sp/>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retVal;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="temperature_8h_1ae8c3bd4aa2bae886c806126b137260cc" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1ae8c3bd4aa2bae886c806126b137260cc" kindref="member">tmp102_get_temp</ref>(<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*temperature<sp/>)</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/>uint8_t<sp/>buffer[2]<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1aeecccc19faa9d25c282c0341631b7d2f" kindref="member">i2c_read</ref>(<sp/><ref refid="temperature_8h_1a52b51038057cc25cb63a5cc9c1b3a2c0" kindref="member">TMP102_SLAVE</ref>,<sp/><ref refid="temperature_8h_1a67feb48f0e5b0886495ad829ae99e75b" kindref="member">TMP102_REG_TEMP</ref>,<sp/>buffer,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>buffer<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_ERROR;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/>uint16_t<sp/>tmp<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/>tmp<sp/>=<sp/>0xfff<sp/>&amp;<sp/>(<sp/>((uint16_t)buffer[0]<sp/>&lt;&lt;<sp/>4<sp/>)<sp/>|<sp/>(buffer[1]<sp/>&gt;&gt;<sp/>4<sp/>)<sp/>);<sp/></highlight><highlight class="comment">/*<sp/>buffer[0]<sp/>=<sp/>MSB(15:8)</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buffer[1]<sp/>=<sp/>LSB(7:4)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0x800<sp/>&amp;<sp/>tmp<sp/>)</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>(<sp/>(~tmp<sp/>)<sp/>+<sp/>1<sp/>)<sp/>&amp;<sp/>0xfff;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*temperature<sp/>=<sp/>-1.0<sp/>*<sp/>(float)tmp<sp/>*<sp/>0.0625;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*temperature<sp/>=<sp/>((float)tmp)<sp/>*<sp/>0.0625;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_CLEAN;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130" refid="temperature_8h_1a3981b7fa33f651b8ccb69c57a367d2a6" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a3981b7fa33f651b8ccb69c57a367d2a6" kindref="member">tmp102_write_thigh</ref>(<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>thigh<sp/>)</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>(-56.0<sp/>&gt;<sp/>thigh)<sp/>||<sp/>(151.0<sp/>&lt;<sp/>thigh)<sp/>)</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>thigh<sp/>=<sp/>80.0;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/>thigh<sp/>/=<sp/>0.0625;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/>uint16_t<sp/>tmp;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>thigh<sp/>)</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>(<sp/>(uint16_t)thigh<sp/>&lt;&lt;<sp/>4<sp/>);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>&amp;=<sp/>0x7fff;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>thigh<sp/>*=<sp/>-1;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>(uint16_t)thigh;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>~(tmp)<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>tmp<sp/>&lt;&lt;<sp/>4;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1a3b5f6dfe9cedb7ea92f9076cfc25c472" kindref="member">i2c_write</ref>(<sp/><ref refid="temperature_8h_1a52b51038057cc25cb63a5cc9c1b3a2c0" kindref="member">TMP102_SLAVE</ref>,<sp/>TMP102_THIGH,<sp/>tmp<sp/>);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;Could<sp/>not<sp/>write<sp/>value<sp/>to<sp/>THigh<sp/>register!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_ERROR;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_CLEAN;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175" refid="temperature_8h_1a1f00b98eda6de0f346820505fe01d35a" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a1f00b98eda6de0f346820505fe01d35a" kindref="member">tmp102_write_tlow</ref>(<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>tlow<sp/>)</highlight></codeline>
+<codeline lineno="176"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>(-56.0<sp/>&gt;<sp/>tlow)<sp/>||<sp/>(151.0<sp/>&lt;<sp/>tlow<sp/>)<sp/>)</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tlow<sp/>=<sp/>75.0;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/>tlow<sp/>/=<sp/>0.0625;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/>uint16_t<sp/>tmp;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&lt;<sp/>tlow<sp/>)</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>(<sp/>(uint16_t)tlow<sp/>&lt;&lt;<sp/>4<sp/>);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>&amp;=<sp/>0x7fff;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tlow<sp/>*=<sp/>-1;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>(uint16_t)tlow;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>~(tmp)<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>tmp<sp/>&lt;&lt;<sp/>4;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1a3b5f6dfe9cedb7ea92f9076cfc25c472" kindref="member">i2c_write</ref>(<sp/><ref refid="temperature_8h_1a52b51038057cc25cb63a5cc9c1b3a2c0" kindref="member">TMP102_SLAVE</ref>,<sp/>TMP102_TLOW,<sp/>tmp<sp/>);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;Could<sp/>not<sp/>write<sp/>value<sp/>to<sp/>TLow<sp/>register!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_ERROR;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_CLEAN;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220" refid="temperature_8h_1a4d0f60419e315719e9ae80690a40240f" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a4d0f60419e315719e9ae80690a40240f" kindref="member">tmp102_read_thigh</ref>(<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*thigh<sp/>)</highlight></codeline>
+<codeline lineno="221"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/>uint16_t<sp/>tmp<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1aeecccc19faa9d25c282c0341631b7d2f" kindref="member">i2c_read</ref>(<sp/><ref refid="temperature_8h_1a52b51038057cc25cb63a5cc9c1b3a2c0" kindref="member">TMP102_SLAVE</ref>,<sp/>TMP102_THIGH,<sp/>(uint8_t*)&amp;tmp,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>tmp<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;Could<sp/>not<sp/>read<sp/>from<sp/>TLow<sp/>register!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_ERROR;</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>tmp<sp/>&amp;<sp/>0x800<sp/>)</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>~(tmp)<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*thigh<sp/>=<sp/>-1<sp/>*<sp/>(<sp/>(float)tmp<sp/>*<sp/>0.0625<sp/>);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*thigh<sp/>=<sp/>(float)tmp<sp/>*<sp/>0.0625;</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>EXIT_CLEAN;</highlight></codeline>
+<codeline lineno="245"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="257" refid="temperature_8h_1abd5568ce7a9d3c7f0c13bea9138b5bec" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1abd5568ce7a9d3c7f0c13bea9138b5bec" kindref="member">tmp102_read_tlow</ref>(<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*tlow<sp/>)</highlight></codeline>
+<codeline lineno="258"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/>uint16_t<sp/>tmp<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1aeecccc19faa9d25c282c0341631b7d2f" kindref="member">i2c_read</ref>(<sp/><ref refid="temperature_8h_1a52b51038057cc25cb63a5cc9c1b3a2c0" kindref="member">TMP102_SLAVE</ref>,<sp/>TMP102_TLOW,<sp/>(uint8_t*)&amp;tmp,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>tmp<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;Could<sp/>not<sp/>read<sp/>from<sp/>TLow<sp/>register!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retVal;</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>tmp<sp/>&amp;<sp/>0x800<sp/>)</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>tmp<sp/>=<sp/>~(tmp)<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*tlow<sp/>=<sp/>-1<sp/>*<sp/>(float)tmp<sp/>*<sp/>0.0625;</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*tlow<sp/>=<sp/>(float)tmp<sp/>*<sp/>0.0625;</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retVal;</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297" refid="temperature_8c_1a366471b5822de7615f33cbe5eab9726a" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a366471b5822de7615f33cbe5eab9726a" kindref="member">sig_handler</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>signo<sp/>)</highlight></codeline>
+<codeline lineno="298"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>signo<sp/>==<sp/>SIGUSR1<sp/>)</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>printf(</highlight><highlight class="stringliteral">&quot;Received<sp/>SIGUSR1!<sp/>Exiting...\n&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>mq_close(<sp/>temp_queue<sp/>);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>timer_delete(<sp/>timerid<sp/>);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="i2c_8c_1a8f550e69702cca5887035007afe36d40" kindref="member">i2c_stop</ref>(<sp/>&amp;i2c_tmp102<sp/>);</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit</ref>(<sp/>signo<sp/>);</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>signo<sp/>==<sp/>SIGUSR2<sp/>)</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>printf(</highlight><highlight class="stringliteral">&quot;Received<sp/>SIGUSR2!<sp/>Exiting...\n&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>mq_close(<sp/>temp_queue<sp/>);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>timer_delete(<sp/>timerid<sp/>);</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="i2c_8c_1a8f550e69702cca5887035007afe36d40" kindref="member">i2c_stop</ref>(<sp/>&amp;i2c_tmp102<sp/>);</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit</ref>(<sp/>signo<sp/>);</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="316"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328" refid="temperature_8c_1a4f3aa3fb3750262d938e191252db81fb" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a4f3aa3fb3750262d938e191252db81fb" kindref="member">timer_handler</ref>(<sp/></highlight><highlight class="keyword">union</highlight><highlight class="normal"><sp/>sigval<sp/>sig<sp/>)</highlight></codeline>
+<codeline lineno="329"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" kindref="member">led_toggle</ref>(<sp/>LED0_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>temperature;</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="temperature_8c_1ae8c3bd4aa2bae886c806126b137260cc" kindref="member">tmp102_get_temp</ref>(<sp/>&amp;temperature<sp/>);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/>i++;</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;cycle[%d]:<sp/>%0.5f<sp/>Celsius\n&quot;</highlight><highlight class="normal">,<sp/>i,<sp/>temperature<sp/>);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;cycle[%d]:<sp/>could<sp/>not<sp/>get<sp/>temperature<sp/>reading!\n&quot;</highlight><highlight class="normal">,<sp/>i<sp/>);</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"></highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" kindref="member">led_toggle</ref>(<sp/>LED0_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="350"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363" refid="temperature_8c_1a17b9e7a92cacdbc3b7220d968b204525" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a17b9e7a92cacdbc3b7220d968b204525" kindref="member">cycle</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>)</highlight></codeline>
+<codeline lineno="364"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><ref refid="structmsg__t" kindref="compound">msg_t</ref><sp/>request<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><ref refid="structmsg__t" kindref="compound">msg_t</ref><sp/>response<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(<sp/>1<sp/>)</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>memset(<sp/>&amp;request,<sp/>0,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>request<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>retVal<sp/>=<sp/>mq_receive(<sp/>temp_queue,<sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*)&amp;request,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>request<sp/>),<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>errnum<sp/>=<sp/>errno;</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;ERROR:<sp/>Encountered<sp/>error<sp/>receiving<sp/>from<sp/>message<sp/>queue<sp/>%s:<sp/>(%s)\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TEMP_QUEUE_NAME,<sp/>strerror(<sp/>errnum<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal">(<sp/>request.id<sp/>)</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>REQUEST_STATUS:</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;(Temperature)<sp/>I<sp/>am<sp/>alive!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<sp/>stdout,<sp/></highlight><highlight class="stringliteral">&quot;(Temperature)<sp/>I<sp/>am<sp/>alive!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>response.id<sp/>=<sp/>request.id;</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>response.info,<sp/></highlight><highlight class="stringliteral">&quot;(Temperature)<sp/>I<sp/>am<sp/>alive!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retVal<sp/>=<sp/>mq_send(<sp/>request.src,<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*)&amp;response,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>response<sp/>),<sp/>0<sp/>);</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pthread_mutex_lock(<sp/>&amp;alive_mutex<sp/>);</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>threads_status[THREAD_TEMP]--;</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pthread_mutex_unlock(<sp/>&amp;alive_mutex<sp/>);</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="402"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"></highlight></codeline>
+<codeline lineno="414" refid="temperature_8h_1a4fb20f64bbc451d19252c2748bad1cb6" refkind="member"><highlight class="normal">mqd_t<sp/><ref refid="temperature_8c_1a4fb20f64bbc451d19252c2748bad1cb6" kindref="member">get_temperature_queue</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>)</highlight></codeline>
+<codeline lineno="415"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>temp_queue;</highlight></codeline>
+<codeline lineno="417"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"></highlight></codeline>
+<codeline lineno="428" refid="temperature_8h_1a8eabbde1b6f330ffc5ccc89d30064138" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="temperature_8c_1a8eabbde1b6f330ffc5ccc89d30064138" kindref="member">temp_queue_init</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>)</highlight></codeline>
+<codeline lineno="429"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="430"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>unlink<sp/>first<sp/>in<sp/>case<sp/>we<sp/>hadn&apos;t<sp/>shut<sp/>down<sp/>cleanly<sp/>last<sp/>time<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="431"><highlight class="normal"><sp/><sp/><sp/>mq_unlink(<sp/>TEMP_QUEUE_NAME<sp/>);</highlight></codeline>
+<codeline lineno="432"><highlight class="normal"></highlight></codeline>
+<codeline lineno="433"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">mq_attr<sp/>attr;</highlight></codeline>
+<codeline lineno="434"><highlight class="normal"><sp/><sp/><sp/>attr.mq_flags<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="435"><highlight class="normal"><sp/><sp/><sp/>attr.mq_maxmsg<sp/>=<sp/>MAX_MESSAGES;</highlight></codeline>
+<codeline lineno="436"><highlight class="normal"><sp/><sp/><sp/>attr.mq_msgsize<sp/>=<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/><ref refid="structmsg__t" kindref="compound">msg_t</ref><sp/>);</highlight></codeline>
+<codeline lineno="437"><highlight class="normal"><sp/><sp/><sp/>attr.mq_curmsgs<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="438"><highlight class="normal"></highlight></codeline>
+<codeline lineno="439"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>msg_q<sp/>=<sp/>mq_open(<sp/>TEMP_QUEUE_NAME,<sp/>O_CREAT<sp/>|<sp/>O_RDWR,<sp/>0666,<sp/>&amp;attr<sp/>);</highlight></codeline>
+<codeline lineno="440"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>msg_q<sp/>)</highlight></codeline>
+<codeline lineno="441"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="442"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>errnum<sp/>=<sp/>errno;</highlight></codeline>
+<codeline lineno="443"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="444"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="445"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;ERROR:<sp/>Encountered<sp/>error<sp/>creating<sp/>message<sp/>queue<sp/>%s:<sp/>(%s)\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="446"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TEMP_QUEUE_NAME,<sp/>strerror(<sp/>errnum<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="447"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="448"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>msg_q;</highlight></codeline>
+<codeline lineno="450"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="451"><highlight class="normal"></highlight></codeline>
+<codeline lineno="462" refid="temperature_8h_1ae0afede2f0dcd1931da5bed09ae70cd4" refkind="member"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="temperature_8c_1ae0afede2f0dcd1931da5bed09ae70cd4" kindref="member">temperature_fn</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*thread_args<sp/>)</highlight></codeline>
+<codeline lineno="463"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="464"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Get<sp/>time<sp/>that<sp/>thread<sp/>was<sp/>spawned<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="465"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">timespec<sp/>time;</highlight></codeline>
+<codeline lineno="466"><highlight class="normal"><sp/><sp/><sp/>clock_gettime(CLOCK_REALTIME,<sp/>&amp;time);</highlight></codeline>
+<codeline lineno="467"><highlight class="normal"><sp/><sp/><sp/>shm<sp/>=<sp/><ref refid="common_8c_1ae426f169cff2eb748a7d509bda02c686" kindref="member">get_shared_memory</ref>();</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"></highlight></codeline>
+<codeline lineno="469"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Write<sp/>initial<sp/>state<sp/>to<sp/>shared<sp/>memory<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="470"><highlight class="normal"><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="471"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="472"><highlight class="normal"><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;Hello<sp/>World!<sp/>Start<sp/>Time:<sp/>%ld.%ld<sp/>secs\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time.tv_sec,<sp/>time.tv_nsec<sp/>);</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Signal<sp/>to<sp/>logger<sp/>that<sp/>shared<sp/>memory<sp/>has<sp/>been<sp/>updated<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="476"><highlight class="normal"></highlight></codeline>
+<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/>signal(SIGUSR1,<sp/><ref refid="temperature_8c_1a366471b5822de7615f33cbe5eab9726a" kindref="member">sig_handler</ref>);</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/>signal(SIGUSR2,<sp/><ref refid="temperature_8c_1a366471b5822de7615f33cbe5eab9726a" kindref="member">sig_handler</ref>);</highlight></codeline>
+<codeline lineno="479"><highlight class="normal"></highlight></codeline>
+<codeline lineno="480"><highlight class="normal"><sp/><sp/><sp/>temp_queue<sp/>=<sp/><ref refid="temperature_8c_1a8eabbde1b6f330ffc5ccc89d30064138" kindref="member">temp_queue_init</ref>();</highlight></codeline>
+<codeline lineno="481"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/>&gt;<sp/>temp_queue<sp/>)</highlight></codeline>
+<codeline lineno="482"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit</ref>(<sp/>EXIT_INIT<sp/>);</highlight></codeline>
+<codeline lineno="484"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="485"><highlight class="normal"></highlight></codeline>
+<codeline lineno="486"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>retVal<sp/>=<sp/><ref refid="i2c_8c_1a1554411301103619aa6f40b7613b5e6b" kindref="member">i2c_init</ref>(<sp/>&amp;i2c_tmp102<sp/>);</highlight></codeline>
+<codeline lineno="487"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>EXIT_INIT<sp/>==<sp/>retVal<sp/>)</highlight></codeline>
+<codeline lineno="488"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="489"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_wait(&amp;shm-&gt;<ref refid="structshared__data__t_1aaa7bbb7121ee6cebe671dd6e2efb7763" kindref="member">w_sem</ref>);</highlight></codeline>
+<codeline lineno="490"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(shm-&gt;<ref refid="structshared__data__t_1aac4f21bda7f4fc47557faac246f0b3ea" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="491"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sprintf(<sp/>shm-&gt;buffer,<sp/></highlight><highlight class="stringliteral">&quot;ERROR:<sp/>Failed<sp/>to<sp/>initialize<sp/>I2C<sp/>for<sp/>temperature<sp/>sensor!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sem_post(&amp;shm-&gt;r_sem);</highlight></codeline>
+<codeline lineno="493"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="common_8c_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit</ref>(<sp/>EXIT_INIT<sp/>);</highlight></codeline>
+<codeline lineno="494"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="495"><highlight class="normal"></highlight></codeline>
+<codeline lineno="496"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a78dd395e9020e2a6066233a529bff7be" kindref="member">timer_setup</ref>(<sp/>&amp;timerid,<sp/>&amp;<ref refid="temperature_8c_1a4f3aa3fb3750262d938e191252db81fb" kindref="member">timer_handler</ref><sp/>);</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"></highlight></codeline>
+<codeline lineno="498"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a207644f53334379d5fcb82b78bafff36" kindref="member">timer_start</ref>(<sp/>&amp;timerid,<sp/>1000000<sp/>);</highlight></codeline>
+<codeline lineno="499"><highlight class="normal"><sp/><sp/><sp/><ref refid="temperature_8c_1a17b9e7a92cacdbc3b7220d968b204525" kindref="member">cycle</ref>();</highlight></codeline>
+<codeline lineno="500"><highlight class="normal"></highlight></codeline>
+<codeline lineno="501"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a760f8eb17501e01a6673e2ec911ba1cb" kindref="member">thread_exit</ref>(<sp/>0<sp/>);</highlight></codeline>
+<codeline lineno="502"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="503"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/src/temperature.c"/>
+  </compounddef>
+</doxygen>

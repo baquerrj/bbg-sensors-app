@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="led_8c" kind="file" language="C++">
+    <compoundname>led.c</compoundname>
+    <includes refid="led_8h" local="yes">led.h</includes>
+    <includes local="no">errno.h</includes>
+    <includes local="no">string.h</includes>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <incdepgraph>
+      <node id="144">
+        <label>stdlib.h</label>
+      </node>
+      <node id="142">
+        <label>errno.h</label>
+      </node>
+      <node id="139">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/led.c</label>
+        <link refid="led_8c"/>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+      </node>
+      <node id="143">
+        <label>string.h</label>
+      </node>
+      <node id="141">
+        <label>stdio.h</label>
+      </node>
+      <node id="140">
+        <label>led.h</label>
+        <link refid="led_8h"/>
+        <childnode refid="141" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="led_8c_1a795573f62d12f2ae16e7d8796ea148d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void get_status</definition>
+        <argsstring>(const char *led)</argsstring>
+        <name>get_status</name>
+        <param>
+          <type>const char *</type>
+          <declname>led</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: get_status <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" line="40" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" bodystart="40" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="led_8c_1a9096dac081e5764a6418ff21aca0a7fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int set_trigger</definition>
+        <argsstring>(const char *led, char *trigger)</argsstring>
+        <name>set_trigger</name>
+        <param>
+          <type>const char *</type>
+          <declname>led</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>trigger</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: get_trigger <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" line="55" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" bodystart="55" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="led_8c_1a09c3e893eed7e69542bfc2cb8d41fda9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int set_delay</definition>
+        <argsstring>(const char *led, int delay)</argsstring>
+        <name>set_delay</name>
+        <param>
+          <type>const char *</type>
+          <declname>led</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>delay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: set_delay <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" line="80" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" bodystart="80" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="led_8c_1ad0da1fddea24f56c3c54d71c35162a05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void led_on</definition>
+        <argsstring>(const char *led)</argsstring>
+        <name>led_on</name>
+        <param>
+          <type>const char *</type>
+          <declname>led</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: led_on <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" line="105" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" bodystart="105" bodyend="112"/>
+        <referencedby refid="led_8h_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" compoundref="led_8c" startline="144" endline="167">led_toggle</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="led_8c_1aa7aa1173f21e957493cbe566e5066735" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void led_off</definition>
+        <argsstring>(const char *led)</argsstring>
+        <name>led_off</name>
+        <param>
+          <type>const char *</type>
+          <declname>led</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: led_off <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" line="125" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" bodystart="125" bodyend="132"/>
+        <referencedby refid="led_8h_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" compoundref="led_8c" startline="144" endline="167">led_toggle</referencedby>
+        <referencedby refid="main_8c_1a144d9a5d0a6c8037966b5c4abc726ed9" compoundref="main_8c" startline="79" endline="86">turn_off_leds</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="led_8c_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void led_toggle</definition>
+        <argsstring>(const char *led)</argsstring>
+        <name>led_toggle</name>
+        <param>
+          <type>const char *</type>
+          <declname>led</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: led_toggle <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" line="144" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/led.c" bodystart="144" bodyend="167"/>
+        <referencedby refid="light_8c_1a4f3aa3fb3750262d938e191252db81fb" compoundref="light_8c" startline="83" endline="117">timer_handler</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>&lt;+DETAILED+&gt; </para>    </briefdescription>
+    <detaileddescription>
+<para>=================================================================================</para><para><simplesect kind="author"><para>Roberto Baquerizo (baquerrj), <ulink url="mailto:roba8460@colorado.edu">roba8460@colorado.edu</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="led_8h" kindref="compound">led.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;errno.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="led_8h_1a795573f62d12f2ae16e7d8796ea148d4" refkind="member"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="led_8c_1a795573f62d12f2ae16e7d8796ea148d4" kindref="member">get_status</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*led<sp/>)</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="led_8h_1a9096dac081e5764a6418ff21aca0a7fe" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="led_8c_1a9096dac081e5764a6418ff21aca0a7fe" kindref="member">set_trigger</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*led,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>trigger<sp/>)</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/>FILE<sp/>*fp<sp/>=<sp/>fopen(<sp/>led,<sp/></highlight><highlight class="stringliteral">&quot;w+&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>NULL<sp/>==<sp/>fp<sp/>)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>errnum<sp/>=<sp/>errno;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<sp/>stderr,<sp/></highlight><highlight class="stringliteral">&quot;Encountered<sp/>error<sp/>trying<sp/>to<sp/>set<sp/>trigger<sp/>%s<sp/>for<sp/>%s<sp/>(%s)\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>trigger,<sp/>led,<sp/>strerror<sp/>(<sp/>errnum<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>fp,<sp/></highlight><highlight class="stringliteral">&quot;%s&quot;</highlight><highlight class="normal">,<sp/>trigger<sp/>);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/>fclose(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="led_8h_1a1f6956111a94edb6167334dc8256100b" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="led_8c_1a09c3e893eed7e69542bfc2cb8d41fda9" kindref="member">set_delay</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*led,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>delay<sp/>)</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/>FILE<sp/>*fp<sp/>=<sp/>fopen(<sp/>led,<sp/></highlight><highlight class="stringliteral">&quot;w+&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>NULL<sp/>==<sp/>fp<sp/>)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>errnum<sp/>=<sp/>errno;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<sp/>stderr,<sp/></highlight><highlight class="stringliteral">&quot;Encuntered<sp/>error<sp/>trying<sp/>to<sp/>set<sp/>delay<sp/>for<sp/>%s<sp/>(%s)\nAre<sp/>you<sp/>sure<sp/>LED<sp/>is<sp/>in<sp/>correct<sp/>configuration?\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>led,<sp/>strerror<sp/>(<sp/>errnum<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>fp,<sp/></highlight><highlight class="stringliteral">&quot;%u&quot;</highlight><highlight class="normal">,<sp/>delay<sp/>);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/>fclose(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>delay;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="led_8h_1ad0da1fddea24f56c3c54d71c35162a05" refkind="member"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="led_8c_1ad0da1fddea24f56c3c54d71c35162a05" kindref="member">led_on</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>led<sp/>)</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/>FILE<sp/>*fp;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/>fp<sp/>=<sp/>fopen(<sp/>led,<sp/></highlight><highlight class="stringliteral">&quot;w+&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>fp,<sp/></highlight><highlight class="stringliteral">&quot;1&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/>fclose(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="led_8h_1aa7aa1173f21e957493cbe566e5066735" refkind="member"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="led_8c_1aa7aa1173f21e957493cbe566e5066735" kindref="member">led_off</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>led<sp/>)</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/>FILE<sp/>*fp;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/>fp<sp/>=<sp/>fopen(<sp/>led,<sp/></highlight><highlight class="stringliteral">&quot;w+&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>fp,<sp/></highlight><highlight class="stringliteral">&quot;0&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/>fclose(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="led_8h_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" refkind="member"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="led_8c_1ad5a256395c8cd67d2a9f9ff1abfd6d2a" kindref="member">led_toggle</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>led<sp/>)</highlight></codeline>
+<codeline lineno="145"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/>FILE<sp/>*fp;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/>fp<sp/>=<sp/>fopen(<sp/>led,<sp/></highlight><highlight class="stringliteral">&quot;rt&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/>fseek(<sp/>fp,<sp/>0,<sp/>SEEK_END<sp/>);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>size<sp/>=<sp/>ftell(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/>rewind(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*value<sp/>=<sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*)<sp/>malloc(<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">)<sp/>*<sp/>size<sp/>);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/>fread(<sp/>value,<sp/>1,<sp/>size,<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/>fclose(<sp/>fp<sp/>);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal">(<sp/>*value<sp/>)</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="led_8c_1ad0da1fddea24f56c3c54d71c35162a05" kindref="member">led_on</ref>(<sp/>led<sp/>);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="led_8c_1aa7aa1173f21e957493cbe566e5066735" kindref="member">led_off</ref>(<sp/>led<sp/>);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/src/led.c"/>
+  </compounddef>
+</doxygen>

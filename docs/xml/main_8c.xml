@@ -1,0 +1,465 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="main_8c" kind="file" language="C++">
+    <compoundname>main.c</compoundname>
+    <includes refid="temperature_8h" local="yes">temperature.h</includes>
+    <includes refid="light_8h" local="yes">light.h</includes>
+    <includes refid="logger_8h" local="yes">logger.h</includes>
+    <includes refid="common_8h" local="yes">common.h</includes>
+    <includes refid="watchdog_8h" local="yes">watchdog.h</includes>
+    <includes refid="socket_8h" local="yes">socket.h</includes>
+    <includes refid="led_8h" local="yes">led.h</includes>
+    <includes local="no">fcntl.h</includes>
+    <includes local="no">signal.h</includes>
+    <includes local="no">errno.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes local="no">string.h</includes>
+    <includes local="no">sys/syscall.h</includes>
+    <includes local="no">sys/mman.h</includes>
+    <includes local="no">sys/types.h</includes>
+    <includes local="no">sys/stat.h</includes>
+    <incdepgraph>
+      <node id="207">
+        <label>sys/stat.h</label>
+      </node>
+      <node id="205">
+        <label>sys/mman.h</label>
+      </node>
+      <node id="202">
+        <label>stdlib.h</label>
+      </node>
+      <node id="194">
+        <label>mraa/i2c.h</label>
+      </node>
+      <node id="197">
+        <label>watchdog.h</label>
+        <link refid="watchdog_8h"/>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="192" relation="include">
+        </childnode>
+      </node>
+      <node id="201">
+        <label>errno.h</label>
+      </node>
+      <node id="200">
+        <label>fcntl.h</label>
+      </node>
+      <node id="198">
+        <label>socket.h</label>
+        <link refid="socket_8h"/>
+        <childnode refid="186" relation="include">
+        </childnode>
+      </node>
+      <node id="192">
+        <label>mqueue.h</label>
+      </node>
+      <node id="186">
+        <label>common.h</label>
+        <link refid="common_8h"/>
+        <childnode refid="187" relation="include">
+        </childnode>
+        <childnode refid="188" relation="include">
+        </childnode>
+        <childnode refid="189" relation="include">
+        </childnode>
+        <childnode refid="190" relation="include">
+        </childnode>
+        <childnode refid="191" relation="include">
+        </childnode>
+        <childnode refid="192" relation="include">
+        </childnode>
+      </node>
+      <node id="184">
+        <label>/home/baquerrj/boulder/ecen5013/project_1/src/main.c</label>
+        <link refid="main_8c"/>
+        <childnode refid="185" relation="include">
+        </childnode>
+        <childnode refid="195" relation="include">
+        </childnode>
+        <childnode refid="196" relation="include">
+        </childnode>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="197" relation="include">
+        </childnode>
+        <childnode refid="198" relation="include">
+        </childnode>
+        <childnode refid="199" relation="include">
+        </childnode>
+        <childnode refid="200" relation="include">
+        </childnode>
+        <childnode refid="187" relation="include">
+        </childnode>
+        <childnode refid="201" relation="include">
+        </childnode>
+        <childnode refid="202" relation="include">
+        </childnode>
+        <childnode refid="203" relation="include">
+        </childnode>
+        <childnode refid="204" relation="include">
+        </childnode>
+        <childnode refid="205" relation="include">
+        </childnode>
+        <childnode refid="206" relation="include">
+        </childnode>
+        <childnode refid="207" relation="include">
+        </childnode>
+      </node>
+      <node id="193">
+        <label>i2c.h</label>
+        <link refid="i2c_8h"/>
+        <childnode refid="189" relation="include">
+        </childnode>
+        <childnode refid="194" relation="include">
+        </childnode>
+      </node>
+      <node id="195">
+        <label>light.h</label>
+        <link refid="light_8h"/>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="193" relation="include">
+        </childnode>
+      </node>
+      <node id="189">
+        <label>pthread.h</label>
+      </node>
+      <node id="206">
+        <label>sys/types.h</label>
+      </node>
+      <node id="203">
+        <label>string.h</label>
+      </node>
+      <node id="185">
+        <label>temperature.h</label>
+        <link refid="temperature_8h"/>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="193" relation="include">
+        </childnode>
+        <childnode refid="192" relation="include">
+        </childnode>
+      </node>
+      <node id="190">
+        <label>unistd.h</label>
+      </node>
+      <node id="191">
+        <label>semaphore.h</label>
+      </node>
+      <node id="187">
+        <label>signal.h</label>
+      </node>
+      <node id="196">
+        <label>logger.h</label>
+        <link refid="logger_8h"/>
+        <childnode refid="186" relation="include">
+        </childnode>
+      </node>
+      <node id="204">
+        <label>sys/syscall.h</label>
+      </node>
+      <node id="188">
+        <label>stdio.h</label>
+      </node>
+      <node id="199">
+        <label>led.h</label>
+        <link refid="led_8h"/>
+        <childnode refid="188" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="main_8c_1a848fadc9c9438eb5b94d6be9e31af217" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t temp_thread</definition>
+        <argsstring></argsstring>
+        <name>temp_thread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>/sys includes </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="40" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="main_8c_1a59851d07f54b3f1ccc49d89dc38ca3ef" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t light_thread</definition>
+        <argsstring></argsstring>
+        <name>light_thread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="41" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="main_8c_1ae270cb65e8ac4279520f0b09dd7256c6" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t logger_thread</definition>
+        <argsstring></argsstring>
+        <name>logger_thread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="42" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="main_8c_1abaa8775236e808e160ef81798f4258c0" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t socket_thread</definition>
+        <argsstring></argsstring>
+        <name>socket_thread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="43" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="main_8c_1ad09f7a023b1e1aafd2bc55fd630ed32c" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t watchdog_thread</definition>
+        <argsstring></argsstring>
+        <name>watchdog_thread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="45" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="main_8c_1a0595a9426215e130f99f34805ad48965" prot="public" static="yes" mutable="no">
+        <type><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref> *</type>
+        <definition>shared_data_t* shm</definition>
+        <argsstring></argsstring>
+        <name>shm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="47" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="main_8c_1ac8e66a8857ca7f368cfc16bdbbac37d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void signal_handler</definition>
+        <argsstring>(int signo)</argsstring>
+        <name>signal_handler</name>
+        <param>
+          <type>int</type>
+          <declname>signo</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: signal_handler <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="59" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="59" bodyend="67"/>
+        <referencedby refid="main_8c_1a0ddf1224851353fc92bfbff6f499fa97" compoundref="main_8c" startline="98" endline="166">main</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="main_8c_1a144d9a5d0a6c8037966b5c4abc726ed9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void turn_off_leds</definition>
+        <argsstring>(void)</argsstring>
+        <name>turn_off_leds</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: turn_off_leds <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="79" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="79" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="main_8c_1a0ddf1224851353fc92bfbff6f499fa97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int main</definition>
+        <argsstring>(int argc, char *argv[])</argsstring>
+        <name>main</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>================================================================================= Function: main <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>&lt;+NAME+&gt;</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&lt;+DESCRIPTION+&gt; </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt;+DESCRIPTION+&gt; <heading level="1">&lt;+DETAILED+&gt; </heading>
+</para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" line="98" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/src/main.c" bodystart="98" bodyend="166"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>&lt;+DETAILED+&gt; </para>    </briefdescription>
+    <detaileddescription>
+<para>=================================================================================</para><para><simplesect kind="author"><para>Roberto Baquerizo (baquerrj), <ulink url="mailto:roba8460@colorado.edu">roba8460@colorado.edu</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="temperature_8h" kindref="compound">temperature.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="light_8h" kindref="compound">light.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="logger_8h" kindref="compound">logger.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="common_8h" kindref="compound">common.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="watchdog_8h" kindref="compound">watchdog.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="socket_8h" kindref="compound">socket.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="led_8h" kindref="compound">led.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fcntl.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;signal.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;errno.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight></codeline>
+<codeline lineno="35"><highlight class="preprocessor">#include<sp/>&lt;sys/syscall.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sys/mman.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sys/types.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sys/stat.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="main_8c_1a848fadc9c9438eb5b94d6be9e31af217" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>pthread_t<sp/><ref refid="main_8c_1a848fadc9c9438eb5b94d6be9e31af217" kindref="member">temp_thread</ref>;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>pthread_t<sp/>light_thread;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>pthread_t<sp/>logger_thread;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>pthread_t<sp/>socket_thread;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>pthread_t<sp/>watchdog_thread;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref><sp/>*shm;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="main_8c_1ac8e66a8857ca7f368cfc16bdbbac37d9" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8c_1ac8e66a8857ca7f368cfc16bdbbac37d9" kindref="member">signal_handler</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>signo<sp/>)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal">(<sp/>signo<sp/>)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>SIGINT:</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<sp/>stderr,<sp/></highlight><highlight class="stringliteral">&quot;Master<sp/>caught<sp/>SIGINT!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pthread_kill(<sp/>watchdog_thread,<sp/>SIGUSR2<sp/>);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="main_8c_1a144d9a5d0a6c8037966b5c4abc726ed9" refkind="member"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="main_8c_1a144d9a5d0a6c8037966b5c4abc726ed9" kindref="member">turn_off_leds</ref>(<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>)</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1aa7aa1173f21e957493cbe566e5066735" kindref="member">led_off</ref>(<sp/>LED0_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1aa7aa1173f21e957493cbe566e5066735" kindref="member">led_off</ref>(<sp/>LED1_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1aa7aa1173f21e957493cbe566e5066735" kindref="member">led_off</ref>(<sp/>LED2_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1aa7aa1173f21e957493cbe566e5066735" kindref="member">led_off</ref>(<sp/>LED3_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="main_8c_1a0ddf1224851353fc92bfbff6f499fa97" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="main_8c_1a0ddf1224851353fc92bfbff6f499fa97" kindref="member">main</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]<sp/>)</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/>signal(<sp/>SIGINT,<sp/><ref refid="main_8c_1ac8e66a8857ca7f368cfc16bdbbac37d9" kindref="member">signal_handler</ref><sp/>);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structfile__t" kindref="compound">file_t</ref><sp/>*log;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/>printf(<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>arguments<sp/>%d\n&quot;</highlight><highlight class="normal">,<sp/>argc<sp/>);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>argc<sp/>&gt;<sp/>1<sp/>)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>log<sp/>=<sp/>malloc(<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/><ref refid="structfile__t" kindref="compound">file_t</ref><sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>log-&gt;fid<sp/>=<sp/>fopen(<sp/>argv[1],<sp/></highlight><highlight class="stringliteral">&quot;w&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>log-&gt;name<sp/>=<sp/>argv[1];</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>printf(<sp/></highlight><highlight class="stringliteral">&quot;Opened<sp/>file<sp/>%s\n&quot;</highlight><highlight class="normal">,<sp/>argv[1]<sp/>);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<sp/>stderr,<sp/></highlight><highlight class="stringliteral">&quot;Name<sp/>of<sp/>log<sp/>file<sp/>required!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Initialize<sp/>Shared<sp/>Memory<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/>shm<sp/>=<sp/><ref refid="common_8c_1ae426f169cff2eb748a7d509bda02c686" kindref="member">get_shared_memory</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>0<sp/><sp/>&gt;<sp/><ref refid="common_8c_1a8e1ee6092ec482d5556b2100d64b8c74" kindref="member">sems_init</ref>(<sp/>shm<sp/>)<sp/>)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<sp/>stderr,<sp/></highlight><highlight class="stringliteral">&quot;Encountered<sp/>error<sp/>initializing<sp/>semaphores!\n&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">timespec<sp/>time;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/>clock_gettime(CLOCK_REALTIME,<sp/>&amp;time);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>stdout,<sp/></highlight><highlight class="stringliteral">&quot;Starting<sp/>Threads!<sp/>Start<sp/>Time:<sp/>%ld.%ld<sp/>secs\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time.tv_sec,<sp/>time.tv_nsec<sp/>);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structthread__id__s" kindref="compound">thread_id_s</ref>*<sp/>threads<sp/>=<sp/>malloc(<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structthread__id__s" kindref="compound">thread_id_s</ref><sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1ad0da1fddea24f56c3c54d71c35162a05" kindref="member">led_on</ref>(<sp/>LED2_BRIGHTNESS<sp/>);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1a9096dac081e5764a6418ff21aca0a7fe" kindref="member">set_trigger</ref>(<sp/>LED2_TRIGGER,<sp/></highlight><highlight class="stringliteral">&quot;timer&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><ref refid="led_8c_1a09c3e893eed7e69542bfc2cb8d41fda9" kindref="member">set_delay</ref>(<sp/>LED2_DELAYON,<sp/>50<sp/>);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Attempting<sp/>to<sp/>spawn<sp/>child<sp/>threads<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/>pthread_create(<sp/>&amp;logger_thread,<sp/>NULL,<sp/><ref refid="logger_8c_1a18e66c89d9fc8c03976de6745e8a3077" kindref="member">logger_fn</ref>,<sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*)log-&gt;fid<sp/>);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/>pthread_create(<sp/>&amp;<ref refid="main_8c_1a848fadc9c9438eb5b94d6be9e31af217" kindref="member">temp_thread</ref>,<sp/>NULL,<sp/><ref refid="temperature_8c_1ae0afede2f0dcd1931da5bed09ae70cd4" kindref="member">temperature_fn</ref>,<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/>pthread_create(<sp/>&amp;light_thread,<sp/>NULL,<sp/><ref refid="light_8c_1a1a3ec39083c9a030ae43f0e8bd3ea71d" kindref="member">light_fn</ref>,<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/>pthread_create(<sp/>&amp;socket_thread,<sp/>NULL<sp/>,<sp/><ref refid="socket_8c_1a8d0b44e38bc248d4939f846b269839e2" kindref="member">socket_fn</ref>,<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/>threads-&gt;temp_thread<sp/>=<sp/><ref refid="main_8c_1a848fadc9c9438eb5b94d6be9e31af217" kindref="member">temp_thread</ref>;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/>threads-&gt;logger_thread<sp/>=<sp/>logger_thread;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/>threads-&gt;light_thread<sp/>=<sp/>light_thread;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/>threads-&gt;socket_thread<sp/>=<sp/>socket_thread;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/>pthread_create(<sp/>&amp;watchdog_thread,<sp/>NULL,<sp/><ref refid="watchdog_8c_1ad69c59482b6b55ec28d5eb51bf01ce52" kindref="member">watchdog_fn</ref>,<sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*)threads<sp/>);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/>pthread_join(<sp/>watchdog_thread,<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/>clock_gettime(CLOCK_REALTIME,<sp/>&amp;time);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><ref refid="common_8c_1a8f714d490a7f06c3a43cfea239e2770f" kindref="member">print_header</ref>(<sp/>NULL<sp/>);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>stdout,<sp/></highlight><highlight class="stringliteral">&quot;All<sp/>threads<sp/>exited!<sp/>Main<sp/>thread<sp/>exiting...<sp/>&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/>fprintf(<sp/>stdout,<sp/></highlight><highlight class="stringliteral">&quot;End<sp/>Time:<sp/>%ld.%ld<sp/>secs\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time.tv_sec,<sp/>time.tv_nsec<sp/>);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/>free(<sp/>log<sp/>);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/>free(<sp/>threads<sp/>);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/>munmap(<sp/>shm,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/><ref refid="structshared__data__t" kindref="compound">shared_data_t</ref><sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/>shm_unlink(<sp/>SHM_SEGMENT_NAME<sp/>);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><ref refid="main_8c_1a144d9a5d0a6c8037966b5c4abc726ed9" kindref="member">turn_off_leds</ref>();</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/src/main.c"/>
+  </compounddef>
+</doxygen>

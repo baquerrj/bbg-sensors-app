@@ -1,0 +1,936 @@
+\hypertarget{light_8c}{}\section{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/light.c File Reference}
+\label{light_8c}\index{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/light.\+c@{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/light.\+c}}
+
+
+Interface to A\+P\+D\+S9301 Light Sensor.  
+
+
+{\ttfamily \#include \char`\"{}watchdog.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}light.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}led.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Include dependency graph for light.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{light_8c_a366471b5822de7615f33cbe5eab9726a}{sig\+\_\+handler} (int signo)
+\begin{DoxyCompactList}\small\item\em Signal handler for light sensor thread. On normal operation, we should be receving S\+I\+G\+U\+S\+R1/2 signals from watchdog when prompted to exit. So, we close the message queue and timer this thread owns. \end{DoxyCompactList}\item 
+static void \hyperlink{light_8c_a4f3aa3fb3750262d938e191252db81fb}{timer\+\_\+handler} (union sigval sig)
+\begin{DoxyCompactList}\small\item\em Timer handler function for light sensor thread When woken up by the timer, get lux reading and write state to shared memory. \end{DoxyCompactList}\item 
+float \hyperlink{light_8c_a7f1c59e171c9db2a7609a4cd8b61fa2c}{get\+\_\+lux} (void)
+\begin{DoxyCompactList}\small\item\em Returns last lux reading. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a5ba3d2c92432bf82f3f3cc4e809b1dba}{is\+\_\+dark} (void)
+\begin{DoxyCompactList}\small\item\em Returns int speciyfing if it is night or day. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_ac3c04aef00858dc27815e190f8186cfd}{apds9301\+\_\+set\+\_\+config} (void)
+\begin{DoxyCompactList}\small\item\em Set configuration of light sensor. For the A\+P\+D\+S9301, the configuration is spread out across the\+: Timing Register, Interrupt Control Register, and Control Register. So, I have to write to all of these to set the config. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a99e9814d23261d099bf5d381d84d6642}{apds9301\+\_\+set\+\_\+integration} (uint8\+\_\+t val)
+\begin{DoxyCompactList}\small\item\em Sets the integration time for A\+P\+D\+S9301 by writing a value to bits I\+N\+T\+EG of the Timing Register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a145d5bf45a3d1527eaa860a2a4ce545b}{apds9301\+\_\+clear\+\_\+interrupt} (void)
+\begin{DoxyCompactList}\small\item\em Clears any pending interrupt for A\+P\+D\+S9301 by writing a 1 to the C\+L\+E\+AR bit of the Command Register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a3b06e19e8c55d93415a41352cf11de16}{apds9301\+\_\+set\+\_\+interrupt} (uint8\+\_\+t enable)
+\begin{DoxyCompactList}\small\item\em Enables or disables interrupts for A\+P\+D\+S9301 by setting or clearing the I\+N\+TR bits of the Interrupt Control Register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a3063fd5cfc043ce2ac7c67f8af9b4b2e}{apds9301\+\_\+set\+\_\+gain} (uint8\+\_\+t gain)
+\begin{DoxyCompactList}\small\item\em Sets gain for A\+P\+D\+S9301 by setting or clearing the G\+A\+IN bit of the Timing Register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a8e844b99f75ecdf6712faaaddc0eb396}{apds9301\+\_\+read\+\_\+control} (uint8\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em Read contents of Control Register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_ae2c85da2e138447c5881122669c36a38}{apds9301\+\_\+write\+\_\+threshold\+\_\+low} (uint16\+\_\+t threshold)
+\begin{DoxyCompactList}\small\item\em Write value to low threshold register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a67500fb59f0ab2f2e46c3b6f945985b5}{apds9301\+\_\+read\+\_\+threshold\+\_\+low} (uint16\+\_\+t $\ast$threshold)
+\begin{DoxyCompactList}\small\item\em Read value from low threshold register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_adb39e9954b4d948edea845453df2abf6}{apds9301\+\_\+write\+\_\+threshold\+\_\+high} (uint16\+\_\+t threshold)
+\begin{DoxyCompactList}\small\item\em Write value to high threshold register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a0005300d36508d20c372b5355d6546d9}{apds9301\+\_\+read\+\_\+threshold\+\_\+high} (uint16\+\_\+t $\ast$threshold)
+\begin{DoxyCompactList}\small\item\em Read value from high threshold register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a6dbf3801330c345b999db86f018c94cf}{apds9301\+\_\+read\+\_\+id} (uint8\+\_\+t $\ast$id)
+\begin{DoxyCompactList}\small\item\em Read A\+P\+D\+S9301 Identification Register. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a14680b863ba54159dba03357d4745a16}{apds9301\+\_\+get\+\_\+lux} (float $\ast$lux)
+\begin{DoxyCompactList}\small\item\em Read A\+DC Registers and calculate lux in lumen using equations from A\+P\+D\+S9301 datasheet. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a96f9f9c1e4e86cc148aa0a334a399d8d}{apds9301\+\_\+read\+\_\+data0} (uint16\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em Read A\+DC register for channel 0. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a342a83b7263a75c5b12bffc638b2797e}{apds9301\+\_\+read\+\_\+data1} (uint16\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em Read A\+DC register for channel 1. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_a163ea457431a4845d5ff5fa205f670b7}{apds9301\+\_\+power} (uint16\+\_\+t on)
+\begin{DoxyCompactList}\small\item\em power on (or off) A\+P\+D\+S9301 as set by paramater \end{DoxyCompactList}\item 
+static void \hyperlink{light_8c_a17b9e7a92cacdbc3b7220d968b204525}{cycle} (void)
+\begin{DoxyCompactList}\small\item\em Cycle function for light sensor thread We wait in this while loop checking for requests from watchdog for health status. \end{DoxyCompactList}\item 
+mqd\+\_\+t \hyperlink{light_8c_a57d6c7de6874cb33b372559ea24ebb85}{get\+\_\+light\+\_\+queue} (void)
+\begin{DoxyCompactList}\small\item\em Get file descriptor for light sensor thread. Called by watchdog thread in order to be able to send heartbeat check via queue. \end{DoxyCompactList}\item 
+int \hyperlink{light_8c_abafa0fdb40560c48e4b98ec10f0e1f43}{light\+\_\+queue\+\_\+init} (void)
+\begin{DoxyCompactList}\small\item\em Initialize message queue for light sensor thread. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{light_8c_a1a3ec39083c9a030ae43f0e8bd3ea71d}{light\+\_\+fn} (void $\ast$thread\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Entry point for light sensor processing thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{light_8c_a7c22bf62313ce4f2bbe148ca7ba2abd3}\label{light_8c_a7c22bf62313ce4f2bbe148ca7ba2abd3}} 
+static timer\+\_\+t {\bfseries timerid}
+\item 
+\mbox{\Hypertarget{light_8c_a3dfce1828c167eae81a00615b18296df}\label{light_8c_a3dfce1828c167eae81a00615b18296df}} 
+struct itimerspec {\bfseries trigger}
+\item 
+\mbox{\Hypertarget{light_8c_a98be0c2951e1b0d2613e16324c8e569c}\label{light_8c_a98be0c2951e1b0d2613e16324c8e569c}} 
+static \hyperlink{structi2c__handle__t}{i2c\+\_\+handle\+\_\+t} {\bfseries i2c\+\_\+apds9301}
+\item 
+\mbox{\Hypertarget{light_8c_a9619c20b05cd6ad35d7ff8651cc29a7e}\label{light_8c_a9619c20b05cd6ad35d7ff8651cc29a7e}} 
+static float {\bfseries last\+\_\+lux\+\_\+value} = -\/5
+\item 
+\mbox{\Hypertarget{light_8c_a65781390ecf1a5a022a3dfe0bc13b8cb}\label{light_8c_a65781390ecf1a5a022a3dfe0bc13b8cb}} 
+static mqd\+\_\+t {\bfseries light\+\_\+queue}
+\item 
+\mbox{\Hypertarget{light_8c_a0595a9426215e130f99f34805ad48965}\label{light_8c_a0595a9426215e130f99f34805ad48965}} 
+static \hyperlink{structshared__data__t}{shared\+\_\+data\+\_\+t} $\ast$ {\bfseries shm}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Interface to A\+P\+D\+S9301 Light Sensor. 
+
+=================================================================================
+
+$<$+\+D\+E\+T\+A\+I\+L\+E\+D+$>$
+
+\begin{DoxyAuthor}{Author}
+Roberto Baquerizo (baquerrj), \href{mailto:roba8460@colorado.edu}{\tt roba8460@colorado.\+edu} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{light_8c_a145d5bf45a3d1527eaa860a2a4ce545b}\label{light_8c_a145d5bf45a3d1527eaa860a2a4ce545b}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+clear\+\_\+interrupt@{apds9301\+\_\+clear\+\_\+interrupt}}
+\index{apds9301\+\_\+clear\+\_\+interrupt@{apds9301\+\_\+clear\+\_\+interrupt}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+clear\+\_\+interrupt()}{apds9301\_clear\_interrupt()}}
+{\footnotesize\ttfamily int apds9301\+\_\+clear\+\_\+interrupt (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Clears any pending interrupt for A\+P\+D\+S9301 by writing a 1 to the C\+L\+E\+AR bit of the Command Register. 
+
+================================================================================= Function\+: apds9301\+\_\+clear\+\_\+interrupt 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{see i2c\+\_\+set() }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00236 \{
+00237    uint8\_t clear = \hyperlink{light_8h_ac2e33218e7b5df546d974d0c766d8b0b}{APDS9301\_REG\_CMD} | CMD\_CLEAR\_INTR;
+00238 
+00239    \textcolor{keywordtype}{int} retVal = i2c\_set( APDS9301\_ADDRESS, clear );
+00240 
+00241    \textcolor{keywordflow}{return} retVal;
+00242 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a14680b863ba54159dba03357d4745a16}\label{light_8c_a14680b863ba54159dba03357d4745a16}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+get\+\_\+lux@{apds9301\+\_\+get\+\_\+lux}}
+\index{apds9301\+\_\+get\+\_\+lux@{apds9301\+\_\+get\+\_\+lux}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+get\+\_\+lux()}{apds9301\_get\_lux()}}
+{\footnotesize\ttfamily int apds9301\+\_\+get\+\_\+lux (\begin{DoxyParamCaption}\item[{float $\ast$}]{lux }\end{DoxyParamCaption})}
+
+
+
+Read A\+DC Registers and calculate lux in lumen using equations from A\+P\+D\+S9301 datasheet. 
+
+Read A\+DC Registers and calculate lux in lumen.
+
+================================================================================= Function\+: apds9301\+\_\+get\+\_\+lux 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$lux} & -\/ pointer to location to write decoded lux to \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+E\+R\+R\+OR }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00413 \{
+00414    \textcolor{keywordtype}{float} ratio = 0;
+00415    uint16\_t data0 = 0;
+00416    uint16\_t data1 = 0;
+00417 
+00418    \textcolor{keywordtype}{int} retVal = \hyperlink{light_8c_a96f9f9c1e4e86cc148aa0a334a399d8d}{apds9301\_read\_data0}( &data0 );
+00419    \textcolor{keywordflow}{if}( EXIT\_CLEAN != retVal )
+00420    \{
+00421       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00422    \}
+00423 
+00424    retVal = \hyperlink{light_8c_a342a83b7263a75c5b12bffc638b2797e}{apds9301\_read\_data1}( &data1 );
+00425    \textcolor{keywordflow}{if}( EXIT\_CLEAN != retVal )
+00426    \{
+00427       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00428    \}
+00429 
+00430    \textcolor{keywordflow}{if}( 0 == data0 )
+00431    \{
+00432       ratio = 0.0;
+00433    \}
+00434    \textcolor{keywordflow}{else}
+00435    \{
+00436       ratio = (float)data1 / (\textcolor{keywordtype}{float})data0;
+00437    \}
+00438 
+00439    \textcolor{keywordflow}{if}( (0 < ratio) && (0.50 >= ratio) )
+00440    \{
+00441       *lux = 0.0304*data0 - 0.062*data0*(pow(ratio, 1.4));
+00442     \}
+00443     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (0.50 < ratio) && (0.61 >= ratio) )
+00444     \{
+00445         *lux = 0.0224*data0 - 0.031*data1;
+00446     \}
+00447     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (0.61 < ratio) && (0.80 >= ratio) )
+00448     \{
+00449         *lux = 0.0128*data0 - 0.0153*data1;
+00450     \}
+00451     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (0.80 < ratio) && (1.30 >= ratio) )
+00452     \{
+00453         *lux = 0.00146*data0 - 0.00112*data1;
+00454     \}
+00455     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( 1.30 < ratio )
+00456     \{
+00457         *lux = 0;
+00458    \}
+00459 
+00460    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00461 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a163ea457431a4845d5ff5fa205f670b7}\label{light_8c_a163ea457431a4845d5ff5fa205f670b7}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+power@{apds9301\+\_\+power}}
+\index{apds9301\+\_\+power@{apds9301\+\_\+power}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+power()}{apds9301\_power()}}
+{\footnotesize\ttfamily int apds9301\+\_\+power (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{on }\end{DoxyParamCaption})}
+
+
+
+power on (or off) A\+P\+D\+S9301 as set by paramater 
+
+================================================================================= Function\+: apds9301\+\_\+power 
+\begin{DoxyParams}{Parameters}
+{\em on} & -\/ specifies if sensor is to be powered on or off \subsection*{see \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\+\_\+write\+\_\+byte()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00538 \{
+00539    \textcolor{keywordtype}{int} retVal = 0;
+00540    \textcolor{keywordflow}{if}( on )
+00541    \{
+00542       \textcolor{comment}{/* power on */}
+00543       retVal = \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\_write\_byte}( APDS9301\_ADDRESS, APDS9301\_REG\_CNTRL, 
+      \hyperlink{light_8h_a14cdc4396ca692461b59fb937003115b}{POWER\_ON} );
+00544    \}
+00545    \textcolor{keywordflow}{else}
+00546    \{
+00547       \textcolor{comment}{/* power off */}
+00548       retVal = \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\_write\_byte}( APDS9301\_ADDRESS, APDS9301\_REG\_CNTRL, POWER\_OFF );
+00549    \}
+00550 
+00551    \textcolor{keywordflow}{return} retVal;
+00552 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a8e844b99f75ecdf6712faaaddc0eb396}\label{light_8c_a8e844b99f75ecdf6712faaaddc0eb396}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+read\+\_\+control@{apds9301\+\_\+read\+\_\+control}}
+\index{apds9301\+\_\+read\+\_\+control@{apds9301\+\_\+read\+\_\+control}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+read\+\_\+control()}{apds9301\_read\_control()}}
+{\footnotesize\ttfamily int apds9301\+\_\+read\+\_\+control (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Read contents of Control Register. 
+
+================================================================================= Function\+: apds9301\+\_\+read\+\_\+control 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$data} & -\/ where to store contents \subsection*{see \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\+\_\+read()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00322 \{
+00323    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_CNTRL, data, \textcolor{keyword}{sizeof}( *data ) );
+00324    \textcolor{keywordflow}{return} retVal;
+00325 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a96f9f9c1e4e86cc148aa0a334a399d8d}\label{light_8c_a96f9f9c1e4e86cc148aa0a334a399d8d}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+read\+\_\+data0@{apds9301\+\_\+read\+\_\+data0}}
+\index{apds9301\+\_\+read\+\_\+data0@{apds9301\+\_\+read\+\_\+data0}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+read\+\_\+data0()}{apds9301\_read\_data0()}}
+{\footnotesize\ttfamily int apds9301\+\_\+read\+\_\+data0 (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Read A\+DC register for channel 0. 
+
+================================================================================= function\+: apds9301\+\_\+read\+\_\+data0 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$data} & -\/ pointer to location to write decoded value to \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise exit\+\_\+error }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00473 \{
+00474    uint8\_t low  = 0;
+00475    uint8\_t high = 0;
+00476    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_DLOW\_0, &low, 0 );
+00477 
+00478    \textcolor{keywordflow}{if}( EXIT\_CLEAN != retVal )
+00479    \{
+00480      \textcolor{keywordflow}{return} EXIT\_ERROR;
+00481    \}
+00482 
+00483    retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_DHIGH\_0, &high, 0 );
+00484 
+00485    \textcolor{keywordflow}{if}( EXIT\_CLEAN == retVal )
+00486    \{
+00487       *data = ( low | (high << 8 ) );
+00488    \}
+00489    \textcolor{keywordflow}{else}
+00490    \{
+00491       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00492    \}
+00493    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00494 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{light_8c_a342a83b7263a75c5b12bffc638b2797e}\label{light_8c_a342a83b7263a75c5b12bffc638b2797e}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+read\+\_\+data1@{apds9301\+\_\+read\+\_\+data1}}
+\index{apds9301\+\_\+read\+\_\+data1@{apds9301\+\_\+read\+\_\+data1}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+read\+\_\+data1()}{apds9301\_read\_data1()}}
+{\footnotesize\ttfamily int apds9301\+\_\+read\+\_\+data1 (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Read A\+DC register for channel 1. 
+
+================================================================================= function\+: apds9301\+\_\+read\+\_\+data1 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$data} & -\/ pointer to location to write decoded value to \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise exit\+\_\+error }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00505 \{
+00506    uint8\_t low  = 0;
+00507    uint8\_t high = 0;
+00508    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_DLOW\_1, &low, 0 );
+00509 
+00510    \textcolor{keywordflow}{if}( EXIT\_CLEAN != retVal )
+00511    \{
+00512      \textcolor{keywordflow}{return} EXIT\_ERROR;
+00513    \}
+00514 
+00515    retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_DHIGH\_1, &high, 0 );
+00516 
+00517    \textcolor{keywordflow}{if}( EXIT\_CLEAN == retVal )
+00518    \{
+00519       *data = ( low | (high << 8 ) );
+00520    \}
+00521    \textcolor{keywordflow}{else}
+00522    \{
+00523       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00524    \}
+00525    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00526 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a6dbf3801330c345b999db86f018c94cf}\label{light_8c_a6dbf3801330c345b999db86f018c94cf}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+read\+\_\+id@{apds9301\+\_\+read\+\_\+id}}
+\index{apds9301\+\_\+read\+\_\+id@{apds9301\+\_\+read\+\_\+id}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+read\+\_\+id()}{apds9301\_read\_id()}}
+{\footnotesize\ttfamily int apds9301\+\_\+read\+\_\+id (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{id }\end{DoxyParamCaption})}
+
+
+
+Read A\+P\+D\+S9301 Identification Register. 
+
+================================================================================= Function\+: apds9301\+\_\+read\+\_\+id 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$id} & -\/ where to write ID from register \subsection*{see \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\+\_\+read()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00397 \{
+00398    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_ID, \textcolor{keywordtype}{id}, \textcolor{keyword}{sizeof}( *\textcolor{keywordtype}{id} ) );
+00399    \textcolor{keywordflow}{return} retVal;
+00400 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a0005300d36508d20c372b5355d6546d9}\label{light_8c_a0005300d36508d20c372b5355d6546d9}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+read\+\_\+threshold\+\_\+high@{apds9301\+\_\+read\+\_\+threshold\+\_\+high}}
+\index{apds9301\+\_\+read\+\_\+threshold\+\_\+high@{apds9301\+\_\+read\+\_\+threshold\+\_\+high}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+read\+\_\+threshold\+\_\+high()}{apds9301\_read\_threshold\_high()}}
+{\footnotesize\ttfamily int apds9301\+\_\+read\+\_\+threshold\+\_\+high (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{threshold }\end{DoxyParamCaption})}
+
+
+
+Read value from high threshold register. 
+
+================================================================================= Function\+: apds9301\+\_\+write\+\_\+threshold\+\_\+high 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$threshold} & -\/ where to write value read \subsection*{see \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\+\_\+write()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00382 \{
+00383    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_TH\_HL, (uint8\_t*)threshold, \textcolor{keyword}{sizeof}( *
+      threshold ) );
+00384    \textcolor{keywordflow}{return} retVal;
+00385 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a67500fb59f0ab2f2e46c3b6f945985b5}\label{light_8c_a67500fb59f0ab2f2e46c3b6f945985b5}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+read\+\_\+threshold\+\_\+low@{apds9301\+\_\+read\+\_\+threshold\+\_\+low}}
+\index{apds9301\+\_\+read\+\_\+threshold\+\_\+low@{apds9301\+\_\+read\+\_\+threshold\+\_\+low}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+read\+\_\+threshold\+\_\+low()}{apds9301\_read\_threshold\_low()}}
+{\footnotesize\ttfamily int apds9301\+\_\+read\+\_\+threshold\+\_\+low (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{threshold }\end{DoxyParamCaption})}
+
+
+
+Read value from low threshold register. 
+
+================================================================================= Function\+: apds9301\+\_\+write\+\_\+threshold\+\_\+low 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$threshold} & -\/ where to write value read \subsection*{see \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\+\_\+write()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00352 \{
+00353    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_TH\_LL, (uint8\_t*)threshold, \textcolor{keyword}{sizeof}( *
+      threshold ) );
+00354    \textcolor{keywordflow}{return} retVal;
+00355 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_ac3c04aef00858dc27815e190f8186cfd}\label{light_8c_ac3c04aef00858dc27815e190f8186cfd}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+set\+\_\+config@{apds9301\+\_\+set\+\_\+config}}
+\index{apds9301\+\_\+set\+\_\+config@{apds9301\+\_\+set\+\_\+config}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+set\+\_\+config()}{apds9301\_set\_config()}}
+{\footnotesize\ttfamily int apds9301\+\_\+set\+\_\+config (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Set configuration of light sensor. For the A\+P\+D\+S9301, the configuration is spread out across the\+: Timing Register, Interrupt Control Register, and Control Register. So, I have to write to all of these to set the config. 
+
+================================================================================= Function\+: apds9301\+\_\+set\+\_\+config 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise see \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\+\_\+write()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00166 \{
+00167    \textcolor{keywordtype}{int} retVal = \hyperlink{light_8c_a3063fd5cfc043ce2ac7c67f8af9b4b2e}{apds9301\_set\_gain}( \hyperlink{light_8h_ae242ab0e0a91e95de561944085dbdf20}{DEFAULT\_GAIN} );
+00168    \textcolor{keywordflow}{if}( retVal )
+00169    \{
+00170       \textcolor{keywordflow}{return} retVal;
+00171    \}
+00172    \textcolor{keywordflow}{else}
+00173    \{
+00174       retVal = \hyperlink{light_8c_a3b06e19e8c55d93415a41352cf11de16}{apds9301\_set\_interrupt}( DEFAULT\_INTERRUPT );
+00175       \textcolor{keywordflow}{if}( retVal )
+00176       \{
+00177          \textcolor{keywordflow}{return} retVal;
+00178       \}
+00179       \textcolor{keywordflow}{else}
+00180       \{
+00181          retVal = \hyperlink{light_8c_a99e9814d23261d099bf5d381d84d6642}{apds9301\_set\_integration}( DEFAULT\_INTEGRATION\_TIME );
+00182          \textcolor{keywordflow}{if}( retVal )
+00183          \{
+00184             \textcolor{keywordflow}{return} retVal;
+00185          \}
+00186       \}
+00187    \}
+00188    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00189 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a3063fd5cfc043ce2ac7c67f8af9b4b2e}\label{light_8c_a3063fd5cfc043ce2ac7c67f8af9b4b2e}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+set\+\_\+gain@{apds9301\+\_\+set\+\_\+gain}}
+\index{apds9301\+\_\+set\+\_\+gain@{apds9301\+\_\+set\+\_\+gain}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+set\+\_\+gain()}{apds9301\_set\_gain()}}
+{\footnotesize\ttfamily int apds9301\+\_\+set\+\_\+gain (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{gain }\end{DoxyParamCaption})}
+
+
+
+Sets gain for A\+P\+D\+S9301 by setting or clearing the G\+A\+IN bit of the Timing Register. 
+
+================================================================================= Function\+: apds9301\+\_\+set\+\_\+gain 
+\begin{DoxyParams}{Parameters}
+{\em gain} & -\/ set if we want high gain \subsection*{see \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\+\_\+write\+\_\+byte()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00289 \{
+00290    uint8\_t data;
+00291    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_TIME, &data, \textcolor{keyword}{sizeof}( data ) );
+00292    \textcolor{keywordflow}{if}( retVal )
+00293    \{
+00294       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00295    \}
+00296 
+00297    \textcolor{comment}{/* if gain != 0, high gain */}
+00298    \textcolor{keywordflow}{if}( gain )
+00299    \{
+00300       data |= (1<<4);
+00301    \}
+00302    \textcolor{keywordflow}{else}
+00303    \{
+00304       data &= ~(1<<4);
+00305    \}
+00306 
+00307    retVal = \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\_write\_byte}( APDS9301\_ADDRESS, APDS9301\_REG\_TIME, data );
+00308 
+00309    \textcolor{keywordflow}{return} retVal;
+00310 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{light_8c_a99e9814d23261d099bf5d381d84d6642}\label{light_8c_a99e9814d23261d099bf5d381d84d6642}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+set\+\_\+integration@{apds9301\+\_\+set\+\_\+integration}}
+\index{apds9301\+\_\+set\+\_\+integration@{apds9301\+\_\+set\+\_\+integration}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+set\+\_\+integration()}{apds9301\_set\_integration()}}
+{\footnotesize\ttfamily int apds9301\+\_\+set\+\_\+integration (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{val }\end{DoxyParamCaption})}
+
+
+
+Sets the integration time for A\+P\+D\+S9301 by writing a value to bits I\+N\+T\+EG of the Timing Register. 
+
+================================================================================= Function\+: apds9301\+\_\+set\+\_\+integration 
+\begin{DoxyParams}{Parameters}
+{\em val} & -\/ value to write to timing register \subsection*{see \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\+\_\+write\+\_\+byte()} -\/ if val is not an allowed value, E\+X\+I\+T\+\_\+\+E\+R\+R\+OR }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00202 \{
+00203    \textcolor{keywordflow}{if}( 3 < val )
+00204    \{
+00205       \textcolor{comment}{/* invalid value */}
+00206       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00207    \}
+00208    uint8\_t data;
+00209    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_TIME, &data, \textcolor{keyword}{sizeof}( data ) );
+00210 
+00211    \textcolor{keywordflow}{if}( retVal )
+00212    \{
+00213       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00214    \}
+00215 
+00216    data &= ~(0b11);  \textcolor{comment}{/* clears lower 2 bits of TIMING REG */}
+00217    data |= val;
+00218 
+00219    retVal = \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\_write\_byte}( APDS9301\_ADDRESS, APDS9301\_REG\_TIME, data );
+00220 
+00221    \textcolor{keywordflow}{return} retVal;
+00222 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a3b06e19e8c55d93415a41352cf11de16}\label{light_8c_a3b06e19e8c55d93415a41352cf11de16}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+set\+\_\+interrupt@{apds9301\+\_\+set\+\_\+interrupt}}
+\index{apds9301\+\_\+set\+\_\+interrupt@{apds9301\+\_\+set\+\_\+interrupt}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+set\+\_\+interrupt()}{apds9301\_set\_interrupt()}}
+{\footnotesize\ttfamily int apds9301\+\_\+set\+\_\+interrupt (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{enable }\end{DoxyParamCaption})}
+
+
+
+Enables or disables interrupts for A\+P\+D\+S9301 by setting or clearing the I\+N\+TR bits of the Interrupt Control Register. 
+
+================================================================================= Function\+: apds9301\+\_\+set\+\_\+interrupt 
+\begin{DoxyParams}{Parameters}
+{\em enable} & -\/ set if we want to enable interrupts \subsection*{see \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\+\_\+write\+\_\+byte()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00256 \{
+00257    uint8\_t data;
+00258    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( APDS9301\_ADDRESS, APDS9301\_REG\_INT\_CNTRL, &data, \textcolor{keyword}{sizeof}( data ) );
+00259    \textcolor{keywordflow}{if}( retVal )
+00260    \{
+00261       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00262    \}
+00263 
+00264    \textcolor{keywordflow}{if}( enable )
+00265    \{
+00266       data |= (1<<4);
+00267    \}
+00268    \textcolor{keywordflow}{else}
+00269    \{
+00270       data &= ~(1<<4);
+00271    \}
+00272 
+00273    retVal = \hyperlink{i2c_8c_acf2df3bfc71068fc8d551eed2a6e7341}{i2c\_write\_byte}( APDS9301\_ADDRESS, APDS9301\_REG\_INT\_CNTRL, data );
+00274 
+00275    \textcolor{keywordflow}{return} retVal;
+00276 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{light_8c_adb39e9954b4d948edea845453df2abf6}\label{light_8c_adb39e9954b4d948edea845453df2abf6}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+write\+\_\+threshold\+\_\+high@{apds9301\+\_\+write\+\_\+threshold\+\_\+high}}
+\index{apds9301\+\_\+write\+\_\+threshold\+\_\+high@{apds9301\+\_\+write\+\_\+threshold\+\_\+high}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+write\+\_\+threshold\+\_\+high()}{apds9301\_write\_threshold\_high()}}
+{\footnotesize\ttfamily int apds9301\+\_\+write\+\_\+threshold\+\_\+high (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{threshold }\end{DoxyParamCaption})}
+
+
+
+Write value to high threshold register. 
+
+================================================================================= Function\+: apds9301\+\_\+write\+\_\+threshold\+\_\+high 
+\begin{DoxyParams}{Parameters}
+{\em threshold} & -\/ value to write \subsection*{see \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\+\_\+write()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00367 \{
+00368    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\_write}( APDS9301\_ADDRESS, APDS9301\_REG\_TH\_HL, threshold );
+00369    \textcolor{keywordflow}{return} retVal;
+00370 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_ae2c85da2e138447c5881122669c36a38}\label{light_8c_ae2c85da2e138447c5881122669c36a38}} 
+\index{light.\+c@{light.\+c}!apds9301\+\_\+write\+\_\+threshold\+\_\+low@{apds9301\+\_\+write\+\_\+threshold\+\_\+low}}
+\index{apds9301\+\_\+write\+\_\+threshold\+\_\+low@{apds9301\+\_\+write\+\_\+threshold\+\_\+low}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{apds9301\+\_\+write\+\_\+threshold\+\_\+low()}{apds9301\_write\_threshold\_low()}}
+{\footnotesize\ttfamily int apds9301\+\_\+write\+\_\+threshold\+\_\+low (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{threshold }\end{DoxyParamCaption})}
+
+
+
+Write value to low threshold register. 
+
+================================================================================= Function\+: apds9301\+\_\+write\+\_\+threshold\+\_\+low 
+\begin{DoxyParams}{Parameters}
+{\em threshold} & -\/ value to write \subsection*{see \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\+\_\+write()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00337 \{
+00338    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\_write}( APDS9301\_ADDRESS, APDS9301\_REG\_TH\_LL, threshold );
+00339    \textcolor{keywordflow}{return} retVal;
+00340 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a17b9e7a92cacdbc3b7220d968b204525}\label{light_8c_a17b9e7a92cacdbc3b7220d968b204525}} 
+\index{light.\+c@{light.\+c}!cycle@{cycle}}
+\index{cycle@{cycle}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{cycle()}{cycle()}}
+{\footnotesize\ttfamily static void cycle (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Cycle function for light sensor thread We wait in this while loop checking for requests from watchdog for health status. 
+
+================================================================================= Function\+: cycle 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00566 \{
+00567    \textcolor{keywordtype}{int} retVal = 0;
+00568    \hyperlink{structmsg__t}{msg\_t} request = \{0\};
+00569    \hyperlink{structmsg__t}{msg\_t} response = \{0\};
+00570    \textcolor{keywordflow}{while}( 1 )
+00571    \{
+00572       memset( &request, 0, \textcolor{keyword}{sizeof}( request ) );
+00573       retVal = mq\_receive( light\_queue, (\textcolor{keywordtype}{char}*)&request, \textcolor{keyword}{sizeof}( request ), NULL );
+00574       \textcolor{keywordflow}{if}( 0 > retVal )
+00575       \{
+00576          \textcolor{keywordtype}{int} errnum = errno;
+00577          fprintf( stderr, \textcolor{stringliteral}{"Encountered error receiving from message queue %s: (%s)\(\backslash\)n"},
+00578                   LIGHT\_QUEUE\_NAME, strerror( errnum ) );
+00579          \textcolor{keywordflow}{continue};
+00580       \}
+00581       \textcolor{keywordflow}{switch}( request.id )
+00582       \{
+00583          \textcolor{keywordflow}{case} REQUEST\_STATUS:
+00584             sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00585             \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00586             sprintf( shm->buffer, \textcolor{stringliteral}{"(Light) I am alive!\(\backslash\)n"} );
+00587             sem\_post(&shm->r\_sem);
+00588             fprintf( stdout, \textcolor{stringliteral}{"(Light) I am alive!\(\backslash\)n"} );
+00589             response.id = request.id;
+00590             sprintf( response.info, \textcolor{stringliteral}{"(Light) I am alive!\(\backslash\)n"} );
+00591             retVal = mq\_send( request.src, (\textcolor{keyword}{const} \textcolor{keywordtype}{char}*)&response, \textcolor{keyword}{sizeof}( response ), 0 );
+00592 
+00593             pthread\_mutex\_lock( &alive\_mutex );
+00594             threads\_status[THREAD\_LIGHT]--;
+00595             pthread\_mutex\_unlock( &alive\_mutex );
+00596             \textcolor{keywordflow}{break};
+00597          \textcolor{keywordflow}{default}:
+00598             \textcolor{keywordflow}{break};
+00599       \}
+00600    \}
+00601    \textcolor{keywordflow}{return};
+00602 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a57d6c7de6874cb33b372559ea24ebb85}\label{light_8c_a57d6c7de6874cb33b372559ea24ebb85}} 
+\index{light.\+c@{light.\+c}!get\+\_\+light\+\_\+queue@{get\+\_\+light\+\_\+queue}}
+\index{get\+\_\+light\+\_\+queue@{get\+\_\+light\+\_\+queue}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+light\+\_\+queue()}{get\_light\_queue()}}
+{\footnotesize\ttfamily mqd\+\_\+t get\+\_\+light\+\_\+queue (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get file descriptor for light sensor thread. Called by watchdog thread in order to be able to send heartbeat check via queue. 
+
+================================================================================= Function\+: get\+\_\+light\+\_\+queue 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{temp\+\_\+queue -\/ file descriptor for light sensor thread message queue }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00615 \{
+00616    \textcolor{keywordflow}{return} light\_queue;
+00617 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a7f1c59e171c9db2a7609a4cd8b61fa2c}\label{light_8c_a7f1c59e171c9db2a7609a4cd8b61fa2c}} 
+\index{light.\+c@{light.\+c}!get\+\_\+lux@{get\+\_\+lux}}
+\index{get\+\_\+lux@{get\+\_\+lux}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+lux()}{get\_lux()}}
+{\footnotesize\ttfamily float get\+\_\+lux (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Returns last lux reading. 
+
+================================================================================= Function\+: get\+\_\+lux 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{last\+\_\+lux\+\_\+value -\/ last lux reading we have }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00130 \{
+00131    \textcolor{keywordflow}{return} last\_lux\_value;
+00132 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a5ba3d2c92432bf82f3f3cc4e809b1dba}\label{light_8c_a5ba3d2c92432bf82f3f3cc4e809b1dba}} 
+\index{light.\+c@{light.\+c}!is\+\_\+dark@{is\+\_\+dark}}
+\index{is\+\_\+dark@{is\+\_\+dark}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+dark()}{is\_dark()}}
+{\footnotesize\ttfamily int is\+\_\+dark (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Returns int speciyfing if it is night or day. 
+
+================================================================================= Function\+: is\+\_\+dark 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{night -\/ 0 if it is day, 1 if night, i.\+e. below D\+A\+R\+K\+\_\+\+T\+H\+R\+E\+S\+H\+O\+LD }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00145 \{
+00146    \textcolor{keywordtype}{int} dark = 0;
+00147    \textcolor{keywordflow}{if}( DARK\_THRESHOLD > last\_lux\_value )
+00148    \{
+00149       dark = 1;
+00150    \}
+00151    \textcolor{keywordflow}{return} dark;
+00152 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a1a3ec39083c9a030ae43f0e8bd3ea71d}\label{light_8c_a1a3ec39083c9a030ae43f0e8bd3ea71d}} 
+\index{light.\+c@{light.\+c}!light\+\_\+fn@{light\+\_\+fn}}
+\index{light\+\_\+fn@{light\+\_\+fn}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{light\+\_\+fn()}{light\_fn()}}
+{\footnotesize\ttfamily void$\ast$ light\+\_\+fn (\begin{DoxyParamCaption}\item[{void $\ast$}]{thread\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Entry point for light sensor processing thread. 
+
+================================================================================= Function\+: light\+\_\+fn 
+\begin{DoxyParams}{Parameters}
+{\em thread\+\_\+args} & -\/ void ptr to arguments used to initialize thread \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\+U\+LL -\/ We don\textquotesingle{}t really exit from this function, \subsection*{since the exit point is \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\+\_\+exit()} }
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+00663 \{
+00664    \textcolor{comment}{/* Get time that thread was spawned */}
+00665    \textcolor{keyword}{struct }timespec time;
+00666    clock\_gettime(CLOCK\_REALTIME, &time);
+00667    shm = \hyperlink{common_8c_ae426f169cff2eb748a7d509bda02c686}{get\_shared\_memory}();
+00668 
+00669    \textcolor{comment}{/* Write initial state to shared memory */}
+00670    sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00671    \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00672    sprintf( shm->buffer, \textcolor{stringliteral}{"Hello World! Start Time: %ld.%ld secs\(\backslash\)n"},
+00673             time.tv\_sec, time.tv\_nsec );
+00674    \textcolor{comment}{/* Signal to logger that shared memory has been updated */}
+00675    sem\_post(&shm->r\_sem);
+00676 
+00677    signal(SIGUSR1, \hyperlink{light_8c_a366471b5822de7615f33cbe5eab9726a}{sig\_handler});
+00678    signal(SIGUSR2, \hyperlink{light_8c_a366471b5822de7615f33cbe5eab9726a}{sig\_handler});
+00679 
+00680    light\_queue = \hyperlink{light_8c_abafa0fdb40560c48e4b98ec10f0e1f43}{light\_queue\_init}();
+00681    \textcolor{keywordflow}{if}( 0 > light\_queue )
+00682    \{
+00683       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_INIT );
+00684    \}
+00685 
+00686    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a1554411301103619aa6f40b7613b5e6b}{i2c\_init}( &i2c\_apds9301 );
+00687    \textcolor{keywordflow}{if}( EXIT\_INIT == retVal )
+00688    \{
+00689       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00690       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00691       sprintf( shm->buffer, \textcolor{stringliteral}{"ERROR: Failed to initialize I2C for light sensor!\(\backslash\)n"} );
+00692       sem\_post(&shm->r\_sem);
+00693       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_INIT );
+00694    \}
+00695    retVal = \hyperlink{light_8c_a163ea457431a4845d5ff5fa205f670b7}{apds9301\_power}( \hyperlink{light_8h_a14cdc4396ca692461b59fb937003115b}{POWER\_ON} );
+00696    \textcolor{keywordflow}{if}( retVal )
+00697    \{
+00698       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00699       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00700       sprintf( shm->buffer, \textcolor{stringliteral}{"ERROR: Failed to power on light sensor!\(\backslash\)n"} );
+00701       sem\_post(&shm->r\_sem);
+00702       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_INIT );
+00703    \}
+00704 
+00705    \hyperlink{common_8c_a78dd395e9020e2a6066233a529bff7be}{timer\_setup}( &timerid, &\hyperlink{light_8c_a4f3aa3fb3750262d938e191252db81fb}{timer\_handler} );
+00706 
+00707    \hyperlink{common_8c_a207644f53334379d5fcb82b78bafff36}{timer\_start}( &timerid, 5000000 );
+00708    \hyperlink{light_8c_a17b9e7a92cacdbc3b7220d968b204525}{cycle}();
+00709 
+00710    \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( 0 );
+00711    \textcolor{keywordflow}{return} NULL;
+00712 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_abafa0fdb40560c48e4b98ec10f0e1f43}\label{light_8c_abafa0fdb40560c48e4b98ec10f0e1f43}} 
+\index{light.\+c@{light.\+c}!light\+\_\+queue\+\_\+init@{light\+\_\+queue\+\_\+init}}
+\index{light\+\_\+queue\+\_\+init@{light\+\_\+queue\+\_\+init}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{light\+\_\+queue\+\_\+init()}{light\_queue\_init()}}
+{\footnotesize\ttfamily int light\+\_\+queue\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialize message queue for light sensor thread. 
+
+================================================================================= Function\+: light\+\_\+queue\+\_\+init 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{msg\+\_\+q -\/ file descriptor for initialized message queue }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00629 \{
+00630    \textcolor{comment}{/* unlink first in case we hadn't shut down cleanly last time */}
+00631    mq\_unlink( LIGHT\_QUEUE\_NAME );
+00632 
+00633    \textcolor{keyword}{struct }mq\_attr attr;
+00634    attr.mq\_flags = 0;
+00635    attr.mq\_maxmsg = MAX\_MESSAGES;
+00636    attr.mq\_msgsize = \textcolor{keyword}{sizeof}( \hyperlink{structmsg__t}{msg\_t} );
+00637    attr.mq\_curmsgs = 0;
+00638 
+00639    \textcolor{keywordtype}{int} msg\_q = mq\_open( LIGHT\_QUEUE\_NAME, O\_CREAT | O\_RDWR, 0666, &attr );
+00640    \textcolor{keywordflow}{if}( 0 > msg\_q )
+00641    \{
+00642       \textcolor{keywordtype}{int} errnum = errno;
+00643       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00644       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00645       sprintf( shm->buffer, \textcolor{stringliteral}{"Encountered error creating message queue %s: (%s)\(\backslash\)n"},
+00646                LIGHT\_QUEUE\_NAME, strerror( errnum ) );
+00647       sem\_post(&shm->r\_sem);
+00648    \}
+00649    \textcolor{keywordflow}{return} msg\_q;
+00650 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{light_8c_a366471b5822de7615f33cbe5eab9726a}\label{light_8c_a366471b5822de7615f33cbe5eab9726a}} 
+\index{light.\+c@{light.\+c}!sig\+\_\+handler@{sig\+\_\+handler}}
+\index{sig\+\_\+handler@{sig\+\_\+handler}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{sig\+\_\+handler()}{sig\_handler()}}
+{\footnotesize\ttfamily static void sig\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{signo }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Signal handler for light sensor thread. On normal operation, we should be receving S\+I\+G\+U\+S\+R1/2 signals from watchdog when prompted to exit. So, we close the message queue and timer this thread owns. 
+
+================================================================================= Function\+: sig\+\_\+handler 
+\begin{DoxyParams}{Parameters}
+{\em signo} & -\/ enum with signal number of signal being handled \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00051 \{
+00052    \textcolor{keywordflow}{if}( signo == SIGUSR1 )
+00053    \{
+00054       printf(\textcolor{stringliteral}{"Received SIGUSR1! Exiting...\(\backslash\)n"});
+00055       mq\_close( light\_queue );
+00056       timer\_delete( timerid );
+00057       \hyperlink{light_8c_a163ea457431a4845d5ff5fa205f670b7}{apds9301\_power}( POWER\_OFF );
+00058       \hyperlink{i2c_8c_a8f550e69702cca5887035007afe36d40}{i2c\_stop}( &i2c\_apds9301 );
+00059       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( signo );
+00060    \}
+00061    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( signo == SIGUSR2 )
+00062    \{
+00063       printf(\textcolor{stringliteral}{"Received SIGUSR2! Exiting...\(\backslash\)n"});
+00064       mq\_close( light\_queue );
+00065       timer\_delete( timerid );
+00066       \hyperlink{light_8c_a163ea457431a4845d5ff5fa205f670b7}{apds9301\_power}( POWER\_OFF );
+00067       \hyperlink{i2c_8c_a8f550e69702cca5887035007afe36d40}{i2c\_stop}( &i2c\_apds9301 );
+00068       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( signo );
+00069    \}
+00070    \textcolor{keywordflow}{return};
+00071 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{light_8c_a4f3aa3fb3750262d938e191252db81fb}\label{light_8c_a4f3aa3fb3750262d938e191252db81fb}} 
+\index{light.\+c@{light.\+c}!timer\+\_\+handler@{timer\+\_\+handler}}
+\index{timer\+\_\+handler@{timer\+\_\+handler}!light.\+c@{light.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+handler()}{timer\_handler()}}
+{\footnotesize\ttfamily static void timer\+\_\+handler (\begin{DoxyParamCaption}\item[{union sigval}]{sig }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Timer handler function for light sensor thread When woken up by the timer, get lux reading and write state to shared memory. 
+
+================================================================================= Function\+: timer\+\_\+handler 
+\begin{DoxyParams}{Parameters}
+{\em sig} & \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00084 \{
+00085    \textcolor{keyword}{static} \textcolor{keywordtype}{int} i = 0;
+00086    \hyperlink{led_8c_ad5a256395c8cd67d2a9f9ff1abfd6d2a}{led\_toggle}( LED1\_BRIGHTNESS );
+00087    sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00088 
+00089    \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00090    \textcolor{keywordtype}{float} lux = -5;
+00091    \textcolor{keywordtype}{int} retVal = \hyperlink{light_8c_a14680b863ba54159dba03357d4745a16}{apds9301\_get\_lux}( &lux );
+00092 
+00093    i++;
+00094    \textcolor{keywordflow}{if}( retVal )
+00095    \{
+00096       \textcolor{comment}{/* save new lux value */}
+00097       last\_lux\_value = lux;
+00098       \textcolor{keywordflow}{if}( DARK\_THRESHOLD > lux )
+00099       \{
+00100          sprintf( shm->buffer, \textcolor{stringliteral}{"cycle[%d]: State: %s, Lux: %0.5f\(\backslash\)n"},
+00101                   i, \textcolor{stringliteral}{"NIGHT"}, lux );
+00102       \}
+00103       \textcolor{keywordflow}{else}
+00104       \{
+00105          sprintf( shm->buffer, \textcolor{stringliteral}{"cycle[%d]: State: %s, Lux: %0.5f\(\backslash\)n"},
+00106                   i, \textcolor{stringliteral}{"DAY"}, lux );
+00107       \}
+00108    \}
+00109    \textcolor{keywordflow}{else}
+00110    \{
+00111       sprintf( shm->buffer, \textcolor{stringliteral}{"cycle[%d]: could not get light reading!\(\backslash\)n"}, i );
+00112    \}
+00113 
+00114    sem\_post(&shm->r\_sem);
+00115    \hyperlink{led_8c_ad5a256395c8cd67d2a9f9ff1abfd6d2a}{led\_toggle}( LED1\_BRIGHTNESS );
+00116    \textcolor{keywordflow}{return};
+00117 \}
+\end{DoxyCode}

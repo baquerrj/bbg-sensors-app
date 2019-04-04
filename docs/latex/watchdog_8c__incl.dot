@@ -1,0 +1,42 @@
+digraph "/home/baquerrj/boulder/ecen5013/project_1/src/watchdog.c"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="/home/baquerrj/boulder\l/ecen5013/project_1/src\l/watchdog.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid"];
+  Node1 [label="watchdog.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$watchdog_8h.html",tooltip="Watchdog thread header. "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="common.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8h.html",tooltip="Defines types and functions common between the threads of the application. "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="signal.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="stdio.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="pthread.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="unistd.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="semaphore.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node2 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="mqueue.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node0 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="temperature.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$temperature_8h.html",tooltip="Header for temperature sensor thread. "];
+  Node9 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="i2c.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$i2c_8h.html",tooltip="Interface to I2C Bus of BeagleBone Green using libmraa https://iotdk.intel.com/docs/master/mraa/. "];
+  Node10 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="mraa/i2c.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node0 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="light.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$light_8h.html",tooltip="Interface to APDS9301 Light Sensor. "];
+  Node12 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node0 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node13 [label="errno.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node0 -> Node14 [color="midnightblue",fontsize="10",style="solid"];
+  Node14 [label="string.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node0 -> Node15 [color="midnightblue",fontsize="10",style="solid"];
+  Node15 [label="time.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

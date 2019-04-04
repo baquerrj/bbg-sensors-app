@@ -1,0 +1,303 @@
+\hypertarget{watchdog_8c}{}\section{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/watchdog.c File Reference}
+\label{watchdog_8c}\index{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/watchdog.\+c@{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/watchdog.\+c}}
+
+
+Watchdog source file\+: the watchdog is responsible for checking that the temperature and light sensor threads are alive.  
+
+
+{\ttfamily \#include \char`\"{}watchdog.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}temperature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}light.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+Include dependency graph for watchdog.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{watchdog_8c_a366471b5822de7615f33cbe5eab9726a}{sig\+\_\+handler} (int signo)
+\begin{DoxyCompactList}\small\item\em Signal handler for watchdog. On normal operation, we should be receiving a S\+I\+G\+U\+S\+R2 signal from the main thread prompting us to call pthread\+\_\+kill for the other child threads. \end{DoxyCompactList}\item 
+void \hyperlink{watchdog_8c_afcff12ebeae3126251c60440eec3247b}{kill\+\_\+threads} (void)
+\begin{DoxyCompactList}\small\item\em Function to kill children threads. \end{DoxyCompactList}\item 
+void \hyperlink{watchdog_8c_ad237b88f34b264a1c3c3965f765f730f}{check\+\_\+threads} (union sigval sig)
+\begin{DoxyCompactList}\small\item\em Periodically send message via message queue for temperature and sensor threads to check for health. This function is registered as the timer hanlder for the timer owned by the watchdog. \end{DoxyCompactList}\item 
+int \hyperlink{watchdog_8c_afabbc670717ce1fd6b791b6c5a618517}{watchdog\+\_\+queue\+\_\+init} (void)
+\begin{DoxyCompactList}\small\item\em Initalize message queue for watchdog. \end{DoxyCompactList}\item 
+int \hyperlink{watchdog_8c_a5fce3bd6c685cff6e3a4be0764c3a933}{watchdog\+\_\+init} (void)
+\begin{DoxyCompactList}\small\item\em Initialize watchdog, calling appropriate functions to do so. E.\+g. calling timer\+\_\+setup and timer\+\_\+start to set up timer. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{watchdog_8c_ad69c59482b6b55ec28d5eb51bf01ce52}{watchdog\+\_\+fn} (void $\ast$thread\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Entry point for wachtdog. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{watchdog_8c_a7c22bf62313ce4f2bbe148ca7ba2abd3}\label{watchdog_8c_a7c22bf62313ce4f2bbe148ca7ba2abd3}} 
+static timer\+\_\+t {\bfseries timerid}
+\item 
+\mbox{\Hypertarget{watchdog_8c_a3dfce1828c167eae81a00615b18296df}\label{watchdog_8c_a3dfce1828c167eae81a00615b18296df}} 
+struct itimerspec {\bfseries trigger}
+\item 
+\mbox{\Hypertarget{watchdog_8c_acbc9353f339ceb8f5d12bff29bf3951a}\label{watchdog_8c_acbc9353f339ceb8f5d12bff29bf3951a}} 
+static struct \hyperlink{structthread__id__s}{thread\+\_\+id\+\_\+s} $\ast$ {\bfseries threads}
+\item 
+\mbox{\Hypertarget{watchdog_8c_a9f6fd594e8c49716bfd76538e46e62c4}\label{watchdog_8c_a9f6fd594e8c49716bfd76538e46e62c4}} 
+static mqd\+\_\+t {\bfseries thread\+\_\+msg\+\_\+q} \mbox{[}N\+U\+M\+\_\+\+T\+H\+R\+E\+A\+DS\mbox{]}
+\item 
+\mbox{\Hypertarget{watchdog_8c_aed4f753b6928e9e5d5a7439a6bfaf5cb}\label{watchdog_8c_aed4f753b6928e9e5d5a7439a6bfaf5cb}} 
+static mqd\+\_\+t {\bfseries watchdog\+\_\+queue}
+\item 
+\mbox{\Hypertarget{watchdog_8c_a894607e556ddb03a8409f7245ae74e9d}\label{watchdog_8c_a894607e556ddb03a8409f7245ae74e9d}} 
+pthread\+\_\+mutex\+\_\+t {\bfseries alive\+\_\+mutex}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Watchdog source file\+: the watchdog is responsible for checking that the temperature and light sensor threads are alive. 
+
+=================================================================================
+
+\begin{DoxyAuthor}{Author}
+Roberto Baquerizo (baquerrj), \href{mailto:roba8460@colorado.edu}{\tt roba8460@colorado.\+edu} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{watchdog_8c_ad237b88f34b264a1c3c3965f765f730f}\label{watchdog_8c_ad237b88f34b264a1c3c3965f765f730f}} 
+\index{watchdog.\+c@{watchdog.\+c}!check\+\_\+threads@{check\+\_\+threads}}
+\index{check\+\_\+threads@{check\+\_\+threads}!watchdog.\+c@{watchdog.\+c}}
+\subsubsection{\texorpdfstring{check\+\_\+threads()}{check\_threads()}}
+{\footnotesize\ttfamily void check\+\_\+threads (\begin{DoxyParamCaption}\item[{union sigval}]{sig }\end{DoxyParamCaption})}
+
+
+
+Periodically send message via message queue for temperature and sensor threads to check for health. This function is registered as the timer hanlder for the timer owned by the watchdog. 
+
+================================================================================= Function\+: check\+\_\+threads 
+\begin{DoxyParams}{Parameters}
+{\em sig} & \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00104 \{
+00105    \textcolor{keywordtype}{int} retVal = 0;
+00106    \hyperlink{structmsg__t}{msg\_t} request = \{0\};
+00107    request.id = REQUEST\_STATUS;
+00108    request.src = watchdog\_queue;
+00109 
+00110    \textcolor{keywordflow}{if}( (0 == threads\_status[THREAD\_TEMP]) && (0 == threads\_status[THREAD\_LIGHT] ) )
+00111    \{
+00112       pthread\_mutex\_lock( &alive\_mutex );
+00113       threads\_status[THREAD\_TEMP]++;
+00114       threads\_status[THREAD\_LIGHT]++;
+00115       pthread\_mutex\_unlock( &alive\_mutex );
+00116       retVal = mq\_send( thread\_msg\_q[THREAD\_TEMP], (\textcolor{keyword}{const} \textcolor{keywordtype}{char}*)&request, \textcolor{keyword}{sizeof}( request ), 0 );
+00117       \textcolor{keywordflow}{if}( 0 > retVal )
+00118       \{
+00119          \textcolor{keywordtype}{int} errnum = errno;
+00120          fprintf( stderr, \textcolor{stringliteral}{"Encountered error sending status request from watchdog: (%s)\(\backslash\)n"},
+00121                   strerror( errnum ) );
+00122       \}
+00123       retVal = mq\_send( thread\_msg\_q[THREAD\_LIGHT], (\textcolor{keyword}{const} \textcolor{keywordtype}{char}*)&request, \textcolor{keyword}{sizeof}( request ), 0 );
+00124       \textcolor{keywordflow}{if}( 0 > retVal )
+00125       \{
+00126          \textcolor{keywordtype}{int} errnum = errno;
+00127          fprintf( stderr, \textcolor{stringliteral}{"Encountered error sending status request from watchdog: (%s)\(\backslash\)n"},
+00128                   strerror( errnum ) );
+00129       \}
+00130    \}
+00131    \textcolor{keywordflow}{else}
+00132    \{
+00133       fprintf( stderr, \textcolor{stringliteral}{"One of the threads did not return!\(\backslash\)n"} );
+00134       fprintf( stderr, \textcolor{stringliteral}{"thread\_status[THREAD\_TEMP] = %d\(\backslash\)nthread\_status[THREAD\_LIGHT] = %d\(\backslash\)n"},
+00135                threads\_status[THREAD\_TEMP], threads\_status[THREAD\_LIGHT] );
+00136       \hyperlink{watchdog_8c_afcff12ebeae3126251c60440eec3247b}{kill\_threads}();
+00137       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_ERROR );
+00138    \}
+00139 
+00140    \textcolor{keywordflow}{return};
+00141 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{watchdog_8c_afcff12ebeae3126251c60440eec3247b}\label{watchdog_8c_afcff12ebeae3126251c60440eec3247b}} 
+\index{watchdog.\+c@{watchdog.\+c}!kill\+\_\+threads@{kill\+\_\+threads}}
+\index{kill\+\_\+threads@{kill\+\_\+threads}!watchdog.\+c@{watchdog.\+c}}
+\subsubsection{\texorpdfstring{kill\+\_\+threads()}{kill\_threads()}}
+{\footnotesize\ttfamily void kill\+\_\+threads (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Function to kill children threads. 
+
+================================================================================= Function\+: kill\+\_\+threads 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00073 \{
+00074    fprintf( stdout, \textcolor{stringliteral}{"watchdog caught signals - killing thread [%ld]\(\backslash\)n"},
+00075             threads->temp\_thread );
+00076    fflush( stdout );
+00077    pthread\_kill( threads->temp\_thread, SIGUSR1 );
+00078 
+00079    fprintf( stdout, \textcolor{stringliteral}{"watchdog caught signals - killing thread [%ld]\(\backslash\)n"},
+00080             threads->light\_thread );
+00081    fflush( stdout );
+00082    pthread\_kill( threads->light\_thread, SIGUSR1 );
+00083 
+00084    fprintf( stdout, \textcolor{stringliteral}{"watchdog caught signals - killing thread [%ld]\(\backslash\)n"},
+00085             threads->logger\_thread );
+00086    fflush( stdout );
+00087    pthread\_kill( threads->logger\_thread, SIGUSR1 );
+00088    free( threads );
+00089    \textcolor{keywordflow}{return};
+00090 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{watchdog_8c_a366471b5822de7615f33cbe5eab9726a}\label{watchdog_8c_a366471b5822de7615f33cbe5eab9726a}} 
+\index{watchdog.\+c@{watchdog.\+c}!sig\+\_\+handler@{sig\+\_\+handler}}
+\index{sig\+\_\+handler@{sig\+\_\+handler}!watchdog.\+c@{watchdog.\+c}}
+\subsubsection{\texorpdfstring{sig\+\_\+handler()}{sig\_handler()}}
+{\footnotesize\ttfamily static void sig\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{signo }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Signal handler for watchdog. On normal operation, we should be receiving a S\+I\+G\+U\+S\+R2 signal from the main thread prompting us to call pthread\+\_\+kill for the other child threads. 
+
+================================================================================= Function\+: sig\+\_\+handler 
+\begin{DoxyParams}{Parameters}
+{\em signo} & -\/ enum with signal number of signal being handled \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00053 \{
+00054    \textcolor{keywordflow}{if}( SIGUSR2 == signo )
+00055    \{
+00056       \hyperlink{watchdog_8c_afcff12ebeae3126251c60440eec3247b}{kill\_threads}();
+00057       mq\_close( watchdog\_queue );
+00058       timer\_delete( timerid );
+00059       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( 0 );
+00060    \}
+00061 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{watchdog_8c_ad69c59482b6b55ec28d5eb51bf01ce52}\label{watchdog_8c_ad69c59482b6b55ec28d5eb51bf01ce52}} 
+\index{watchdog.\+c@{watchdog.\+c}!watchdog\+\_\+fn@{watchdog\+\_\+fn}}
+\index{watchdog\+\_\+fn@{watchdog\+\_\+fn}!watchdog.\+c@{watchdog.\+c}}
+\subsubsection{\texorpdfstring{watchdog\+\_\+fn()}{watchdog\_fn()}}
+{\footnotesize\ttfamily void$\ast$ watchdog\+\_\+fn (\begin{DoxyParamCaption}\item[{void $\ast$}]{thread\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Entry point for wachtdog. 
+
+================================================================================= Function\+: watchdog\+\_\+fn 
+\begin{DoxyParams}{Parameters}
+{\em thread\+\_\+args} & -\/ void ptr used to pass thread identifiers (pthread\+\_\+t) for child threads we have to check for health \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\+U\+LL -\/ We don\textquotesingle{}t really exit from this function, \subsection*{since the exit point for threads is \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\+\_\+exit()} }
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+00217 \{
+00218    signal( SIGUSR2, \hyperlink{watchdog_8c_a366471b5822de7615f33cbe5eab9726a}{sig\_handler} );
+00219    exit\_e retVal = EXIT\_ERROR;
+00220    \textcolor{keywordflow}{if}( NULL == thread\_args )
+00221    \{
+00222       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}( NULL );
+00223       fprintf( stderr, \textcolor{stringliteral}{"Encountered null pointer!\(\backslash\)n"} );
+00224       pthread\_exit(&retVal);
+00225    \}
+00226    \textcolor{keywordflow}{else}
+00227    \{
+00228       threads = malloc( \textcolor{keyword}{sizeof}( \textcolor{keyword}{struct} \hyperlink{structthread__id__s}{thread\_id\_s} ) );
+00229       threads = (\textcolor{keyword}{struct }\hyperlink{structthread__id__s}{thread\_id\_s}*)thread\_args;
+00230    \}
+00231 
+00232    \hyperlink{watchdog_8c_a5fce3bd6c685cff6e3a4be0764c3a933}{watchdog\_init}();
+00233 
+00234    \textcolor{keywordflow}{while}(1);
+00235    \textcolor{keywordflow}{return} NULL;
+00236 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{watchdog_8c_a5fce3bd6c685cff6e3a4be0764c3a933}\label{watchdog_8c_a5fce3bd6c685cff6e3a4be0764c3a933}} 
+\index{watchdog.\+c@{watchdog.\+c}!watchdog\+\_\+init@{watchdog\+\_\+init}}
+\index{watchdog\+\_\+init@{watchdog\+\_\+init}!watchdog.\+c@{watchdog.\+c}}
+\subsubsection{\texorpdfstring{watchdog\+\_\+init()}{watchdog\_init()}}
+{\footnotesize\ttfamily int watchdog\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialize watchdog, calling appropriate functions to do so. E.\+g. calling timer\+\_\+setup and timer\+\_\+start to set up timer. 
+
+================================================================================= Function\+: watchdog\+\_\+init 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN, otherwise E\+X\+I\+T\+\_\+\+I\+N\+IT }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00184 \{
+00185    watchdog\_queue = \hyperlink{watchdog_8c_afabbc670717ce1fd6b791b6c5a618517}{watchdog\_queue\_init}();
+00186    \textcolor{keywordflow}{if}( 0 > watchdog\_queue )
+00187    \{
+00188       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_INIT );
+00189    \}
+00190 
+00191    \textcolor{keywordflow}{while}( 0 == (thread\_msg\_q[THREAD\_TEMP] = \hyperlink{temperature_8c_a4fb20f64bbc451d19252c2748bad1cb6}{get\_temperature\_queue}()) );
+00192    \textcolor{keywordflow}{while}( 0 == (thread\_msg\_q[THREAD\_LIGHT] = \hyperlink{light_8c_a57d6c7de6874cb33b372559ea24ebb85}{get\_light\_queue}()) );
+00193 
+00194    fprintf( stderr, \textcolor{stringliteral}{"Watchdog says: Temp Queue FD: %d\(\backslash\)n"}, thread\_msg\_q[0] );
+00195    fprintf( stderr, \textcolor{stringliteral}{"Watchdog says: Light Queue FD: %d\(\backslash\)n"}, thread\_msg\_q[1] );
+00196 
+00197    pthread\_mutex\_init( &alive\_mutex, NULL );
+00198    \hyperlink{common_8c_a78dd395e9020e2a6066233a529bff7be}{timer\_setup}( &timerid, &\hyperlink{watchdog_8c_ad237b88f34b264a1c3c3965f765f730f}{check\_threads} );
+00199 
+00200    \hyperlink{common_8c_a207644f53334379d5fcb82b78bafff36}{timer\_start}( &timerid, 4000000 );
+00201 
+00202    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00203 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{watchdog_8c_afabbc670717ce1fd6b791b6c5a618517}\label{watchdog_8c_afabbc670717ce1fd6b791b6c5a618517}} 
+\index{watchdog.\+c@{watchdog.\+c}!watchdog\+\_\+queue\+\_\+init@{watchdog\+\_\+queue\+\_\+init}}
+\index{watchdog\+\_\+queue\+\_\+init@{watchdog\+\_\+queue\+\_\+init}!watchdog.\+c@{watchdog.\+c}}
+\subsubsection{\texorpdfstring{watchdog\+\_\+queue\+\_\+init()}{watchdog\_queue\_init()}}
+{\footnotesize\ttfamily int watchdog\+\_\+queue\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initalize message queue for watchdog. 
+
+================================================================================= Function\+: watchdog\+\_\+queue\+\_\+init 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{msg\+\_\+q -\/ file descriptor for initialized message queue }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00153 \{
+00154    \textcolor{comment}{/* unlink first in case we hadn't shut down cleanly last time */}
+00155    mq\_unlink( WATCHDOG\_QUEUE\_NAME );
+00156 
+00157    \textcolor{keyword}{struct }mq\_attr attr;
+00158    attr.mq\_flags = 0;
+00159    attr.mq\_maxmsg = MAX\_MESSAGES;
+00160    attr.mq\_msgsize = \textcolor{keyword}{sizeof}( \hyperlink{structmsg__t}{msg\_t} );
+00161    attr.mq\_curmsgs = 0;
+00162 
+00163    \textcolor{keywordtype}{int} msg\_q = mq\_open( WATCHDOG\_QUEUE\_NAME, O\_CREAT | O\_RDWR, 0666, &attr );
+00164    \textcolor{keywordflow}{if}( 0 > msg\_q )
+00165    \{
+00166       \textcolor{keywordtype}{int} errnum = errno;
+00167       fprintf( stderr, \textcolor{stringliteral}{"Encountered error creating message queue %s: (%s)\(\backslash\)n"},
+00168                WATCHDOG\_QUEUE\_NAME, strerror( errnum ) );
+00169    \}
+00170    \textcolor{keywordflow}{return} msg\_q;
+00171 \}
+\end{DoxyCode}

@@ -1,0 +1,315 @@
+\hypertarget{common_8c}{}\section{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/common.c File Reference}
+\label{common_8c}\index{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/common.\+c@{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/common.\+c}}
+
+
+Defines types and functions common between the threads of the application.  
+
+
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/syscall.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+Include dependency graph for common.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\+\_\+header} (char $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em Write a string formatted with the T\+ID of the thread calling this function and a timestamp to the log buffer. \end{DoxyCompactList}\item 
+void \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\+\_\+exit} (int exit\+\_\+status)
+\begin{DoxyCompactList}\small\item\em Common exit point for all threads. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{common_8c_ae426f169cff2eb748a7d509bda02c686}{get\+\_\+shared\+\_\+memory} (void)
+\begin{DoxyCompactList}\small\item\em Sets up shared memory location for logging. \end{DoxyCompactList}\item 
+int \hyperlink{common_8c_a8e1ee6092ec482d5556b2100d64b8c74}{sems\+\_\+init} (\hyperlink{structshared__data__t}{shared\+\_\+data\+\_\+t} $\ast$shm)
+\item 
+int \hyperlink{common_8c_a78dd395e9020e2a6066233a529bff7be}{timer\+\_\+setup} (timer\+\_\+t $\ast$id, void($\ast$handler)(union sigval))
+\begin{DoxyCompactList}\small\item\em Initializes a timer identified by timer\+\_\+t id. \end{DoxyCompactList}\item 
+int \hyperlink{common_8c_a207644f53334379d5fcb82b78bafff36}{timer\+\_\+start} (timer\+\_\+t $\ast$id, unsigned long usecs)
+\begin{DoxyCompactList}\small\item\em Starts the timer with interval usecs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Defines types and functions common between the threads of the application. 
+
+=================================================================================
+
+\begin{DoxyAuthor}{Author}
+Roberto Baquerizo (baquerrj), \href{mailto:roba8460@colorado.edu}{\tt roba8460@colorado.\+edu} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{common_8c_ae426f169cff2eb748a7d509bda02c686}\label{common_8c_ae426f169cff2eb748a7d509bda02c686}} 
+\index{common.\+c@{common.\+c}!get\+\_\+shared\+\_\+memory@{get\+\_\+shared\+\_\+memory}}
+\index{get\+\_\+shared\+\_\+memory@{get\+\_\+shared\+\_\+memory}!common.\+c@{common.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+shared\+\_\+memory()}{get\_shared\_memory()}}
+{\footnotesize\ttfamily void$\ast$ get\+\_\+shared\+\_\+memory (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Sets up shared memory location for logging. 
+
+================================================================================= Function\+: get\+\_\+shared\+\_\+memory 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{$\ast$shm\+\_\+p -\/ pointer to shared memory object }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00083 \{
+00084    \textcolor{keyword}{struct }shared\_data *shm\_p;
+00085 
+00086    \textcolor{keywordtype}{int} shm\_fd = shm\_open( SHM\_SEGMENT\_NAME, O\_CREAT | O\_EXCL | O\_RDWR, 0666 );
+00087    \textcolor{keywordflow}{if}( 0 > shm\_fd )
+00088    \{
+00089       \textcolor{keywordtype}{int} errnum = errno;
+00090       \textcolor{keywordflow}{if}( EEXIST == errnum )
+00091       \{
+00092            \textcolor{comment}{/* Already exists: open again without O\_CREAT */}
+00093            shm\_fd = shm\_open(SHM\_SEGMENT\_NAME, O\_RDWR, 0);
+00094        \}
+00095       \textcolor{keywordflow}{else}
+00096       \{
+00097          fprintf( stderr, \textcolor{stringliteral}{"Encountered error opening shared memory: %s\(\backslash\)n"},
+00098                   strerror( errnum ) );
+00099          exit(EXIT\_FAILURE);
+00100       \}
+00101    \}
+00102    \textcolor{keywordflow}{else}
+00103    \{
+00104       fprintf( stdout, \textcolor{stringliteral}{"Creating shared memory and setting size to %u bytes\(\backslash\)n"},
+00105                \textcolor{keyword}{sizeof}( \hyperlink{structshared__data__t}{shared\_data\_t} ) );
+00106 
+00107       \textcolor{keywordflow}{if}( 0 > ftruncate( shm\_fd, \textcolor{keyword}{sizeof}( \hyperlink{structshared__data__t}{shared\_data\_t} )) )
+00108       \{
+00109          \textcolor{keywordtype}{int} errnum = errno;
+00110          fprintf( stderr, \textcolor{stringliteral}{"Encountered error setting size of shared memroy: %s\(\backslash\)n"},
+00111                   strerror( errnum ) );
+00112          exit(EXIT\_FAILURE);
+00113       \}
+00114    \}
+00115 
+00116     \textcolor{comment}{/* Map the shared memory */}
+00117     shm\_p = mmap(NULL, \textcolor{keyword}{sizeof}( \hyperlink{structshared__data__t}{shared\_data\_t} ), PROT\_READ | PROT\_WRITE,
+00118              MAP\_SHARED, shm\_fd, 0);
+00119 
+00120    \textcolor{keywordflow}{if}( NULL == shm\_p )
+00121    \{
+00122       \textcolor{keywordtype}{int} errnum = errno;
+00123       fprintf( stderr, \textcolor{stringliteral}{"Encountered error memory mapping shared memory: %s\(\backslash\)n"},
+00124                strerror( errnum ) );
+00125         exit(EXIT\_FAILURE);
+00126     \}
+00127     \textcolor{keywordflow}{return} shm\_p;
+00128 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{common_8c_a8f714d490a7f06c3a43cfea239e2770f}\label{common_8c_a8f714d490a7f06c3a43cfea239e2770f}} 
+\index{common.\+c@{common.\+c}!print\+\_\+header@{print\+\_\+header}}
+\index{print\+\_\+header@{print\+\_\+header}!common.\+c@{common.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+header()}{print\_header()}}
+{\footnotesize\ttfamily void print\+\_\+header (\begin{DoxyParamCaption}\item[{char $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Write a string formatted with the T\+ID of the thread calling this function and a timestamp to the log buffer. 
+
+================================================================================= Function\+: print\+\_\+header 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$buffer} & -\/ pointer to where we should copy formatted string to if N\+U\+LL, we print to stderr \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00036 \{
+00037 
+00038    \textcolor{keyword}{struct }timespec time;
+00039    clock\_gettime(CLOCK\_REALTIME, &time);
+00040 
+00041    \textcolor{keywordflow}{if}( NULL == buffer )
+00042    \{
+00043       fprintf( stderr, \textcolor{stringliteral}{"\(\backslash\)n=====================================================\(\backslash\)n"} );
+00044       fprintf( stderr, \textcolor{stringliteral}{"Thread [%d]: %ld.%ld secs\(\backslash\)n"},
+00045                (pid\_t)syscall(SYS\_gettid), time.tv\_sec, time.tv\_nsec );
+00046       fflush( stderr );
+00047    \}
+00048    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( NULL != buffer )
+00049    \{
+00050       \textcolor{keywordtype}{char} tmp[100]  = \textcolor{stringliteral}{"\(\backslash\)n=====================================================\(\backslash\)n"};
+00051       \textcolor{keywordtype}{char} tmp2[100];
+00052       sprintf( tmp2, \textcolor{stringliteral}{"Thread [%d]: %ld.%ld secs\(\backslash\)n"},
+00053                (pid\_t)syscall(SYS\_gettid), time.tv\_sec, time.tv\_nsec );
+00054       strcat( tmp, tmp2 );
+00055       strcpy( buffer, tmp );
+00056    \}
+00057    \textcolor{keywordflow}{return};
+00058 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{common_8c_a8e1ee6092ec482d5556b2100d64b8c74}\label{common_8c_a8e1ee6092ec482d5556b2100d64b8c74}} 
+\index{common.\+c@{common.\+c}!sems\+\_\+init@{sems\+\_\+init}}
+\index{sems\+\_\+init@{sems\+\_\+init}!common.\+c@{common.\+c}}
+\subsubsection{\texorpdfstring{sems\+\_\+init()}{sems\_init()}}
+{\footnotesize\ttfamily int sems\+\_\+init (\begin{DoxyParamCaption}\item[{\hyperlink{structshared__data__t}{shared\+\_\+data\+\_\+t} $\ast$}]{shm }\end{DoxyParamCaption})}
+
+================================================================================= Function\+: sems\+\_\+init  Initialize semaphores for shared memory
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$shm} & -\/ pointer to shared memory object \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+I\+N\+IT }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00132 \{
+00133    \textcolor{keywordtype}{int} retVal = 0;
+00134    retVal = sem\_init( &shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem}, 1, 1 );
+00135    \textcolor{keywordflow}{if}( 0 > retVal )
+00136    \{
+00137       \textcolor{keywordtype}{int} errnum = errno;
+00138       fprintf( stderr, \textcolor{stringliteral}{"Encountered error initializing write semaphore: %s\(\backslash\)n"},
+00139                strerror( errnum ) );
+00140       \textcolor{keywordflow}{return} EXIT\_INIT;
+00141    \}
+00142    retVal = sem\_init( &shm->r\_sem, 1, 0 );
+00143    \textcolor{keywordflow}{if}( 0 > retVal )
+00144    \{
+00145       \textcolor{keywordtype}{int} errnum = errno;
+00146       fprintf( stderr, \textcolor{stringliteral}{"Encountered error initializing read semaphore: %s\(\backslash\)n"},
+00147                strerror( errnum ) );
+00148       \textcolor{keywordflow}{return} EXIT\_INIT;
+00149    \}
+00150    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00151 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}\label{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}} 
+\index{common.\+c@{common.\+c}!thread\+\_\+exit@{thread\+\_\+exit}}
+\index{thread\+\_\+exit@{thread\+\_\+exit}!common.\+c@{common.\+c}}
+\subsubsection{\texorpdfstring{thread\+\_\+exit()}{thread\_exit()}}
+{\footnotesize\ttfamily void thread\+\_\+exit (\begin{DoxyParamCaption}\item[{int}]{exit\+\_\+status }\end{DoxyParamCaption})}
+
+
+
+Common exit point for all threads. 
+
+================================================================================= Function\+: thread\+\_\+exit 
+\begin{DoxyParams}{Parameters}
+{\em exit\+\_\+status} & -\/ reason for exit (signal number) \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00061 \{
+00062    \textcolor{keyword}{struct }timespec time;
+00063    clock\_gettime(CLOCK\_REALTIME, &time);
+00064 
+00065    \textcolor{keywordflow}{switch}( exit\_status )
+00066    \{
+00067       \textcolor{keywordflow}{case} SIGUSR1:
+00068          fprintf( stdout, \textcolor{stringliteral}{"Caught SIGUSR1 Signal! Exiting...\(\backslash\)n"});
+00069          \textcolor{keywordflow}{break};
+00070       \textcolor{keywordflow}{case} SIGUSR2:
+00071          fprintf( stdout, \textcolor{stringliteral}{"Caught SIGUSR2 Signal! Exiting...\(\backslash\)n"});
+00072          \textcolor{keywordflow}{break};
+00073       \textcolor{keywordflow}{default}:
+00074          \textcolor{keywordflow}{break};
+00075    \}
+00076    fprintf( stdout, \textcolor{stringliteral}{"Goodbye World! End Time: %ld.%ld secs\(\backslash\)n"},
+00077             time.tv\_sec, time.tv\_nsec );
+00078 
+00079    pthread\_exit(EXIT\_SUCCESS);
+00080 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{common_8c_a78dd395e9020e2a6066233a529bff7be}\label{common_8c_a78dd395e9020e2a6066233a529bff7be}} 
+\index{common.\+c@{common.\+c}!timer\+\_\+setup@{timer\+\_\+setup}}
+\index{timer\+\_\+setup@{timer\+\_\+setup}!common.\+c@{common.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+setup()}{timer\_setup()}}
+{\footnotesize\ttfamily int timer\+\_\+setup (\begin{DoxyParamCaption}\item[{timer\+\_\+t $\ast$}]{id,  }\item[{void($\ast$)(union sigval)}]{timer\+\_\+handler }\end{DoxyParamCaption})}
+
+
+
+Initializes a timer identified by timer\+\_\+t id. 
+
+================================================================================= Function\+: timer\+\_\+setup 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$id} & -\/ identifier for new timer \\
+\hline
+{\em $\ast$handler} & -\/ pointer to function to register as the handler for the timer ticks \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+I\+N\+IT }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00156 \{
+00157    \textcolor{keywordtype}{int} retVal = 0;
+00158    \textcolor{comment}{/* Set up timer */}
+00159    \textcolor{keyword}{struct }sigevent sev;
+00160 
+00161    memset(&sev, 0, \textcolor{keyword}{sizeof}(\textcolor{keyword}{struct} sigevent));
+00162 
+00163    sev.sigev\_notify = SIGEV\_THREAD;
+00164    sev.sigev\_notify\_function = handler;
+00165    sev.sigev\_value.sival\_ptr = NULL;
+00166    sev.sigev\_notify\_attributes = NULL;
+00167 
+00168    retVal = timer\_create( CLOCK\_REALTIME, &sev, \textcolor{keywordtype}{id} );
+00169    \textcolor{keywordflow}{if}( 0 > retVal )
+00170    \{
+00171       \textcolor{keywordtype}{int} errnum = errno;
+00172       fprintf( stderr, \textcolor{stringliteral}{"Encountered error creating new timer: (%s)\(\backslash\)n"},
+00173                strerror( errnum ) );
+00174       \textcolor{keywordflow}{return} EXIT\_INIT;
+00175    \}
+00176    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00177 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{common_8c_a207644f53334379d5fcb82b78bafff36}\label{common_8c_a207644f53334379d5fcb82b78bafff36}} 
+\index{common.\+c@{common.\+c}!timer\+\_\+start@{timer\+\_\+start}}
+\index{timer\+\_\+start@{timer\+\_\+start}!common.\+c@{common.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+start()}{timer\_start()}}
+{\footnotesize\ttfamily int timer\+\_\+start (\begin{DoxyParamCaption}\item[{timer\+\_\+t $\ast$}]{id,  }\item[{unsigned long}]{usecs }\end{DoxyParamCaption})}
+
+
+
+Starts the timer with interval usecs. 
+
+================================================================================= Function\+: timer\+\_\+start 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$id} & -\/ identifier for new timer \\
+\hline
+{\em usecs} & -\/ timer interval \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+I\+N\+IT }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00181 \{
+00182    \textcolor{keywordtype}{int} retVal = 0;
+00183    \textcolor{keyword}{struct }itimerspec trigger;
+00184 
+00185    trigger.it\_value.tv\_sec = usecs / MICROS\_PER\_SEC;
+00186    trigger.it\_value.tv\_nsec = ( usecs % MICROS\_PER\_SEC ) * 1000;
+00187    
+00188    trigger.it\_interval.tv\_sec = trigger.it\_value.tv\_sec;
+00189    trigger.it\_interval.tv\_nsec = trigger.it\_value.tv\_nsec;
+00190 
+00191    retVal = timer\_settime( *\textcolor{keywordtype}{id}, 0, &trigger, NULL );
+00192    \textcolor{keywordflow}{if}( 0 > retVal )
+00193    \{
+00194       \textcolor{keywordtype}{int} errnum = errno;
+00195       fprintf( stderr, \textcolor{stringliteral}{"Encountered error starting new timer: (%s)\(\backslash\)n"},
+00196                strerror( errnum ) );
+00197       \textcolor{keywordflow}{return} EXIT\_INIT;
+00198    \}
+00199    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00200 \}
+\end{DoxyCode}

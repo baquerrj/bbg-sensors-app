@@ -1,0 +1,647 @@
+\hypertarget{temperature_8c}{}\section{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/temperature.c File Reference}
+\label{temperature_8c}\index{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/temperature.\+c@{/home/baquerrj/boulder/ecen5013/project\+\_\+1/src/temperature.\+c}}
+
+
+Source file implementing \hyperlink{temperature_8h}{temperature.\+h}.  
+
+
+{\ttfamily \#include \char`\"{}watchdog.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}temperature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}led.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for temperature.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{temperature_8c_a47f06fefabeb93c38acaface0c1f0a1d}{get\+\_\+temperature} (void)
+\begin{DoxyCompactList}\small\item\em Returns last temperature reading we have. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_acd7ca9077d8d9806394cf01abdc944e4}{tmp102\+\_\+write\+\_\+config} (\hyperlink{structtmp102__config__t}{tmp102\+\_\+config\+\_\+t} $\ast$config\+\_\+reg)
+\begin{DoxyCompactList}\small\item\em Write configuration register of T\+M\+P102 sensor. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_ae8c3bd4aa2bae886c806126b137260cc}{tmp102\+\_\+get\+\_\+temp} (float $\ast$temperature)
+\begin{DoxyCompactList}\small\item\em Read temperature registers fo T\+M\+P102 sensor and decode temperature value. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_a3981b7fa33f651b8ccb69c57a367d2a6}{tmp102\+\_\+write\+\_\+thigh} (float thigh)
+\begin{DoxyCompactList}\small\item\em Write value thigh (in celsius) to Thigh register for T\+M\+P102 sensor. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_a1f00b98eda6de0f346820505fe01d35a}{tmp102\+\_\+write\+\_\+tlow} (float tlow)
+\begin{DoxyCompactList}\small\item\em Write value tlow (in celsius) to Tlow register for T\+M\+P102 sensor. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_a4d0f60419e315719e9ae80690a40240f}{tmp102\+\_\+read\+\_\+thigh} (float $\ast$thigh)
+\begin{DoxyCompactList}\small\item\em Read value of T\+High register of T\+M\+P102 sensor and store value (in celsius) in thigh. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_abd5568ce7a9d3c7f0c13bea9138b5bec}{tmp102\+\_\+read\+\_\+tlow} (float $\ast$tlow)
+\begin{DoxyCompactList}\small\item\em Read value of T\+Low register of T\+M\+P102 sensor and store value (in celsius) in tlow. \end{DoxyCompactList}\item 
+static void \hyperlink{temperature_8c_a366471b5822de7615f33cbe5eab9726a}{sig\+\_\+handler} (int signo)
+\begin{DoxyCompactList}\small\item\em Signal handler for temperature sensor thread. On normal operation, we should be receving S\+I\+G\+U\+S\+R1/2 signals from watchdog when prompted to exit. So, we close the message queue and timer this thread owns. \end{DoxyCompactList}\item 
+static void \hyperlink{temperature_8c_a4f3aa3fb3750262d938e191252db81fb}{timer\+\_\+handler} (union sigval sig)
+\begin{DoxyCompactList}\small\item\em Timer handler function for temperature sensor thread When woken up by the timer, get temperature and write state to shared memory. \end{DoxyCompactList}\item 
+static void \hyperlink{temperature_8c_a17b9e7a92cacdbc3b7220d968b204525}{cycle} (void)
+\begin{DoxyCompactList}\small\item\em Cycle function for temperature sensor thread We wait in this while loop checking for requests from watchdog for health status. \end{DoxyCompactList}\item 
+mqd\+\_\+t \hyperlink{temperature_8c_a4fb20f64bbc451d19252c2748bad1cb6}{get\+\_\+temperature\+\_\+queue} (void)
+\begin{DoxyCompactList}\small\item\em Get file descriptor for temperature sensor thread. Called by watchdog thread in order to be able to send heartbeat check via queue. \end{DoxyCompactList}\item 
+int \hyperlink{temperature_8c_a8eabbde1b6f330ffc5ccc89d30064138}{temp\+\_\+queue\+\_\+init} (void)
+\begin{DoxyCompactList}\small\item\em Initialize message queue for temperature sensor thread. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{temperature_8c_ae0afede2f0dcd1931da5bed09ae70cd4}{temperature\+\_\+fn} (void $\ast$thread\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Entry point for temperature sensor processing thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{temperature_8c_a7c22bf62313ce4f2bbe148ca7ba2abd3}\label{temperature_8c_a7c22bf62313ce4f2bbe148ca7ba2abd3}} 
+static timer\+\_\+t {\bfseries timerid}
+\item 
+\mbox{\Hypertarget{temperature_8c_a3dfce1828c167eae81a00615b18296df}\label{temperature_8c_a3dfce1828c167eae81a00615b18296df}} 
+struct itimerspec {\bfseries trigger}
+\item 
+\mbox{\Hypertarget{temperature_8c_a82fa9da819416d4a96db95fb0557190b}\label{temperature_8c_a82fa9da819416d4a96db95fb0557190b}} 
+static \hyperlink{structi2c__handle__t}{i2c\+\_\+handle\+\_\+t} {\bfseries i2c\+\_\+tmp102}
+\item 
+\mbox{\Hypertarget{temperature_8c_a2e60d9e9c490a5f92c19fa664e1633dd}\label{temperature_8c_a2e60d9e9c490a5f92c19fa664e1633dd}} 
+static float {\bfseries last\+\_\+temp\+\_\+value} = -\/5
+\item 
+\mbox{\Hypertarget{temperature_8c_a03f2a9c06ed019d5ba167521a180cfa3}\label{temperature_8c_a03f2a9c06ed019d5ba167521a180cfa3}} 
+static mqd\+\_\+t {\bfseries temp\+\_\+queue}
+\item 
+\mbox{\Hypertarget{temperature_8c_a0595a9426215e130f99f34805ad48965}\label{temperature_8c_a0595a9426215e130f99f34805ad48965}} 
+static \hyperlink{structshared__data__t}{shared\+\_\+data\+\_\+t} $\ast$ {\bfseries shm}
+\item 
+const \hyperlink{structtmp102__config__t}{tmp102\+\_\+config\+\_\+t} {\bfseries tmp102\+\_\+default\+\_\+config}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Source file implementing \hyperlink{temperature_8h}{temperature.\+h}. 
+
+=================================================================================
+
+\begin{DoxyAuthor}{Author}
+Roberto Baquerizo (baquerrj), \href{mailto:roba8460@colorado.edu}{\tt roba8460@colorado.\+edu} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{temperature_8c_a17b9e7a92cacdbc3b7220d968b204525}\label{temperature_8c_a17b9e7a92cacdbc3b7220d968b204525}} 
+\index{temperature.\+c@{temperature.\+c}!cycle@{cycle}}
+\index{cycle@{cycle}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{cycle()}{cycle()}}
+{\footnotesize\ttfamily static void cycle (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Cycle function for temperature sensor thread We wait in this while loop checking for requests from watchdog for health status. 
+
+================================================================================= Function\+: cycle 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00364 \{
+00365    \textcolor{keywordtype}{int} retVal = 0;
+00366    \hyperlink{structmsg__t}{msg\_t} request = \{0\};
+00367    \hyperlink{structmsg__t}{msg\_t} response = \{0\};
+00368    \textcolor{keywordflow}{while}( 1 )
+00369    \{
+00370       memset( &request, 0, \textcolor{keyword}{sizeof}( request ) );
+00371       retVal = mq\_receive( temp\_queue, (\textcolor{keywordtype}{char}*)&request, \textcolor{keyword}{sizeof}( request ), NULL );
+00372       \textcolor{keywordflow}{if}( 0 > retVal )
+00373       \{
+00374          \textcolor{keywordtype}{int} errnum = errno;
+00375          sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00376          sprintf( shm->buffer, \textcolor{stringliteral}{"ERROR: Encountered error receiving from message queue %s: (%s)\(\backslash\)n"},
+00377                   TEMP\_QUEUE\_NAME, strerror( errnum ) );
+00378          sem\_post(&shm->r\_sem);
+00379          \textcolor{keywordflow}{continue};
+00380       \}
+00381       \textcolor{keywordflow}{switch}( request.id )
+00382       \{
+00383          \textcolor{keywordflow}{case} REQUEST\_STATUS:
+00384             sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00385             \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00386             sprintf( shm->buffer, \textcolor{stringliteral}{"(Temperature) I am alive!\(\backslash\)n"} );
+00387             sem\_post(&shm->r\_sem);
+00388             fprintf( stdout, \textcolor{stringliteral}{"(Temperature) I am alive!\(\backslash\)n"} );
+00389             response.id = request.id;
+00390             sprintf( response.info, \textcolor{stringliteral}{"(Temperature) I am alive!\(\backslash\)n"} );
+00391             retVal = mq\_send( request.src, (\textcolor{keyword}{const} \textcolor{keywordtype}{char}*)&response, \textcolor{keyword}{sizeof}( response ), 0 );
+00392 
+00393             pthread\_mutex\_lock( &alive\_mutex );
+00394             threads\_status[THREAD\_TEMP]--;
+00395             pthread\_mutex\_unlock( &alive\_mutex );
+00396             \textcolor{keywordflow}{break};
+00397          \textcolor{keywordflow}{default}:
+00398             \textcolor{keywordflow}{break};
+00399       \}
+00400    \}
+00401    \textcolor{keywordflow}{return};
+00402 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a47f06fefabeb93c38acaface0c1f0a1d}\label{temperature_8c_a47f06fefabeb93c38acaface0c1f0a1d}} 
+\index{temperature.\+c@{temperature.\+c}!get\+\_\+temperature@{get\+\_\+temperature}}
+\index{get\+\_\+temperature@{get\+\_\+temperature}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+temperature()}{get\_temperature()}}
+{\footnotesize\ttfamily float get\+\_\+temperature (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Returns last temperature reading we have. 
+
+================================================================================= Function\+: get\+\_\+temperature 
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+last\+\_\+temp\+\_\+value -\/ last temperature reading we have \subsection*{$<$+\+D\+E\+T\+A\+I\+L\+E\+D+$>$ }
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+00066 \{
+00067    \textcolor{keywordflow}{return} last\_temp\_value;
+00068 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a4fb20f64bbc451d19252c2748bad1cb6}\label{temperature_8c_a4fb20f64bbc451d19252c2748bad1cb6}} 
+\index{temperature.\+c@{temperature.\+c}!get\+\_\+temperature\+\_\+queue@{get\+\_\+temperature\+\_\+queue}}
+\index{get\+\_\+temperature\+\_\+queue@{get\+\_\+temperature\+\_\+queue}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+temperature\+\_\+queue()}{get\_temperature\_queue()}}
+{\footnotesize\ttfamily mqd\+\_\+t get\+\_\+temperature\+\_\+queue (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get file descriptor for temperature sensor thread. Called by watchdog thread in order to be able to send heartbeat check via queue. 
+
+================================================================================= Function\+: get\+\_\+temperature\+\_\+queue 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{temp\+\_\+queue -\/ file descriptor for temperature sensor thread message queue }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00415 \{
+00416    \textcolor{keywordflow}{return} temp\_queue;
+00417 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a366471b5822de7615f33cbe5eab9726a}\label{temperature_8c_a366471b5822de7615f33cbe5eab9726a}} 
+\index{temperature.\+c@{temperature.\+c}!sig\+\_\+handler@{sig\+\_\+handler}}
+\index{sig\+\_\+handler@{sig\+\_\+handler}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{sig\+\_\+handler()}{sig\_handler()}}
+{\footnotesize\ttfamily static void sig\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{signo }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Signal handler for temperature sensor thread. On normal operation, we should be receving S\+I\+G\+U\+S\+R1/2 signals from watchdog when prompted to exit. So, we close the message queue and timer this thread owns. 
+
+================================================================================= Function\+: sig\+\_\+handler 
+\begin{DoxyParams}{Parameters}
+{\em signo} & -\/ enum with signal number of signal being handled \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00298 \{
+00299    \textcolor{keywordflow}{if}( signo == SIGUSR1 )
+00300    \{
+00301       printf(\textcolor{stringliteral}{"Received SIGUSR1! Exiting...\(\backslash\)n"});
+00302       mq\_close( temp\_queue );
+00303       timer\_delete( timerid );
+00304       \hyperlink{i2c_8c_a8f550e69702cca5887035007afe36d40}{i2c\_stop}( &i2c\_tmp102 );
+00305       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( signo );
+00306    \}
+00307    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( signo == SIGUSR2 )
+00308    \{
+00309       printf(\textcolor{stringliteral}{"Received SIGUSR2! Exiting...\(\backslash\)n"});
+00310       mq\_close( temp\_queue );
+00311       timer\_delete( timerid );
+00312       \hyperlink{i2c_8c_a8f550e69702cca5887035007afe36d40}{i2c\_stop}( &i2c\_tmp102 );
+00313       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( signo );
+00314    \}
+00315    \textcolor{keywordflow}{return};
+00316 \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{temperature_8c_a8eabbde1b6f330ffc5ccc89d30064138}\label{temperature_8c_a8eabbde1b6f330ffc5ccc89d30064138}} 
+\index{temperature.\+c@{temperature.\+c}!temp\+\_\+queue\+\_\+init@{temp\+\_\+queue\+\_\+init}}
+\index{temp\+\_\+queue\+\_\+init@{temp\+\_\+queue\+\_\+init}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{temp\+\_\+queue\+\_\+init()}{temp\_queue\_init()}}
+{\footnotesize\ttfamily int temp\+\_\+queue\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialize message queue for temperature sensor thread. 
+
+================================================================================= Function\+: temp\+\_\+queue\+\_\+init 
+\begin{DoxyParams}{Parameters}
+{\em void} & \subsection*{msg\+\_\+q -\/ file descriptor for initialized message queue }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00429 \{
+00430    \textcolor{comment}{/* unlink first in case we hadn't shut down cleanly last time */}
+00431    mq\_unlink( TEMP\_QUEUE\_NAME );
+00432 
+00433    \textcolor{keyword}{struct }mq\_attr attr;
+00434    attr.mq\_flags = 0;
+00435    attr.mq\_maxmsg = MAX\_MESSAGES;
+00436    attr.mq\_msgsize = \textcolor{keyword}{sizeof}( \hyperlink{structmsg__t}{msg\_t} );
+00437    attr.mq\_curmsgs = 0;
+00438 
+00439    \textcolor{keywordtype}{int} msg\_q = mq\_open( TEMP\_QUEUE\_NAME, O\_CREAT | O\_RDWR, 0666, &attr );
+00440    \textcolor{keywordflow}{if}( 0 > msg\_q )
+00441    \{
+00442       \textcolor{keywordtype}{int} errnum = errno;
+00443       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00444       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00445       sprintf( shm->buffer, \textcolor{stringliteral}{"ERROR: Encountered error creating message queue %s: (%s)\(\backslash\)n"},
+00446                TEMP\_QUEUE\_NAME, strerror( errnum ) );
+00447       sem\_post(&shm->r\_sem);     
+00448    \}
+00449    \textcolor{keywordflow}{return} msg\_q;
+00450 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_ae0afede2f0dcd1931da5bed09ae70cd4}\label{temperature_8c_ae0afede2f0dcd1931da5bed09ae70cd4}} 
+\index{temperature.\+c@{temperature.\+c}!temperature\+\_\+fn@{temperature\+\_\+fn}}
+\index{temperature\+\_\+fn@{temperature\+\_\+fn}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{temperature\+\_\+fn()}{temperature\_fn()}}
+{\footnotesize\ttfamily void$\ast$ temperature\+\_\+fn (\begin{DoxyParamCaption}\item[{void $\ast$}]{thread\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Entry point for temperature sensor processing thread. 
+
+================================================================================= Function\+: temperature\+\_\+fn 
+\begin{DoxyParams}{Parameters}
+{\em thread\+\_\+args} & -\/ void ptr to arguments used to initialize thread \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\+U\+LL -\/ We don\textquotesingle{}t really exit from this function, \subsection*{since the exit point is \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\+\_\+exit()} }
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+00463 \{
+00464    \textcolor{comment}{/* Get time that thread was spawned */}
+00465    \textcolor{keyword}{struct }timespec time;
+00466    clock\_gettime(CLOCK\_REALTIME, &time);
+00467    shm = \hyperlink{common_8c_ae426f169cff2eb748a7d509bda02c686}{get\_shared\_memory}();
+00468 
+00469    \textcolor{comment}{/* Write initial state to shared memory */}
+00470    sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00471    \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00472    sprintf( shm->buffer, \textcolor{stringliteral}{"Hello World! Start Time: %ld.%ld secs\(\backslash\)n"},
+00473             time.tv\_sec, time.tv\_nsec );
+00474    \textcolor{comment}{/* Signal to logger that shared memory has been updated */}
+00475    sem\_post(&shm->r\_sem);
+00476 
+00477    signal(SIGUSR1, \hyperlink{temperature_8c_a366471b5822de7615f33cbe5eab9726a}{sig\_handler});
+00478    signal(SIGUSR2, \hyperlink{temperature_8c_a366471b5822de7615f33cbe5eab9726a}{sig\_handler});
+00479 
+00480    temp\_queue = \hyperlink{temperature_8c_a8eabbde1b6f330ffc5ccc89d30064138}{temp\_queue\_init}();
+00481    \textcolor{keywordflow}{if}( 0 > temp\_queue )
+00482    \{
+00483       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_INIT );
+00484    \}
+00485 
+00486    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a1554411301103619aa6f40b7613b5e6b}{i2c\_init}( &i2c\_tmp102 );
+00487    \textcolor{keywordflow}{if}( EXIT\_INIT == retVal )
+00488    \{
+00489       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00490       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00491       sprintf( shm->buffer, \textcolor{stringliteral}{"ERROR: Failed to initialize I2C for temperature sensor!\(\backslash\)n"} );
+00492       sem\_post(&shm->r\_sem);
+00493       \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( EXIT\_INIT );
+00494    \}
+00495 
+00496    \hyperlink{common_8c_a78dd395e9020e2a6066233a529bff7be}{timer\_setup}( &timerid, &\hyperlink{temperature_8c_a4f3aa3fb3750262d938e191252db81fb}{timer\_handler} );
+00497 
+00498    \hyperlink{common_8c_a207644f53334379d5fcb82b78bafff36}{timer\_start}( &timerid, 1000000 );
+00499    \hyperlink{temperature_8c_a17b9e7a92cacdbc3b7220d968b204525}{cycle}();
+00500 
+00501    \hyperlink{common_8c_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( 0 );
+00502    \textcolor{keywordflow}{return} NULL;
+00503 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a4f3aa3fb3750262d938e191252db81fb}\label{temperature_8c_a4f3aa3fb3750262d938e191252db81fb}} 
+\index{temperature.\+c@{temperature.\+c}!timer\+\_\+handler@{timer\+\_\+handler}}
+\index{timer\+\_\+handler@{timer\+\_\+handler}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+handler()}{timer\_handler()}}
+{\footnotesize\ttfamily static void timer\+\_\+handler (\begin{DoxyParamCaption}\item[{union sigval}]{sig }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Timer handler function for temperature sensor thread When woken up by the timer, get temperature and write state to shared memory. 
+
+================================================================================= Function\+: timer\+\_\+handler 
+\begin{DoxyParams}{Parameters}
+{\em sig} & \subsection*{void }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00329 \{
+00330    \textcolor{keyword}{static} \textcolor{keywordtype}{int} i = 0;
+00331    \hyperlink{led_8c_ad5a256395c8cd67d2a9f9ff1abfd6d2a}{led\_toggle}( LED0\_BRIGHTNESS );
+00332    sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00333    
+00334    \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00335    \textcolor{keywordtype}{float} temperature;
+00336    \textcolor{keywordtype}{int} retVal = \hyperlink{temperature_8c_ae8c3bd4aa2bae886c806126b137260cc}{tmp102\_get\_temp}( &temperature );
+00337    i++;
+00338    \textcolor{keywordflow}{if}( retVal )
+00339    \{
+00340       sprintf( shm->buffer, \textcolor{stringliteral}{"cycle[%d]: %0.5f Celsius\(\backslash\)n"}, i, temperature );
+00341    \}
+00342    \textcolor{keywordflow}{else}
+00343    \{
+00344       sprintf( shm->buffer, \textcolor{stringliteral}{"cycle[%d]: could not get temperature reading!\(\backslash\)n"}, i );
+00345    \}
+00346 
+00347    sem\_post(&shm->r\_sem);
+00348    \hyperlink{led_8c_ad5a256395c8cd67d2a9f9ff1abfd6d2a}{led\_toggle}( LED0\_BRIGHTNESS );
+00349    \textcolor{keywordflow}{return};
+00350 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_ae8c3bd4aa2bae886c806126b137260cc}\label{temperature_8c_ae8c3bd4aa2bae886c806126b137260cc}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+get\+\_\+temp@{tmp102\+\_\+get\+\_\+temp}}
+\index{tmp102\+\_\+get\+\_\+temp@{tmp102\+\_\+get\+\_\+temp}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+get\+\_\+temp()}{tmp102\_get\_temp()}}
+{\footnotesize\ttfamily int tmp102\+\_\+get\+\_\+temp (\begin{DoxyParamCaption}\item[{float $\ast$}]{temperature }\end{DoxyParamCaption})}
+
+
+
+Read temperature registers fo T\+M\+P102 sensor and decode temperature value. 
+
+================================================================================= Function\+: tmp102\+\_\+get\+\_\+temp 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$temperature} & -\/ pointer to location to write decoded value to \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+E\+R\+R\+OR }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00097 \{
+00098    uint8\_t buffer[2] = \{0\};
+00099    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( \hyperlink{temperature_8h_a52b51038057cc25cb63a5cc9c1b3a2c0}{TMP102\_SLAVE}, \hyperlink{temperature_8h_a67feb48f0e5b0886495ad829ae99e75b}{TMP102\_REG\_TEMP}, buffer, \textcolor{keyword}{sizeof}(
+       buffer ) );
+00100    \textcolor{keywordflow}{if}( 0 > retVal )
+00101    \{
+00102       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00103    \}
+00104 
+00105    uint16\_t tmp = 0;
+00106    tmp = 0xfff & ( ((uint16\_t)buffer[0] << 4 ) | (buffer[1] >> 4 ) ); \textcolor{comment}{/* buffer[0] = MSB(15:8)}
+00107 \textcolor{comment}{                                                                        buffer[1] = LSB(7:4) */}
+00108    \textcolor{keywordflow}{if}( 0x800 & tmp )
+00109    \{
+00110       tmp = ( (~tmp ) + 1 ) & 0xfff;
+00111       *temperature = -1.0 * (float)tmp * 0.0625;
+00112    \}
+00113    \textcolor{keywordflow}{else}
+00114    \{
+00115       *temperature = ((float)tmp) * 0.0625;
+00116    \}
+00117 
+00118    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00119 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a4d0f60419e315719e9ae80690a40240f}\label{temperature_8c_a4d0f60419e315719e9ae80690a40240f}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+read\+\_\+thigh@{tmp102\+\_\+read\+\_\+thigh}}
+\index{tmp102\+\_\+read\+\_\+thigh@{tmp102\+\_\+read\+\_\+thigh}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+read\+\_\+thigh()}{tmp102\_read\_thigh()}}
+{\footnotesize\ttfamily int tmp102\+\_\+read\+\_\+thigh (\begin{DoxyParamCaption}\item[{float $\ast$}]{thigh }\end{DoxyParamCaption})}
+
+
+
+Read value of T\+High register of T\+M\+P102 sensor and store value (in celsius) in thigh. 
+
+================================================================================= Function\+: tmp102\+\_\+read\+\_\+thigh 
+\begin{DoxyParams}{Parameters}
+{\em thigh} & -\/ pointer to location to store decoded temperature value to \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, E\+X\+I\+T\+\_\+\+E\+R\+R\+OR otherwise }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00221 \{
+00222    uint16\_t tmp = 0;
+00223 
+00224    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( \hyperlink{temperature_8h_a52b51038057cc25cb63a5cc9c1b3a2c0}{TMP102\_SLAVE}, TMP102\_THIGH, (uint8\_t*)&tmp, \textcolor{keyword}{sizeof}( tmp ) );
+00225    \textcolor{keywordflow}{if}( 0 > retVal )
+00226    \{
+00227       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00228       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00229       sprintf( shm->buffer, \textcolor{stringliteral}{"Could not read from TLow register!\(\backslash\)n"} );
+00230       sem\_post(&shm->r\_sem);
+00231       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00232    \}
+00233 
+00234    \textcolor{keywordflow}{if}( tmp & 0x800 )
+00235    \{
+00236       tmp = ~(tmp) + 1;
+00237       *thigh = -1 * ( (float)tmp * 0.0625 );
+00238    \}
+00239    \textcolor{keywordflow}{else}
+00240    \{
+00241       *thigh = (float)tmp * 0.0625;
+00242    \}
+00243 
+00244    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00245 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_abd5568ce7a9d3c7f0c13bea9138b5bec}\label{temperature_8c_abd5568ce7a9d3c7f0c13bea9138b5bec}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+read\+\_\+tlow@{tmp102\+\_\+read\+\_\+tlow}}
+\index{tmp102\+\_\+read\+\_\+tlow@{tmp102\+\_\+read\+\_\+tlow}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+read\+\_\+tlow()}{tmp102\_read\_tlow()}}
+{\footnotesize\ttfamily int tmp102\+\_\+read\+\_\+tlow (\begin{DoxyParamCaption}\item[{float $\ast$}]{tlow }\end{DoxyParamCaption})}
+
+
+
+Read value of T\+Low register of T\+M\+P102 sensor and store value (in celsius) in tlow. 
+
+================================================================================= Function\+: tmp102\+\_\+read\+\_\+tlow 
+\begin{DoxyParams}{Parameters}
+{\em tlow} & -\/ pointer to location to store decoded temperature value to \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, E\+X\+I\+T\+\_\+\+E\+R\+R\+OR otherwise }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00258 \{
+00259    uint16\_t tmp = 0;
+00260 
+00261    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_aeecccc19faa9d25c282c0341631b7d2f}{i2c\_read}( \hyperlink{temperature_8h_a52b51038057cc25cb63a5cc9c1b3a2c0}{TMP102\_SLAVE}, TMP102\_TLOW, (uint8\_t*)&tmp, \textcolor{keyword}{sizeof}( tmp ) );
+00262    \textcolor{keywordflow}{if}( 0 > retVal )
+00263    \{
+00264       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00265       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00266       sprintf( shm->buffer, \textcolor{stringliteral}{"Could not read from TLow register!\(\backslash\)n"} );
+00267       sem\_post(&shm->r\_sem);
+00268       \textcolor{keywordflow}{return} retVal;
+00269    \}
+00270 
+00271    \textcolor{keywordflow}{if}( tmp & 0x800 )
+00272    \{
+00273       tmp = ~(tmp) + 1;
+00274       *tlow = -1 * (float)tmp * 0.0625;
+00275    \}
+00276    \textcolor{keywordflow}{else}
+00277    \{
+00278       *tlow = (float)tmp * 0.0625;
+00279    \}
+00280 
+00281    \textcolor{keywordflow}{return} retVal;
+00282 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_acd7ca9077d8d9806394cf01abdc944e4}\label{temperature_8c_acd7ca9077d8d9806394cf01abdc944e4}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+write\+\_\+config@{tmp102\+\_\+write\+\_\+config}}
+\index{tmp102\+\_\+write\+\_\+config@{tmp102\+\_\+write\+\_\+config}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+write\+\_\+config()}{tmp102\_write\_config()}}
+{\footnotesize\ttfamily int tmp102\+\_\+write\+\_\+config (\begin{DoxyParamCaption}\item[{\hyperlink{structtmp102__config__t}{tmp102\+\_\+config\+\_\+t} $\ast$}]{config\+\_\+reg }\end{DoxyParamCaption})}
+
+
+
+Write configuration register of T\+M\+P102 sensor. 
+
+================================================================================= Function\+: tmp102\+\_\+write\+\_\+config 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$config\+\_\+reg} & -\/ pointer to struct with values to write to configuration register \subsection*{see \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\+\_\+write()} }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00081 \{
+00082    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\_write}( \hyperlink{temperature_8h_a52b51038057cc25cb63a5cc9c1b3a2c0}{TMP102\_SLAVE}, TMP102\_REG\_CONFIG, *((uint16\_t*)&config\_reg) 
+      );
+00083 
+00084    \textcolor{keywordflow}{return} retVal;
+00085 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a3981b7fa33f651b8ccb69c57a367d2a6}\label{temperature_8c_a3981b7fa33f651b8ccb69c57a367d2a6}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+write\+\_\+thigh@{tmp102\+\_\+write\+\_\+thigh}}
+\index{tmp102\+\_\+write\+\_\+thigh@{tmp102\+\_\+write\+\_\+thigh}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+write\+\_\+thigh()}{tmp102\_write\_thigh()}}
+{\footnotesize\ttfamily int tmp102\+\_\+write\+\_\+thigh (\begin{DoxyParamCaption}\item[{float}]{thigh }\end{DoxyParamCaption})}
+
+
+
+Write value thigh (in celsius) to Thigh register for T\+M\+P102 sensor. 
+
+================================================================================= Function\+: tmp102\+\_\+write\+\_\+thigh 
+\begin{DoxyParams}{Parameters}
+{\em thigh} & -\/ value to write to Thigh register \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+E\+R\+R\+OR }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00131 \{
+00132    \textcolor{keywordflow}{if}( (-56.0 > thigh) || (151.0 < thigh) )
+00133    \{
+00134       thigh = 80.0;
+00135    \}
+00136 
+00137    thigh /= 0.0625;
+00138    uint16\_t tmp;
+00139 
+00140    \textcolor{keywordflow}{if}( 0 > thigh )
+00141    \{
+00142       tmp = ( (uint16\_t)thigh << 4 );
+00143       tmp &= 0x7fff;
+00144    \}
+00145    \textcolor{keywordflow}{else}
+00146    \{
+00147       thigh *= -1;
+00148       tmp = (uint16\_t)thigh;
+00149       tmp = ~(tmp) + 1;
+00150       tmp = tmp << 4;
+00151    \}
+00152 
+00153    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\_write}( \hyperlink{temperature_8h_a52b51038057cc25cb63a5cc9c1b3a2c0}{TMP102\_SLAVE}, TMP102\_THIGH, tmp );
+00154    \textcolor{keywordflow}{if}( 0 > retVal )
+00155    \{
+00156       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00157       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00158       sprintf( shm->buffer, \textcolor{stringliteral}{"Could not write value to THigh register!\(\backslash\)n"} );
+00159       sem\_post(&shm->r\_sem);
+00160       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00161    \}
+00162 
+00163    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00164 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{temperature_8c_a1f00b98eda6de0f346820505fe01d35a}\label{temperature_8c_a1f00b98eda6de0f346820505fe01d35a}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+write\+\_\+tlow@{tmp102\+\_\+write\+\_\+tlow}}
+\index{tmp102\+\_\+write\+\_\+tlow@{tmp102\+\_\+write\+\_\+tlow}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+write\+\_\+tlow()}{tmp102\_write\_tlow()}}
+{\footnotesize\ttfamily int tmp102\+\_\+write\+\_\+tlow (\begin{DoxyParamCaption}\item[{float}]{tlow }\end{DoxyParamCaption})}
+
+
+
+Write value tlow (in celsius) to Tlow register for T\+M\+P102 sensor. 
+
+================================================================================= Function\+: tmp102\+\_\+write\+\_\+tlow 
+\begin{DoxyParams}{Parameters}
+{\em tlow} & -\/ value to write to Tlow register \subsection*{E\+X\+I\+T\+\_\+\+C\+L\+E\+AN if successful, otherwise E\+X\+I\+T\+\_\+\+E\+R\+R\+OR }\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+00176 \{
+00177    \textcolor{keywordflow}{if}( (-56.0 > tlow) || (151.0 < tlow ) )
+00178    \{
+00179       tlow = 75.0;
+00180    \}
+00181 
+00182    tlow /= 0.0625;
+00183    uint16\_t tmp;
+00184 
+00185    \textcolor{keywordflow}{if}( 0 < tlow )
+00186    \{
+00187       tmp = ( (uint16\_t)tlow << 4 );
+00188       tmp &= 0x7fff;
+00189    \}
+00190    \textcolor{keywordflow}{else}
+00191    \{
+00192       tlow *= -1;
+00193       tmp = (uint16\_t)tlow;
+00194       tmp = ~(tmp) + 1;
+00195       tmp = tmp << 4;
+00196    \}
+00197 
+00198    \textcolor{keywordtype}{int} retVal = \hyperlink{i2c_8c_a3b5f6dfe9cedb7ea92f9076cfc25c472}{i2c\_write}( \hyperlink{temperature_8h_a52b51038057cc25cb63a5cc9c1b3a2c0}{TMP102\_SLAVE}, TMP102\_TLOW, tmp );
+00199    \textcolor{keywordflow}{if}( 0 > retVal )
+00200    \{
+00201       sem\_wait(&shm->\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem});
+00202       \hyperlink{common_8c_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}(shm->\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{header});
+00203       sprintf( shm->buffer, \textcolor{stringliteral}{"Could not write value to TLow register!\(\backslash\)n"} );
+00204       sem\_post(&shm->r\_sem);
+00205       \textcolor{keywordflow}{return} EXIT\_ERROR;
+00206    \}
+00207 
+00208    \textcolor{keywordflow}{return} EXIT\_CLEAN;
+00209 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{temperature_8c_a56a31c1041686d35848cae16ffc6e478}\label{temperature_8c_a56a31c1041686d35848cae16ffc6e478}} 
+\index{temperature.\+c@{temperature.\+c}!tmp102\+\_\+default\+\_\+config@{tmp102\+\_\+default\+\_\+config}}
+\index{tmp102\+\_\+default\+\_\+config@{tmp102\+\_\+default\+\_\+config}!temperature.\+c@{temperature.\+c}}
+\subsubsection{\texorpdfstring{tmp102\+\_\+default\+\_\+config}{tmp102\_default\_config}}
+{\footnotesize\ttfamily const \hyperlink{structtmp102__config__t}{tmp102\+\_\+config\+\_\+t} tmp102\+\_\+default\+\_\+config}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+   .mode = \{                                 
+      .shutdown = \hyperlink{temperature_8h_a26deb1cdb6af48dfb3246342d9434321}{TMP102\_SHUTDOWN\_MODE},
+      .thermostat = TMP102\_THERMOSTAT\_MODE
+   \},
+   .polarity = TMP102\_POLARITY,              
+   .fault\_queue = TMP102\_FAULT\_QUEUE,        
+   .resolution = \{                           
+      .res\_0 = TMP102\_RESOLUTION\_0,
+      .res\_1 = TMP102\_RESOLUTION\_1
+   \},
+   .one\_shot = 1,                            
+   .operation = TMP102\_EXTENDED\_MODE,        
+   .alert = 1,                               
+   .conv\_rate = TMP102\_CONVERSION\_RATE       
+\}
+\end{DoxyCode}

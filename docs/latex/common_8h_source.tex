@@ -1,0 +1,118 @@
+\hypertarget{common_8h_source}{}\section{common.\+h}
+\label{common_8h_source}\index{/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/common.\+h@{/home/baquerrj/boulder/ecen5013/project\+\_\+1/inc/common.\+h}}
+
+\begin{DoxyCode}
+00001 
+00020 \textcolor{preprocessor}{#ifndef COMMON\_H}
+00021 \textcolor{preprocessor}{#define COMMON\_H}
+00022 
+00023 \textcolor{preprocessor}{#include <signal.h>}
+00024 \textcolor{preprocessor}{#include <stdio.h>}
+00025 \textcolor{preprocessor}{#include <pthread.h>}
+00026 \textcolor{preprocessor}{#include <unistd.h>}
+00027 \textcolor{preprocessor}{#include <semaphore.h>}
+00028 \textcolor{preprocessor}{#include <mqueue.h>}
+00029 
+00030 
+00031 \textcolor{preprocessor}{#define SHM\_SEGMENT\_NAME "/shm-log"}
+00032 \textcolor{preprocessor}{#define SHM\_BUFFER\_SIZE 2048}
+00033 
+00034 \textcolor{preprocessor}{#define GEN\_BUFFER\_SIZE 100}
+00035 \textcolor{preprocessor}{#define MAX\_MESSAGES 100}
+00036 
+00037 \textcolor{preprocessor}{#define MICROS\_PER\_SEC  1000000}
+00038 
+00039 \textcolor{comment}{/*******************************************************************************}
+00040 \textcolor{comment}{ *  Defines types of possible messages}
+00041 \textcolor{comment}{ ******************************************************************************/}
+00042 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{
+00043    REQUEST\_BEGIN = 0,
+00044    REQUEST\_LUX,
+00045    REQUEST\_DARK,
+00046    REQUEST\_TEMP,
+00047    REQUEST\_TEMP\_C = REQUEST\_TEMP,
+00048    REQUEST\_TEMP\_K,
+00049    REQUEST\_TEMP\_F,
+00050    REQUEST\_CLOSE,
+00051    REQUEST\_KILL,
+00052    REQUEST\_STATUS,
+00053    REQUEST\_MAX
+00054 \} request\_e;
+00055 
+00056 \textcolor{comment}{/*******************************************************************************}
+00057 \textcolor{comment}{ *  Defines struct for communicating sensor information}
+00058 \textcolor{comment}{ ******************************************************************************/}
+\Hypertarget{common_8h_source_l00059}\hyperlink{structsensor__data__t}{00059} \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{
+00060    \textcolor{keywordtype}{float} data;    
+\Hypertarget{common_8h_source_l00062}\hyperlink{structsensor__data__t_a237c02f9c5f1662b2c0736c795736ca2}{00062}    \textcolor{keywordtype}{int}   \hyperlink{structsensor__data__t_a237c02f9c5f1662b2c0736c795736ca2}{night};   
+00063 \} \hyperlink{structsensor__data__t}{sensor\_data\_t};
+00064 
+00065 \textcolor{comment}{/*******************************************************************************}
+00066 \textcolor{comment}{ *  Defines struct for response for remote socket task}
+00067 \textcolor{comment}{ ******************************************************************************/}
+\Hypertarget{common_8h_source_l00068}\hyperlink{structmsg__t}{00068} \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{
+00069    request\_e id;
+00070    mqd\_t src;
+00071    \textcolor{keywordtype}{char} info[GEN\_BUFFER\_SIZE];
+00072    \hyperlink{structsensor__data__t}{sensor\_data\_t} data;
+00073 \} \hyperlink{structmsg__t}{msg\_t};
+00074 
+00075 \textcolor{comment}{/*******************************************************************************}
+00076 \textcolor{comment}{ *}
+00077 \textcolor{comment}{ ******************************************************************************/}
+\Hypertarget{common_8h_source_l00078}\hyperlink{structfile__t}{00078} \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{
+00079    \textcolor{keywordtype}{char} *name;
+00080    FILE *fid;
+00081 \} \hyperlink{structfile__t}{file\_t};
+00082 
+00083 \textcolor{comment}{/*******************************************************************************}
+00084 \textcolor{comment}{ *  Struct to hold thread identifiers for tasks}
+00085 \textcolor{comment}{ ******************************************************************************/}
+\Hypertarget{common_8h_source_l00086}\hyperlink{structthread__id__s}{00086} \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\hyperlink{structthread__id__s}{thread\_id\_s} \{
+00087    pthread\_t temp\_thread;
+00088    pthread\_t light\_thread;
+00089    pthread\_t logger\_thread;
+00090    pthread\_t socket\_thread;
+00091    pthread\_t watchdog\_thread;
+00092 \} \hyperlink{structthread__id__s}{thread\_id\_s};
+00093 
+00094 
+00095 
+00096 \textcolor{comment}{/*******************************************************************************}
+00097 \textcolor{comment}{ *  Shared Memory Data Struct}
+00098 \textcolor{comment}{ ******************************************************************************/}
+\Hypertarget{common_8h_source_l00099}\hyperlink{structshared__data__t}{00099} \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{
+00100    \textcolor{keywordtype}{char} buffer[SHM\_BUFFER\_SIZE];  
+\Hypertarget{common_8h_source_l00101}\hyperlink{structshared__data__t_aac4f21bda7f4fc47557faac246f0b3ea}{00101}    \textcolor{keywordtype}{char} header[SHM\_BUFFER\_SIZE];  
+\Hypertarget{common_8h_source_l00102}\hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{00102}    sem\_t \hyperlink{structshared__data__t_aaa7bbb7121ee6cebe671dd6e2efb7763}{w\_sem};
+00103    sem\_t r\_sem;
+00104 \} \hyperlink{structshared__data__t}{shared\_data\_t};
+00105 
+00106 
+00107 \textcolor{comment}{/*******************************************************************************}
+00108 \textcolor{comment}{ *  Exit Enum}
+00109 \textcolor{comment}{ ******************************************************************************/}
+00110 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{
+00111    EXIT\_BEGIN = 0,
+00112    EXIT\_CLEAN = 0,
+00113    EXIT\_INIT,
+00114    EXIT\_ERROR,
+00115    EXIT\_MAX
+00116 \} exit\_e;
+00117 
+00129 \textcolor{keywordtype}{void} \hyperlink{common_8h_a8f714d490a7f06c3a43cfea239e2770f}{print\_header}( \textcolor{keywordtype}{char} *buffer );
+00130 
+00140 \textcolor{keywordtype}{void} \hyperlink{common_8h_a760f8eb17501e01a6673e2ec911ba1cb}{thread\_exit}( \textcolor{keywordtype}{int} exit\_status );
+00141 
+00151 \textcolor{keywordtype}{void} *\hyperlink{common_8h_ae426f169cff2eb748a7d509bda02c686}{get\_shared\_memory}( \textcolor{keywordtype}{void} );
+00152 
+00162 \textcolor{keywordtype}{int} \hyperlink{common_8h_a8e1ee6092ec482d5556b2100d64b8c74}{sems\_init}( \hyperlink{structshared__data__t}{shared\_data\_t} *shm );
+00163 
+00174 \textcolor{keywordtype}{int} \hyperlink{common_8h_a7bc3784d4fdb323e1761a141c72d2f49}{timer\_setup}( timer\_t *\textcolor{keywordtype}{id}, \textcolor{keywordtype}{void} (*\hyperlink{light_8c_a4f3aa3fb3750262d938e191252db81fb}{timer\_handler})(\textcolor{keyword}{union} sigval) );
+00175 
+00176 
+00187 \textcolor{keywordtype}{int} \hyperlink{common_8h_a207644f53334379d5fcb82b78bafff36}{timer\_start}( timer\_t *\textcolor{keywordtype}{id}, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} usecs );
+00188 
+00189 
+00190 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* COMMON\_H */}\textcolor{preprocessor}{}
+\end{DoxyCode}

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="structfile__t" kind="struct" language="C++" prot="public">
+    <compoundname>file_t</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structfile__t_1ab8a1f64f31b4df2b1a358810b762d85d" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* file_t::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="79" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structfile__t_1a42bbe395fb009cbd336689aedcfcacad" prot="public" static="no" mutable="no">
+        <type>FILE *</type>
+        <definition>FILE* file_t::fid</definition>
+        <argsstring></argsstring>
+        <name>fid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="80" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" line="78" column="1" bodyfile="/home/baquerrj/boulder/ecen5013/project_1/inc/common.h" bodystart="78" bodyend="81"/>
+    <listofallmembers>
+      <member refid="structfile__t_1a42bbe395fb009cbd336689aedcfcacad" prot="public" virt="non-virtual"><scope>file_t</scope><name>fid</name></member>
+      <member refid="structfile__t_1ab8a1f64f31b4df2b1a358810b762d85d" prot="public" virt="non-virtual"><scope>file_t</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
