@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['smart_20environment_20monitoring_20device',['Smart Environment Monitoring Device',['../index.html',1,'']]],
   ['sems_5finit',['sems_init',['../common_8c.html#a8e1ee6092ec482d5556b2100d64b8c74',1,'sems_init(shared_data_t *shm):&#160;common.c'],['../common_8h.html#a8e1ee6092ec482d5556b2100d64b8c74',1,'sems_init(shared_data_t *shm):&#160;common.c']]],
   ['sensor_5fdata_5ft',['sensor_data_t',['../structsensor__data__t.html',1,'']]],
   ['set_5fdelay',['set_delay',['../led_8c.html#a09c3e893eed7e69542bfc2cb8d41fda9',1,'set_delay(const char *led, int delay):&#160;led.c'],['../led_8h.html#a1f6956111a94edb6167334dc8256100b',1,'set_delay(const char *led_path, int delay):&#160;led.c']]],

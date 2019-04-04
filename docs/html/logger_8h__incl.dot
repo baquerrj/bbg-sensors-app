@@ -1,8 +1,8 @@
-digraph "inc/logger.h"
+digraph "/home/baquerrj/boulder/ecen5013/project_1/inc/logger.h"
 {
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node0 [label="inc/logger.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 [label="/home/baquerrj/boulder\l/ecen5013/project_1/inc\l/logger.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 [label="common.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8h.html",tooltip="Defines types and functions common between the threads of the application. "];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
