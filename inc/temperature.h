@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     temperature.h
  *    @brief   Header for temperature sensor thread 
@@ -27,16 +27,16 @@
 
 #define TEMP_QUEUE_NAME "/temperature-queue"
 
-/* Default address for Temperature Sensor TMP102 */
+/** Default address for Temperature Sensor TMP102 */
 #define TMP102_SLAVE       (0x48)
 
-/* Regsiter addresses for TMP102 */
+/** Regsiter addresses for TMP102 */
 #define TMP102_REG_TEMP    (0x00)
 #define TMP102_REG_CONFIG  (0x01)
 #define TMP102_TLOW        (0x02)
 #define TMP102_THIGH       (0x03)
 
-/* Default configuration */
+/** Default configuration */
 #define TMP102_SHUTDOWN_MODE     (1)
 #define TMP102_THERMOSTAT_MODE   (1)
 #define TMP102_POLARITY          (1)
@@ -68,7 +68,19 @@ typedef struct {
    uint16_t conv_rate;     /* conversion rate */
 } tmp102_config_t;
 
-/*
+/**
+ * =================================================================================
+ * Function:       get_temperature
+ * @brief   Returns last temperature reading we have
+ *
+ * @param   void
+ * @return  last_temp_value - last temperature reading we have
+ * <+DETAILED+>
+ * =================================================================================
+ */
+float get_temperature( void );
+
+/**
  * =================================================================================
  * Function:       tmp102_write_config
  * @brief   Write configuration register of TMP102 sensor
@@ -79,7 +91,7 @@ typedef struct {
  */
 int tmp102_write_config( tmp102_config_t *config_reg );
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_get_temp
  * @brief   Read temperature registers fo TMP102 sensor and decode temperature value
@@ -91,7 +103,7 @@ int tmp102_write_config( tmp102_config_t *config_reg );
  */
 int tmp102_get_temp( float *temperature );
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_write_thigh
  * @brief   Write value thigh (in celsius) to Thigh register for TMP102 sensor
@@ -102,7 +114,7 @@ int tmp102_get_temp( float *temperature );
  */
 int tmp102_write_thigh( float thigh );
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_write_tlow
  * @brief   Write value tlow (in celsius) to Tlow register for TMP102 sensor
@@ -113,7 +125,7 @@ int tmp102_write_thigh( float thigh );
  */
 int tmp102_write_tlow( float tlow );
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_read_thigh
  * @brief   Read value of THigh register of TMP102 sensor and store value (in celsius) in thigh
@@ -124,7 +136,7 @@ int tmp102_write_tlow( float tlow );
  */
 int tmp102_read_thigh( float *thigh );
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_read_tlow
  * @brief   Read value of TLow register of TMP102 sensor and store value (in celsius) in tlow
@@ -135,7 +147,7 @@ int tmp102_read_thigh( float *thigh );
  */
 int tmp102_read_tlow( float *tlow );
 
-/*
+/**
  * =================================================================================
  * Function:       get_temperature_queue
  * @brief   Get file descriptor for temperature sensor thread.
@@ -147,7 +159,7 @@ int tmp102_read_tlow( float *tlow );
  */
 mqd_t get_temperature_queue( void );
 
-/*
+/**
  * =================================================================================
  * Function:       temp_queue_init
  * @brief   Initialize message queue for temperature sensor thread
@@ -158,7 +170,7 @@ mqd_t get_temperature_queue( void );
  */
 int temp_queue_init( void );
 
-/*
+/**
  * =================================================================================
  * Function:       temperature_fn
  * @brief   Entry point for temperature sensor processing thread

@@ -1,9 +1,8 @@
-/*
+/**
  * =================================================================================
  *    @file     socket.h
- *    @brief    
- *
- *  <+DETAILED+>
+ *    @brief   Remote Socket task capable of requesting sensor readings from
+ *             temperature and light sensor threads
  *
  *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
  *
@@ -25,39 +24,39 @@
 
 #include "common.h"
 
-/*
+/**
  * =================================================================================
  * Function:       process_request
- * @brief  
+ * @brief   Process a request from remote client
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *request - request from client
+ * @return  response - our response 
  * =================================================================================
  */
 msg_t process_request( msg_t *request );
 
-/*
- * =================================================================================
- * Function:       socket_init
- * @brief  
+/**
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * =================================================================================
+ * Function:       cycle
+ * @brief   Cycle function for remote socket task. Spins in this infinite while-loop
+ *          checking for new connections to make. When it receives a new connection,
+ *          it starts processing requests from the client
+ *
+ * @param   server   - server socket file descriptor
+ * @return  void
  * =================================================================================
  */
 int socket_init( void );
 
-
-/*
+/**
  * =================================================================================
- * Function:       socket_call_back
- * @brief  
+ * Function:       socket_fn
+ * @brief   Entry point for remote socket thread
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
+ * @param   *thread_args   - thread arguments (if any) 
+ * @return  NULL  - We don't really exit from this function, 
+ *                   since the exit point is thread_exit()
  * =================================================================================
  */
 void *socket_fn( void *thread_arg );

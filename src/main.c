@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     main.c
  *    @brief
@@ -31,7 +31,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-/* /sys includes */
+/** /sys includes */
 #include <sys/syscall.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -46,7 +46,7 @@ static pthread_t watchdog_thread;
 
 static shared_data_t *shm;
 
-/*
+/**
  * =================================================================================
  * Function:       signal_handler
  * @brief
@@ -66,7 +66,7 @@ static void signal_handler( int signo )
    }
 }
 
-/*
+/**
  * =================================================================================
  * Function:       turn_off_leds
  * @brief
@@ -85,7 +85,7 @@ void turn_off_leds( void )
    return;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       main
  * @brief
@@ -103,7 +103,7 @@ int main( int argc, char *argv[] )
    if( argc > 1 )
    {
       log = malloc( sizeof( file_t ) );
-      log->fid = fopen( argv[1], "a" );
+      log->fid = fopen( argv[1], "w" );
       log->name = argv[1];
       printf( "Opened file %s\n", argv[1] );
    }

@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     common.h
  *    @brief   Defines types and functions common between the threads of the application
@@ -36,7 +36,7 @@
 
 #define MICROS_PER_SEC  1000000
 
-/******************************************************************************
+/*******************************************************************************
  *  Defines types of possible messages
  ******************************************************************************/
 typedef enum {
@@ -53,7 +53,7 @@ typedef enum {
    REQUEST_MAX
 } request_e;
 
-/******************************************************************************
+/*******************************************************************************
  *  Defines struct for communicating sensor information
  ******************************************************************************/
 typedef struct {
@@ -62,7 +62,7 @@ typedef struct {
    int   night;   /* 1 when it is dark and 0 otherwise */
 } sensor_data_t;
 
-/******************************************************************************
+/*******************************************************************************
  *  Defines struct for response for remote socket task
  ******************************************************************************/
 typedef struct {
@@ -72,7 +72,7 @@ typedef struct {
    sensor_data_t data;
 } msg_t;
 
-/******************************************************************************
+/*******************************************************************************
  *
  ******************************************************************************/
 typedef struct {
@@ -80,7 +80,7 @@ typedef struct {
    FILE *fid;
 } file_t;
 
-/******************************************************************************
+/*******************************************************************************
  *  Struct to hold thread identifiers for tasks
  ******************************************************************************/
 typedef struct thread_id_s {
@@ -93,7 +93,7 @@ typedef struct thread_id_s {
 
 
 
-/******************************************************************************
+/*******************************************************************************
  *  Shared Memory Data Struct
  ******************************************************************************/
 typedef struct {
@@ -104,7 +104,7 @@ typedef struct {
 } shared_data_t;
 
 
-/******************************************************************************
+/*******************************************************************************
  *  Exit Enum
  ******************************************************************************/
 typedef enum {
@@ -115,7 +115,7 @@ typedef enum {
    EXIT_MAX
 } exit_e;
 
-/*
+/**
  * =================================================================================
  * Function:       print_header
  * @brief   Write a string formatted with the TID of the thread calling this function
@@ -128,7 +128,7 @@ typedef enum {
  */
 void print_header( char *buffer );
 
-/*
+/**
  * =================================================================================
  * Function:       thread_exit
  * @brief   Common exit point for all threads
@@ -139,7 +139,7 @@ void print_header( char *buffer );
  */
 void thread_exit( int exit_status );
 
-/*
+/**
  * =================================================================================
  * Function:       get_shared_memory
  * @brief   Sets up shared memory location for logging
@@ -150,7 +150,7 @@ void thread_exit( int exit_status );
  */
 void *get_shared_memory( void );
 
-/*
+/**
  * =================================================================================
  * Function:       sems_init
  * @brie    Initialize semaphores for shared memory 
@@ -161,7 +161,7 @@ void *get_shared_memory( void );
  */
 int sems_init( shared_data_t *shm );
 
-/*
+/**
  * =================================================================================
  * Function:       timer_setup
  * @brief   Initializes a timer identified by timer_t id
@@ -174,7 +174,7 @@ int sems_init( shared_data_t *shm );
 int timer_setup( timer_t *id, void (*timer_handler)(union sigval) );
 
 
-/*
+/**
  * =================================================================================
  * Function:       timer_start
  * @brief   Starts the timer with interval usecs

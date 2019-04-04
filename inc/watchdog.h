@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     watchdog.h
  *    @brief   Watchdog thread header 
@@ -40,7 +40,7 @@ volatile int threads_status[NUM_THREADS];
 
 extern pthread_mutex_t alive_mutex;
 
-/*
+/**
  * =================================================================================
  * Function:       kill_threads
  * @brief   Function to kill children threads 
@@ -51,7 +51,7 @@ extern pthread_mutex_t alive_mutex;
  */
 void kill_threads( void );
 
-/*
+/**
  * =================================================================================
  * Function:       check_threads
  * @brief   Periodically send message via message queue for temperature and sensor threads
@@ -64,7 +64,7 @@ void kill_threads( void );
  */
 void check_threads( union sigval sig );
 
-/*
+/**
  * =================================================================================
  * Function:       watchdog_queue_init
  * @brief   Initalize message queue for watchdog
@@ -75,7 +75,7 @@ void check_threads( union sigval sig );
  */
 int watchdog_queue_init( void );
 
-/*
+/**
  * =================================================================================
  * Function:       watchdog_init
  * @brief   Initialize watchdog, calling appropriate functions to do so.
@@ -87,7 +87,7 @@ int watchdog_queue_init( void );
  */
 int watchdog_init( void );
 
-/*
+/**
  * =================================================================================
  * Function:       watchdog_fn
  * @brief   Entry point for wachtdog

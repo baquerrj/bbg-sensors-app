@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     temperature.c
  *    @brief   Source file implementing temperature.h
@@ -29,6 +29,7 @@ static timer_t    timerid;
 struct itimerspec trigger;
 
 static i2c_handle_t i2c_tmp102;
+static float last_temp_value = -5;
 static mqd_t temp_queue;
 static shared_data_t *shm;
 
@@ -50,7 +51,24 @@ const tmp102_config_t tmp102_default_config = {
 };
 
 
-/*
+
+/**
+ * =================================================================================
+ * Function:       get_temperature
+ * @brief   Returns last temperature reading we have
+ *
+ * @param   void
+ * @return  last_temp_value - last temperature reading we have
+ * <+DETAILED+>
+ * =================================================================================
+ */
+float get_temperature( void )
+{
+   return last_temp_value;
+}
+
+
+/**
  * =================================================================================
  * Function:       tmp102_write_config
  * @brief   Write configuration register of TMP102 sensor
@@ -66,7 +84,7 @@ int tmp102_write_config( tmp102_config_t *config_reg )
    return retVal;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_get_temp
  * @brief   Read temperature registers fo TMP102 sensor and decode temperature value
@@ -100,7 +118,7 @@ int tmp102_get_temp( float *temperature )
    return EXIT_CLEAN;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_write_thigh
  * @brief   Write value thigh (in celsius) to Thigh register for TMP102 sensor
@@ -145,7 +163,7 @@ int tmp102_write_thigh( float thigh )
    return EXIT_CLEAN;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_write_tlow
  * @brief   Write value tlow (in celsius) to Tlow register for TMP102 sensor
@@ -190,7 +208,7 @@ int tmp102_write_tlow( float tlow )
    return EXIT_CLEAN;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_read_thigh
  * @brief   Read value of THigh register of TMP102 sensor and store value (in celsius) in thigh
@@ -227,7 +245,7 @@ int tmp102_read_thigh( float *thigh )
 }
 
 
-/*
+/**
  * =================================================================================
  * Function:       tmp102_read_tlow
  * @brief   Read value of TLow register of TMP102 sensor and store value (in celsius) in tlow
@@ -265,7 +283,7 @@ int tmp102_read_tlow( float *tlow )
 
 
 
-/*
+/**
  * =================================================================================
  * Function:       sig_handler
  * @brief   Signal handler for temperature sensor thread.
@@ -297,7 +315,7 @@ static void sig_handler( int signo )
    return;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       timer_handler
  * @brief   Timer handler function for temperature sensor thread
@@ -332,7 +350,7 @@ static void timer_handler( union sigval sig )
 }
 
 
-/*
+/**
  * =================================================================================
  * Function:       cycle
  * @brief   Cycle function for temperature sensor thread
@@ -383,7 +401,7 @@ static void cycle( void )
    return;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       get_temperature_queue
  * @brief   Get file descriptor for temperature sensor thread.
@@ -398,7 +416,7 @@ mqd_t get_temperature_queue( void )
    return temp_queue;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       temp_queue_init
  * @brief   Initialize message queue for temperature sensor thread
@@ -431,7 +449,7 @@ int temp_queue_init( void )
    return msg_q;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       temperature_fn
  * @brief   Entry point for temperature sensor processing thread

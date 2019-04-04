@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     i2c.h
  *    @brief   Interface to I2C Bus of BeagleBone Green using libmraa
@@ -30,7 +30,7 @@ typedef struct {
    pthread_mutex_t  mutex;
 } i2c_handle_t;
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_write_byte
  * @brief   Writes byte to register address
@@ -44,7 +44,7 @@ typedef struct {
 int i2c_write_byte( int slave, int reg, uint8_t data );
 
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_write
  * @brief   Writes data to register address
@@ -57,7 +57,7 @@ int i2c_write_byte( int slave, int reg, uint8_t data );
  */
 int i2c_write( int slave, int reg, uint16_t data );
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_read
  * @brief   Reads data from register address
@@ -71,7 +71,7 @@ int i2c_write( int slave, int reg, uint16_t data );
  */
 int i2c_read( int slave, int reg, uint8_t *data, size_t len );
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_init
  * @brief   Initialize singleton master i2c context
@@ -82,7 +82,7 @@ int i2c_read( int slave, int reg, uint8_t *data, size_t len );
  */
 int i2c_init( i2c_handle_t *i2c );
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_stop
  * @brief   Stops i2c instance

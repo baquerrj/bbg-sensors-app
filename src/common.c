@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     common.c
  *    @brief   Defines types and functions common between the threads of the application
@@ -31,18 +31,7 @@
 #include <sys/stat.h>
 
 
-   
-/*
- * =================================================================================
- * Function:       print_header
- * @brief   Write a string formatted with the TID of the thread calling this function
- *          and a timestamp to the log buffer
- *
- * @param   *buffer  - pointer to where we should copy formatted string to
- *                     if NULL, we print to stderr
- * @return  void
- * =================================================================================
- */
+
 void print_header( char *buffer )
 {
 
@@ -68,16 +57,6 @@ void print_header( char *buffer )
    return;
 }
 
-
-/*
- * =================================================================================
- * Function:       thread_exit
- * @brief   Common exit point for all threads
- *
- * @param   exit_status - reason for exit (signal number)
- * @return  void
- * =================================================================================
- */
 void thread_exit( int exit_status )
 {
    struct timespec time;
@@ -100,16 +79,6 @@ void thread_exit( int exit_status )
    pthread_exit(EXIT_SUCCESS);
 }
 
-
-/*
- * =================================================================================
- * Function:       get_shared_memory
- * @brief   Sets up shared memory location for logging
- *
- * @param   void
- * @return  *shm_p - pointer to shared memory object
- * =================================================================================
- */
 void *get_shared_memory( void )
 {
    struct shared_data *shm_p;
@@ -158,15 +127,7 @@ void *get_shared_memory( void )
 	return shm_p;
 }
 
-/*
- * =================================================================================
- * Function:       sems_init
- * @brie    Initialize semaphores for shared memory 
- *
- * @param   *shm  - pointer to shared memory object
- * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT
- * =================================================================================
- */
+
 int sems_init( shared_data_t *shm )
 {
    int retVal = 0;
@@ -190,16 +151,7 @@ int sems_init( shared_data_t *shm )
 }
 
 
-/*
- * =================================================================================
- * Function:       timer_setup
- * @brief   Initializes a timer identified by timer_t id
- *
- * @param   *id   - identifier for new timer
- * @param   *handler - pointer to function to register as the handler for the timer ticks 
- * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
- * =================================================================================
- */
+
 int timer_setup( timer_t *id, void (*handler)(union sigval) )
 {
    int retVal = 0;
@@ -224,16 +176,7 @@ int timer_setup( timer_t *id, void (*handler)(union sigval) )
    return EXIT_CLEAN;
 }
 
-/*
- * =================================================================================
- * Function:       timer_start
- * @brief   Starts the timer with interval usecs
- *
- * @param   *id   - identifier for new timer
- * @param   usecs - timer interval
- * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT 
- * =================================================================================
- */
+
 int timer_start( timer_t *id, unsigned long usecs )
 {
    int retVal = 0;

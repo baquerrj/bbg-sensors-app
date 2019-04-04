@@ -1,7 +1,8 @@
-/*
+/**
  * =================================================================================
  *    @file     led.h
- *    @brief    
+ *    @brief   Interface to USR LEDs of BeagleBone Green
+ *    http://derekmolloy.ie/beaglebone-controlling-the-on-board-leds-using-c/
  *
  *  Define macros for interacting with user LEDs of BeagleBone Green.
  *
@@ -58,7 +59,7 @@
 
 
 
-/*
+/**
  * =================================================================================
  * Function:       get_status
  * @brief  
@@ -70,7 +71,7 @@
  */
 void get_status( const char *led );
 
-/*
+/**
  * =================================================================================
  * Function:       get_trigger
  * @brief  
@@ -82,7 +83,7 @@ void get_status( const char *led );
  */
 int set_trigger( const char *led, char *trigger );
 
-/*
+/**
  * =================================================================================
  * Function:       set_delay
  * @brief  
@@ -95,7 +96,7 @@ int set_trigger( const char *led, char *trigger );
 int set_delay( const char *led_path, int delay );
 
 
-/*
+/**
  * =================================================================================
  * Function:       led_on
  * @brief  
@@ -108,7 +109,7 @@ int set_delay( const char *led_path, int delay );
 void led_on( const char *led );
 
 
-/*
+/**
  * =================================================================================
  * Function:       led_off
  * @brief  
@@ -121,7 +122,7 @@ void led_on( const char *led );
 void led_off( const char *led );
 
 
-/*
+/**
  * =================================================================================
  * Function:       led_toggle
  * @brief  

@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     logger.c
  *    @brief    Takes care of logging for other threads
@@ -38,7 +38,7 @@ struct itimerspec trigger;
 static FILE *log;
 static shared_data_t *shm;
 
-/*
+/**
  * =================================================================================
  * Function:       sig_handler
  * @brief   Signal handler for logger thread.
@@ -65,7 +65,7 @@ static void sig_handler( int signo )
 }
 
 
-/*
+/**
  * =================================================================================
  * Function:       logger_fn
  * @brief   Entry point for logger thread

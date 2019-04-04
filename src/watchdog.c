@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     watchdog.c
  *    @brief   Watchdog source file:
@@ -38,7 +38,7 @@ static mqd_t watchdog_queue;
 pthread_mutex_t alive_mutex;
 
 
-/*
+/**
  * =================================================================================
  * Function:       sig_handler
  * @brief   Signal handler for watchdog. On normal operation, we should be receiving
@@ -60,7 +60,7 @@ static void sig_handler( int signo )
    }
 }
 
-/*
+/**
  * =================================================================================
  * Function:       kill_threads
  * @brief   Function to kill children threads 
@@ -89,7 +89,7 @@ void kill_threads( void )
    return;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       check_threads
  * @brief   Periodically send message via message queue for temperature and sensor threads
@@ -140,7 +140,7 @@ void check_threads( union sigval sig )
    return;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       watchdog_queue_init
  * @brief   Initalize message queue for watchdog
@@ -170,7 +170,7 @@ int watchdog_queue_init( void )
    return msg_q;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       watchdog_init
  * @brief   Initialize watchdog, calling appropriate functions to do so.
@@ -202,7 +202,7 @@ int watchdog_init( void )
    return EXIT_CLEAN;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       watchdog_fn
  * @brief   Entry point for wachtdog

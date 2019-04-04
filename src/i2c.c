@@ -1,4 +1,4 @@
-/*
+/**
  * =================================================================================
  *    @file     i2c.c
  *    @brief
@@ -25,10 +25,10 @@
 #include <errno.h>
 #include <string.h>
 
-/* Keep around a singleton instance of the master handle */
+/** Keep around a singleton instance of the master handle */
 static i2c_handle_t *my_i2c = NULL;
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_write_byte
  * @brief   Writes byte to register address
@@ -64,7 +64,7 @@ int i2c_write_byte( int slave, int reg, uint8_t data )
    return EXIT_CLEAN;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_write
  * @brief   Writes data to register address
@@ -100,7 +100,7 @@ int i2c_write( int slave, int reg, uint16_t data )
    return EXIT_CLEAN;
 }
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_read
  * @brief   Reads data from register address
@@ -155,7 +155,7 @@ int i2c_read( int slave, int reg, uint8_t *data, size_t len )
 }
 
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_init
  * @brief   Initialize singleton master i2c context
@@ -205,7 +205,7 @@ int i2c_init( i2c_handle_t *i2c )
 }
 
 
-/*
+/**
  * =================================================================================
  * Function:       i2c_stop
  * @brief   Stops i2c instance
