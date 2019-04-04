@@ -57,9 +57,9 @@ typedef enum {
  *  Defines struct for communicating sensor information
  ******************************************************************************/
 typedef struct {
-   float data;    /* Can be temperature in Celsius, Fahrenheit, or Kelvin OR
+   float data;    /** Can be temperature in Celsius, Fahrenheit, or Kelvin OR
                      lux output from light sensor */
-   int   night;   /* 1 when it is dark and 0 otherwise */
+   int   night;   /** 1 when it is dark and 0 otherwise */
 } sensor_data_t;
 
 /*******************************************************************************
@@ -97,8 +97,8 @@ typedef struct thread_id_s {
  *  Shared Memory Data Struct
  ******************************************************************************/
 typedef struct {
-   char buffer[SHM_BUFFER_SIZE];  /* Buffer for message from thread */
-   char header[SHM_BUFFER_SIZE];  /* Buffer for header identifying the thread who wrote to shm */
+   char buffer[SHM_BUFFER_SIZE];  /** Buffer for message from thread */
+   char header[SHM_BUFFER_SIZE];  /** Buffer for header identifying the thread who wrote to shm */
    sem_t w_sem;
    sem_t r_sem;
 } shared_data_t;
