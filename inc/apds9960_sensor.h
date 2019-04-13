@@ -54,7 +54,7 @@
 #define GESTURE_SENSITIVITY_2   20
 
 /* Error code for returned values */
-#define ERROR                   0xFF
+//#define ERROR                   0xFF
 
 /* Acceptable device IDs */
 #define APDS9960_ID_1           0xAB
