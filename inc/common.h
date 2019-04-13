@@ -27,6 +27,8 @@
 #include <semaphore.h>
 #include <mqueue.h>
 
+#include <sys/syscall.h>
+#include <sys/types.h>
 
 #define SHM_SEGMENT_NAME "/shm-log"
 #define SHM_BUFFER_SIZE 2048
@@ -41,6 +43,46 @@
 #define FREQ_4HZ        (MICROS_PER_SEC/4)
 #define FREQ_HALF_HZ    (MICROS_PER_SEC*2)
 #define HALF_QURT_HZ    (MICROS_PER_SEC*4)
+
+#define ERROR   "[ERROR]\n"
+#define INFO    "[INFO]\n"
+#define SIGNAL  "[SIGNAL]\n"
+#define WARNING "[WARNING]\n"
+
+#define FPRINTF(stream, fmt, ...)   \
+   do{ \
+      fprintf(stream, "[PID:%d][TID:%ld]", getpid(), syscall(SYS_gettid)); \
+      fprintf(stream, fmt, ##__VA_ARGS__); \
+      fflush( stream ); \
+   }while(0)
+
+#if 0
+#define SPRINTF(msg, fmt, ...)   \
+   do{ \
+      snprintf("[PID:%d][TID:%ld]", getpid(), syscall(SYS_gettid)); snprintf(msg, sizeof(msg), fmt, ##__VA_ARGS__);}while(0);
+#endif
+
+#define LOG_ERROR(fmt, ...)  \
+   do{ \
+      fprintf( stderr, ERROR fmt, ##__VA_ARGS__ ); \
+      fflush( stderr ); \
+   }while(0)
+
+#define LOG_INFO(fmt, ...)  \
+   do{ \
+      FPRINTF( stdout, INFO fmt, ##__VA_ARGS__ ); \
+      fflush( stdout ); \
+   }while(0)
+
+#define LOG_WARNING(fmt, ...)  \
+   do{ \
+      FPRINTF( stderr, WARNING fmt, ##__VA_ARGS__ ); \
+      fflush( stderr ); \
+   }while(0)
+
+
+
+
 /*******************************************************************************
  *  Defines types of possible messages
  ******************************************************************************/
@@ -97,6 +139,18 @@ typedef struct thread_id_s {
 } thread_id_s;
 
 
+/*******************************************************************************
+ *  Struct to hold thread identifiers for tasks
+ ******************************************************************************/
+typedef enum {
+   TASK_LOGGER = 0,
+   TASK_TMP102,
+   TASK_APDS9301,
+   TASK_SOCKET,
+   TASK_WATCHDOG,
+   TASK_MAIN,
+   TASK_MAX   
+} task_e;
 
 /*******************************************************************************
  *  Shared Memory Data Struct

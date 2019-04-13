@@ -30,7 +30,7 @@ struct itimerspec trigger;
 static i2c_handle_t i2c_tmp102;
 static float last_temp_value = -5;
 static mqd_t temp_queue;
-static shared_data_t *shm;
+//static shared_data_t *shm;
 
 float get_temperature( void )
 {
@@ -71,22 +71,24 @@ void tmp102_handler( union sigval sig )
 {
    static int i = 0;
    led_toggle( LED0_BRIGHTNESS );
-   sem_wait(&shm->w_sem);
+//   sem_wait(&shm->w_sem);
    
-   print_header(shm->header);
+//   print_header(shm->header);
    float temperature;
    int retVal = tmp102_get_temp( &temperature );
    i++;
    if( retVal )
    {
-      sprintf( shm->buffer, "cycle[%d]: could not get temperature reading!\n", i );
+//      sprintf( shm->buffer, "cycle[%d]: could not get temperature reading!\n", i );
+      LOG_ERROR( "CYCLE [%d] --- Couldn't read temperature\n", i );
    }
    else
    {
-      sprintf( shm->buffer, "cycle[%d]: %0.5f Celsius\n", i, temperature );
+//      sprintf( shm->buffer, "cycle[%d]: %0.5f Celsius\n", i, temperature );
+      LOG_INFO( "CYCLE [%d] --- TEMP: %0.5f Celsius\n", i, temperature );
    }
 
-   sem_post(&shm->r_sem);
+//   sem_post(&shm->r_sem);
    led_toggle( LED0_BRIGHTNESS );
    return;
 }
@@ -104,20 +106,22 @@ void tmp102_cycle( void )
       if( 0 > retVal )
       {
          int errnum = errno;
-         sem_wait(&shm->w_sem);
-         sprintf( shm->buffer, "ERROR: Encountered error receiving from message queue %s: (%s)\n",
+//         sem_wait(&shm->w_sem);
+//         sprintf( shm->buffer, "ERROR: Encountered error receiving from message queue %s: (%s)\n",
+//                  TEMP_QUEUE_NAME, strerror( errnum ) );
+//         sem_post(&shm->r_sem);
+         LOG_ERROR( "Encountered error receiving from message queue %s: (%s)\n",
                   TEMP_QUEUE_NAME, strerror( errnum ) );
-         sem_post(&shm->r_sem);
          continue;
       }
       switch( request.id )
       {
          case REQUEST_STATUS:
-            sem_wait(&shm->w_sem);
-            print_header(shm->header);
-            sprintf( shm->buffer, "(Temperature) I am alive!\n" );
-            sem_post(&shm->r_sem);
-            fprintf( stdout, "(Temperature) I am alive!\n" );
+//            sem_wait(&shm->w_sem);
+//            print_header(shm->header);
+//            sprintf( shm->buffer, "(Temperature) I am alive!\n" );
+//            sem_post(&shm->r_sem);
+            LOG_INFO( "(Temperature) I am alive!\n" );
             response.id = request.id;
             sprintf( response.info, "(Temperature) I am alive!\n" );
             retVal = mq_send( request.src, (const char*)&response, sizeof( response ), 0 );
@@ -153,11 +157,14 @@ int temp_queue_init( void )
    if( 0 > msg_q )
    {
       int errnum = errno;
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "ERROR: Encountered error creating message queue %s: (%s)\n",
-               TEMP_QUEUE_NAME, strerror( errnum ) );
-      sem_post(&shm->r_sem);     
+//      sem_wait(&shm->w_sem);
+//      print_header(shm->header);
+//      sprintf( shm->buffer, "ERROR: Encountered error creating message queue %s: (%s)\n",
+//               TEMP_QUEUE_NAME, strerror( errnum ) );
+//      sem_post(&shm->r_sem);
+      LOG_ERROR( "Could not create message queue for logger task: %s\n",
+                  strerror( errnum ) );
+
    }
    return msg_q;
 }
@@ -167,15 +174,15 @@ void *temperature_fn( void *thread_args )
    /* Get time that thread was spawned */
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
-   shm = get_shared_memory();
+//   shm = get_shared_memory();
 
    /* Write initial state to shared memory */
-   sem_wait(&shm->w_sem);
-   print_header(shm->header);
-   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
+//   sem_wait(&shm->w_sem);
+//   print_header(shm->header);
+//   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
+//            time.tv_sec, time.tv_nsec );
    /* Signal to logger that shared memory has been updated */
-   sem_post(&shm->r_sem);
+//   sem_post(&shm->r_sem);
 
    signal(SIGUSR1, sig_handler);
    signal(SIGUSR2, sig_handler);
@@ -189,10 +196,10 @@ void *temperature_fn( void *thread_args )
    int retVal = i2c_init( &i2c_tmp102 );
    if( EXIT_INIT == retVal )
    {
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "ERROR: Failed to initialize I2C for temperature sensor!\n" );
-      sem_post(&shm->r_sem);
+//      sem_wait(&shm->w_sem);
+//      print_header(shm->header);
+//      sprintf( shm->buffer, "ERROR: Failed to initialize I2C for temperature sensor!\n" );
+//      sem_post(&shm->r_sem);
       thread_exit( EXIT_INIT );
    }
 

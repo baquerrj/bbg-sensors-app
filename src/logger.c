@@ -36,10 +36,10 @@
 
 struct itimerspec trigger;
 static FILE *log;
-static shared_data_t *shm;
+//static shared_data_t *shm;
 
-/**
- * =================================================================================
+//static mqd_t logger_queue
+/*!
  * Function:       sig_handler
  * @brief   Signal handler for logger thread.
  *          On normal operation, we should be receving SIGUSR1/2 signals from watchdog
@@ -47,7 +47,6 @@ static shared_data_t *shm;
  *
  * @param   signo - enum with signal number of signal being handled
  * @return  void
- * =================================================================================
  */
 static void sig_handler( int signo )
 {
@@ -64,17 +63,56 @@ static void sig_handler( int signo )
    return;
 }
 
+uint8_t convert_timestamp( char *timestamp, const int len )
+{
+   struct timespec time;
+   uint8_t retVal = clock_gettime( CLOCK_REALTIME, &time );
+   if( 0 != retVal )
+   {
+      memset( timestamp, 0, len );
+      return EXIT_ERROR;
+   }
 
-/**
- * =================================================================================
- * Function:       logger_fn
- * @brief   Entry point for logger thread
- *
- * @param   thread_args - void ptr to arguments used to initialize thread
- * @return  NULL  - We don't really exit from this function, 
- *                   since the exit point is thread_exit()
- * =================================================================================
- */
+   char str[25] = {0};
+   snprintf( str, sizeof( str ), "%ld.%ld", time.tv_sec, time.tv_nsec );
+
+   memcpy( timestamp, str, len );
+
+   return EXIT_CLEAN;
+}
+
+
+mqd_t get_logger_queue( void )
+{
+   return logger_queue;
+}
+
+
+mqd_t logger_queue_init( void )
+{
+   mq_unlink( LOGGER_QUEUE_NAME );
+
+   struct mq_attr attr;
+   attr.mq_flags = 0;
+   attr.mq_maxmsg = MAX_MESSAGES;
+   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_curmsgs = 0;
+
+   int msg_q = mq_open( LOGGER_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   if( 0 > msg_q )
+   {
+      int errnum = errno;
+//      sem_wait(&shm->w_sem);
+//      print_header(shm->header);
+//      sprintf( shm->buffer, "ERROR: Encountered error creating message queue %s: (%s)\n",
+//               LOGGER_QUEUE_NAME, strerror( errnum ) );
+//      sem_post(&shm->r_sem);
+      LOG_ERROR( "Could not create message queue for logger task: %s\n",
+                  strerror( errnum ) );
+   }
+   return msg_q;   
+}
+
 void *logger_fn( void *arg )
 {
    struct timespec time;
@@ -94,37 +132,48 @@ void *logger_fn( void *arg )
    log = (FILE *)arg;
    if( NULL == log )
    {
-      perror( "Encountered error opening log file" );
+      int errnum = errno;
+      //perror( "Encountered error opening log file" );
+      LOG_ERROR( "Encountered error opening log file (%s)\n",
+                  strerror( errnum ) );
       pthread_exit(&failure);
    }
 
-   shm = get_shared_memory();
-   if( NULL == shm )
+//   shm = get_shared_memory();
+//   if( NULL == shm )
+//   {
+//      int errnum = errno;
+//      fprintf( stderr, "Encountered error memory mapping shared memory: %s\n",
+//               strerror( errnum ) );
+//   }
+
+
+//  shared_data_t *buf = malloc( sizeof( shared_data_t ) );
+//   if( NULL == buf )
+//   {
+//      int errnum = errno;
+//      fprintf( stderr, "Encountered error allocating memory for local buffer %s\n",
+//               strerror( errnum ) );
+//   }
+
+   uint8_t retVal = logger_queue_init();
+   if( 0 > retVal )
    {
-      int errnum = errno;
-      fprintf( stderr, "Encountered error memory mapping shared memory: %s\n",
-               strerror( errnum ) );
+      LOG_ERROR( "LOGGER TASK INIT\n" );
+      pthread_exit( &failure );
    }
 
-
-   shared_data_t *buf = malloc( sizeof( shared_data_t ) );
-   if( NULL == buf )
-   {
-      int errnum = errno;
-      fprintf( stderr, "Encountered error allocating memory for local buffer %s\n",
-               strerror( errnum ) );
-   }
-
+   LOG_INFO( "LOGGER TASK INITIALIZED\n" );
    while( 1 )
    {
-      sem_wait(&shm->r_sem);
-      memcpy( buf, shm, sizeof(*shm) );
+//      sem_wait(&shm->r_sem);
+//      memcpy( buf, shm, sizeof(*shm) );
          
-      fprintf( log, "%s\n%s", buf->header, buf->buffer );
-      fflush( log );
+//      fprintf( log, "%s\n%s", buf->header, buf->buffer );
+//      fflush( log );
 
       led_toggle( LED3_BRIGHTNESS ); 
-      sem_post(&shm->w_sem);
+//      sem_post(&shm->w_sem);
    }
 
    return NULL;

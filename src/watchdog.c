@@ -117,21 +117,21 @@ void check_threads( union sigval sig )
       if( 0 > retVal )
       {
          int errnum = errno;
-         fprintf( stderr, "Encountered error sending status request from watchdog: (%s)\n",
+         LOG_ERROR( "Encountered error sending status request from watchdog: (%s)\n",
                   strerror( errnum ) );
       }
       retVal = mq_send( thread_msg_q[THREAD_LIGHT], (const char*)&request, sizeof( request ), 0 );
       if( 0 > retVal )
       {
          int errnum = errno;
-         fprintf( stderr, "Encountered error sending status request from watchdog: (%s)\n",
+         LOG_ERROR( "Encountered error sending status request from watchdog: (%s)\n",
                   strerror( errnum ) );
       }
    }
    else
    {
-      fprintf( stderr, "One of the threads did not return!\n" );
-      fprintf( stderr, "thread_status[THREAD_TEMP] = %d\nthread_status[THREAD_LIGHT] = %d\n",
+      LOG_ERROR( "One of the threads did not return!\n" );
+      LOG_ERROR( "thread_status[THREAD_TEMP] = %d\nthread_status[THREAD_LIGHT] = %d\n",
                threads_status[THREAD_TEMP], threads_status[THREAD_LIGHT] );
       kill_threads();
       thread_exit( EXIT_ERROR );
@@ -164,7 +164,7 @@ int watchdog_queue_init( void )
    if( 0 > msg_q )
    {
       int errnum = errno;
-      fprintf( stderr, "Encountered error creating message queue %s: (%s)\n",
+      LOG_ERROR( "Encountered error creating message queue %s: (%s)\n",
                WATCHDOG_QUEUE_NAME, strerror( errnum ) );
    }
    return msg_q;
@@ -191,8 +191,8 @@ int watchdog_init( void )
    while( 0 == (thread_msg_q[THREAD_TEMP] = get_temperature_queue()) );
    while( 0 == (thread_msg_q[THREAD_LIGHT] = get_light_queue()) );
 
-   fprintf( stderr, "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[0] );
-   fprintf( stderr, "Watchdog says: Light Queue FD: %d\n", thread_msg_q[1] );
+   LOG_ERROR( "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[0] );
+   LOG_ERROR( "Watchdog says: Light Queue FD: %d\n", thread_msg_q[1] );
 
    pthread_mutex_init( &alive_mutex, NULL );
    timer_setup( &timerid, &check_threads );
@@ -219,8 +219,8 @@ void *watchdog_fn( void *thread_args )
    exit_e retVal = EXIT_ERROR;
    if( NULL == thread_args )
    {
-      print_header( NULL );
-      fprintf( stderr, "Encountered null pointer!\n" );
+//      print_header( NULL );
+      LOG_ERROR( "Encountered null pointer!\n" );
       pthread_exit(&retVal);
    }
    else
