@@ -23,8 +23,8 @@
 #ifndef  LED_H
 #define  LED_H
 
-#define LED0_PATH    "/sys/class/leds/beaglebone:green:heartbeat"
-#define LED1_PATH    "/sys/class/leds/beaglebone:green:mmc0"
+#define LED0_PATH    "/sys/class/leds/beaglebone:green:usr0"
+#define LED1_PATH    "/sys/class/leds/beaglebone:green:usr1"
 #define LED2_PATH    "/sys/class/leds/beaglebone:green:usr2"
 #define LED3_PATH    "/sys/class/leds/beaglebone:green:usr3"
 
