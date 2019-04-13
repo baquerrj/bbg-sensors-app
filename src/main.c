@@ -25,6 +25,7 @@
 #include "watchdog.h"
 #include "socket.h"
 #include "led.h"
+#include "apds9960_sensor.h"
 
 #include <fcntl.h>
 #include <signal.h>
@@ -41,8 +42,9 @@ static pthread_t temp_thread;
 static pthread_t light_thread;
 static pthread_t logger_thread;
 static pthread_t socket_thread;
-
 static pthread_t watchdog_thread;
+
+//static pthread_t apds9960_thread;
 
 static shared_data_t *shm;
 
@@ -63,6 +65,8 @@ static void signal_handler( int signo )
       case SIGINT:
          fprintf( stderr, "Master caught SIGINT!\n" );
          pthread_kill( watchdog_thread, SIGUSR2 );
+//         pthread_kill( apds9960_thread, SIGUSR1 );
+//         pthread_kill( logger_thread, SIGUSR1 );
    }
 }
 
@@ -139,7 +143,8 @@ int main( int argc, char *argv[] )
    pthread_create( &temp_thread, NULL, temperature_fn, NULL );
    pthread_create( &light_thread, NULL, light_fn, NULL );
    pthread_create( &socket_thread, NULL , socket_fn, NULL );
-
+//   pthread_create( &apds9960_thread, NULL, apds9960_fn, NULL );
+   
    threads->temp_thread = temp_thread;
    threads->logger_thread = logger_thread;
    threads->light_thread = light_thread;
@@ -149,6 +154,7 @@ int main( int argc, char *argv[] )
 
    pthread_join( watchdog_thread, NULL );
 
+//   pthread_join( apds9960_thread, NULL );
    clock_gettime(CLOCK_REALTIME, &time);
 
 
