@@ -36,6 +36,11 @@
 
 #define MICROS_PER_SEC  1000000
 
+#define FREQ_1HZ        (MICROS_PER_SEC)
+#define FREQ_2HZ        (MICROS_PER_SEC/2)
+#define FREQ_4HZ        (MICROS_PER_SEC/4)
+#define FREQ_HALF_HZ    (MICROS_PER_SEC*2)
+#define HALF_QURT_HZ    (MICROS_PER_SEC*4)
 /*******************************************************************************
  *  Defines types of possible messages
  ******************************************************************************/
