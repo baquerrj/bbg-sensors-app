@@ -56,16 +56,6 @@
  * <+DETAILED+>
  */
 uint8_t log_msg( mqd_t queue, const message_t *msg, size_t size, int priority );
-//static inline uint8_t log_msg( mqd_t queue, const message_t *msg, size_t size, int priority )
-//{
-//   if( -1 == mq_send( queue, (const char*)msg, size, priority ) )
-//   {
-//      int errnum = errno;
-//      LOG_ERROR( "LOGGER - QUEUE SEND (%s)\n", strerror( errnum ) );
-//      return EXIT_ERROR;
-//   }
- //  return EXIT_CLEAN;
-//}
 
 /*!
  * @brief 

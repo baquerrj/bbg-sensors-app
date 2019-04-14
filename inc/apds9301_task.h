@@ -17,13 +17,13 @@
  * =================================================================================
  */
 
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef APDS9301_TASK_H
+#define APDS9301_TASK_H
 
 #include "common.h"
 #include "apds9301_sensor.h"
 
-#define LIGHT_QUEUE_NAME "/light-queue"
+#define APDS9301_QUEUE "/apds9301-queue"
 
 
 
@@ -46,33 +46,33 @@ float get_lux( void );
 int is_dark( void );
 
 /**
- * Function:       get_light_queue
+ * Function:       get_apds9301_queue
  * @brief   Get file descriptor for light sensor thread.
  *          Called by watchdog thread in order to be able to send heartbeat check via queue
  *
  * @param   void
  * @return  temp_queue - file descriptor for light sensor thread message queue
  */
-mqd_t get_light_queue( void );
+mqd_t get_apds9301_queue( void );
 
 /**
- * Function:       light_queue_init
+ * Function:       apds9301_queue_init
  * @brief   Initialize message queue for light sensor thread
  *
  * @param   void
  * @return  msg_q - file descriptor for initialized message queue
  */
-int light_queue_init( void );
+int apds9301_queue_init( void );
 
 /**
- * Function:       light_fn
+ * Function:       apds9301_fn
  * @brief   Entry point for light sensor processing thread
  *
  * @param   thread_args - void ptr to arguments used to initialize thread
  * @return  NULL  - We don't really exit from this function,
  *                   since the exit point is thread_exit()
  */
-void *light_fn( void *thread_args );
+void *apds9301_fn( void *thread_args );
 
 
-#endif /* LIGHT_H */
+#endif /* APDS9301_TASK_H */

@@ -41,8 +41,8 @@
 
 void* (*thread_entry_fn[ NUM_THREADS ])(void *) = {
    logger_fn,
-   temperature_fn,
-   light_fn,
+   tmp102_fn,
+   apds9301_fn,
    socket_fn,
    watchdog_fn,
 };

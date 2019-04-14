@@ -15,14 +15,14 @@
  *  GNU General Public License as published by the Free Software Foundation.
  */
 
-#ifndef TEMPERATURE_H
-#define TEMPERATURE_H
+#ifndef TMP102_TASK_H
+#define TMP102_TASK_H
 
 #include "common.h"
 
 #include <mqueue.h>
 
-#define TEMP_QUEUE_NAME "/temperature-queue"
+#define TMP102_QUEUE "/tmp102-queue" 
 
 /*!
  * Function:       tmp102_handler
@@ -57,14 +57,14 @@ float get_temperature( void );
 
 
 /*!
- * Function:       get_temperature_queue
+ * Function:       get_tmp102_queue
  * @brief   Get file descriptor for temperature sensor thread.
  *          Called by watchdog thread in order to be able to send heartbeat check via queue
  *
  * @param   void
  * @return  temp_queue - file descriptor for temperature sensor thread message queue
  */
-mqd_t get_temperature_queue( void );
+mqd_t get_tmp102_queue( void );
 
 /*!
  * Function:       temp_queue_init
@@ -76,14 +76,14 @@ mqd_t get_temperature_queue( void );
 int temp_queue_init( void );
 
 /*!
- * Function:       temperature_fn
+ * Function:       tmp102_fn
  * @brief   Entry point for temperature sensor processing thread
  *
  * @param   thread_args  - void ptr to arguments used to initialize thread
  * @return  NULL  - We don't really exit from this function, 
  *                   since the exit point is thread_exit()
  */
-void *temperature_fn( void *thread_args );
+void *tmp102_fn( void *thread_args );
 
 
-#endif /* TEMPERATURE_H */
+#endif /* TMP102_TASK_H */

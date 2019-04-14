@@ -21,6 +21,7 @@
  * =================================================================================
  */
 
+#include "watchdog.h"
 #include "led.h"
 #include "logger.h"
 #include <errno.h>
@@ -96,6 +97,15 @@ void logger_cycle( void )
       }
       switch( msg.id )
       {
+         case MSG_ALIVE:
+         {
+            pthread_mutex_lock( &alive_mutex );
+            threads_status[TASK_LOGGER]--;
+            pthread_mutex_unlock( &alive_mutex );
+
+            LOG_INFO( "LOGGER TASK: I am alive!\n" );
+            break;
+         }
          case MSG_STATUS:
          {
             LOG_MSG( log, INFO"FROM: %s ----- %s",

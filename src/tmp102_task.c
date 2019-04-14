@@ -1,6 +1,6 @@
 /*!
- *    @file     temperature.c
- *    @brief   Source file implementing temperature.h
+ *    @file     tmp102_task.c
+ *    @brief   Source file implementing tmp102_task.h
  *
  *
  *    @author   Roberto Baquerizo (baquerrj), roba8460@colorado.edu
@@ -29,14 +29,14 @@ static timer_t    timerid;
 struct itimerspec trigger;
 
 static i2c_handle_t i2c_tmp102;
-static float last_temp_value = -5;
-static mqd_t temp_queue;
+static float last_tmp102_value = -5;
+static mqd_t tmp102_queue;
 
-static message_t temp_log = {
+static message_t tmp102_log = {
    .level      = LOG_INFO,
    .timestamp  = {0},
    .id         = MSG_STATUS,
-   .src        = TASK_TEMP,
+   .src        = TASK_TMP102,
    .msg        = {0}
 };
 
@@ -56,7 +56,7 @@ static void sig_handler( int signo )
    if( signo == SIGUSR1 )
    {
       LOG_INFO( "TEMP TASK: Received SIGUSR1! Exiting...\n");
-      mq_close( temp_queue );
+      mq_close( tmp102_queue );
       timer_delete( timerid );
       i2c_stop( &i2c_tmp102 );
       thread_exit( signo );
@@ -64,7 +64,7 @@ static void sig_handler( int signo )
    else if( signo == SIGUSR2 )
    {
       LOG_INFO( "TEMP TASK: Received SIGUSR2! Exiting...\n");
-      mq_close( temp_queue );
+      mq_close( tmp102_queue );
       timer_delete( timerid );
       i2c_stop( &i2c_tmp102 );
       thread_exit( signo );
@@ -74,7 +74,7 @@ static void sig_handler( int signo )
 
 float get_temperature( void )
 {
-   return last_temp_value;
+   return last_tmp102_value;
 }
 
 void tmp102_handler( union sigval sig )
@@ -91,7 +91,8 @@ void tmp102_handler( union sigval sig )
    }
    else
    {
-      LOG_TASK_MSG( &temp_log, "TEMP: %0.5f Celsius\n", temperature );
+      tmp102_log.id = MSG_STATUS;
+      LOG_TASK_MSG( &tmp102_log, "TEMP: %0.5f Celsius\n", temperature );
    }
 
    return;
@@ -106,7 +107,7 @@ void tmp102_cycle( void )
    while( 1 )
    {
       memset( &request, 0, sizeof( request ) );
-      retVal = mq_receive( temp_queue, (char*)&request, sizeof( request ), NULL );
+      retVal = mq_receive( tmp102_queue, (char*)&request, sizeof( request ), NULL );
       if( 0 > retVal )
       {
          int errnum = errno;
@@ -116,9 +117,9 @@ void tmp102_cycle( void )
       }
       switch( request.id )
       {
-         case MSG_STATUS:
+         case MSG_ALIVE:
             pthread_mutex_lock( &alive_mutex );
-            threads_status[TASK_TEMP]--;
+            threads_status[TASK_TMP102]--;
             pthread_mutex_unlock( &alive_mutex );
 
             LOG_INFO( "TEMP TASK: I am alive!\n" );
@@ -130,15 +131,15 @@ void tmp102_cycle( void )
    return;
 }
 
-mqd_t get_temperature_queue( void )
+mqd_t get_tmp102_queue( void )
 {
-   return temp_queue;
+   return tmp102_queue;
 }
 
-int temp_queue_init( void )
+int tmp102_queue_init( void )
 {
    /* unlink first in case we hadn't shut down cleanly last time */
-   mq_unlink( TEMP_QUEUE_NAME );
+   mq_unlink( TMP102_QUEUE );
 
    struct mq_attr attr;
    attr.mq_flags = 0;
@@ -146,7 +147,7 @@ int temp_queue_init( void )
    attr.mq_msgsize = sizeof( message_t );
    attr.mq_curmsgs = 0;
 
-   int msg_q = mq_open( TEMP_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   int msg_q = mq_open( TMP102_QUEUE, O_CREAT | O_RDWR, 0666, &attr );
    if( 0 > msg_q )
    {
       int errnum = errno;
@@ -156,13 +157,13 @@ int temp_queue_init( void )
    return msg_q;
 }
 
-void *temperature_fn( void *thread_args )
+void *tmp102_fn( void *thread_args )
 {
    signal(SIGUSR1, sig_handler);
    signal(SIGUSR2, sig_handler);
 
-   temp_queue = temp_queue_init();
-   if( 0 > temp_queue )
+   tmp102_queue = tmp102_queue_init();
+   if( 0 > tmp102_queue )
    {
       thread_exit( EXIT_INIT );
    }

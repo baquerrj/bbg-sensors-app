@@ -34,13 +34,13 @@ struct itimerspec trigger;
 
 static i2c_handle_t i2c_apds9301;
 static float last_lux_value = -5;
-static mqd_t light_queue;
+static mqd_t apds9301_queue;
 
-static message_t light_log = {
+static message_t apds9301_log = {
    .level      = LOG_INFO,
    .timestamp  = {0},
    .id         = MSG_STATUS,
-   .src        = TASK_LIGHT,
+   .src        = TASK_APDS9301,
    .msg        = {0}
 };
 
@@ -60,7 +60,7 @@ static void sig_handler( int signo )
    if( signo == SIGUSR1 )
    {
       LOG_INFO( "LIGHT TASK: Received SIGUSR1! Exiting...\n");
-      mq_close( light_queue );
+      mq_close( apds9301_queue );
       timer_delete( timerid );
       apds9301_power( POWER_OFF );
       i2c_stop( &i2c_apds9301 );
@@ -69,7 +69,7 @@ static void sig_handler( int signo )
    else if( signo == SIGUSR2 )
    {
       LOG_INFO( "LIGHT TASK: Received SIGUSR2! Exiting...\n");
-      mq_close( light_queue );
+      mq_close( apds9301_queue );
       timer_delete( timerid );
       apds9301_power( POWER_OFF );
       i2c_stop( &i2c_apds9301 );
@@ -104,15 +104,16 @@ static void timer_handler( union sigval sig )
    }
    else
    {
+      apds9301_log.id = MSG_STATUS;
       /* save new lux value */
       last_lux_value = lux;
       if( DARK_THRESHOLD > lux )
       {
-         LOG_TASK_MSG( &light_log, "State: %s, Lux: %0.5f\n", "NIGHT", lux );
+         LOG_TASK_MSG( &apds9301_log, "State: %s, Lux: %0.5f\n", "NIGHT", lux );
       }
       else
       {
-         LOG_TASK_MSG( &light_log, "State: %s, Lux: %0.5f\n", "DAY", lux );
+         LOG_TASK_MSG( &apds9301_log, "State: %s, Lux: %0.5f\n", "DAY", lux );
       }
    }
 
@@ -154,7 +155,7 @@ static void cycle( void )
    while( 1 )
    {
       memset( &request, 0, sizeof( request ) );
-      retVal = mq_receive( light_queue, (char*)&request, sizeof( request ), NULL );
+      retVal = mq_receive( apds9301_queue, (char*)&request, sizeof( request ), NULL );
       if( 0 > retVal )
       {
          int errnum = errno;
@@ -164,9 +165,9 @@ static void cycle( void )
       }
       switch( request.id )
       {
-         case REQUEST_STATUS:
+         case MSG_ALIVE:
             pthread_mutex_lock( &alive_mutex );
-            threads_status[TASK_LIGHT]--;
+            threads_status[TASK_APDS9301]--;
             pthread_mutex_unlock( &alive_mutex );
 
             LOG_INFO( "LIGHT TASK: I am alive!\n" );
@@ -178,15 +179,15 @@ static void cycle( void )
    return;
 }
 
-mqd_t get_light_queue( void )
+mqd_t get_apds9301_queue( void )
 {
-   return light_queue;
+   return apds9301_queue;
 }
 
-int light_queue_init( void )
+int apds9301_queue_init( void )
 {
    /* unlink first in case we hadn't shut down cleanly last time */
-   mq_unlink( LIGHT_QUEUE_NAME );
+   mq_unlink( APDS9301_QUEUE );
 
    struct mq_attr attr;
    attr.mq_flags = 0;
@@ -194,7 +195,7 @@ int light_queue_init( void )
    attr.mq_msgsize = sizeof( message_t );
    attr.mq_curmsgs = 0;
 
-   int msg_q = mq_open( LIGHT_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   int msg_q = mq_open( APDS9301_QUEUE, O_CREAT | O_RDWR, 0666, &attr );
    if( 0 > msg_q )
    {
       int errnum = errno;
@@ -204,13 +205,13 @@ int light_queue_init( void )
    return msg_q;
 }
 
-void *light_fn( void *thread_args )
+void *apds9301_fn( void *thread_args )
 {
    signal(SIGUSR1, sig_handler);
    signal(SIGUSR2, sig_handler);
 
-   light_queue = light_queue_init();
-   if( 0 > light_queue )
+   apds9301_queue = apds9301_queue_init();
+   if( 0 > apds9301_queue )
    {
       thread_exit( EXIT_INIT );
    }

@@ -19,6 +19,7 @@
 
 
 #include "watchdog.h"
+#include "logger.h"
 #include "tmp102_task.h"
 #include "apds9301_task.h"
 
@@ -66,14 +67,14 @@ static void sig_handler( int signo )
 void kill_threads( void )
 {
    fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
-            task_id[TASK_TEMP] );
+            task_id[TASK_TMP102] );
    fflush( stdout );
-   pthread_kill( task_id[TASK_TEMP], SIGUSR1 );
+   pthread_kill( task_id[TASK_TMP102], SIGUSR1 );
 
    fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
-            task_id[TASK_LIGHT] );
+            task_id[TASK_APDS9301] );
    fflush( stdout );
-   pthread_kill( task_id[TASK_LIGHT], SIGUSR1 );
+   pthread_kill( task_id[TASK_APDS9301], SIGUSR1 );
 
    fprintf( stdout, "watchdog caught signals - killing thread [%ld]\n",
             task_id[TASK_SOCKET] );
@@ -101,35 +102,40 @@ void check_threads( union sigval sig )
 {
    int retVal = 0;
    message_t msg_out = {0};
-   msg_out.id  = MSG_STATUS;
+   msg_out.id  = MSG_ALIVE;
    msg_out.src = TASK_WATCHDOG;
 
-   if( (0 == threads_status[TASK_TEMP]) && (0 == threads_status[TASK_LIGHT] ) )
+   if( (0 == threads_status[TASK_TMP102]) && (0 == threads_status[TASK_APDS9301] ) && (0 == threads_status[TASK_LOGGER]) )
    {
       pthread_mutex_lock( &alive_mutex );
-      threads_status[TASK_TEMP]++;
-      threads_status[TASK_LIGHT]++;
+      threads_status[TASK_LOGGER]++;
+      threads_status[TASK_TMP102]++;
+      threads_status[TASK_APDS9301]++;
       pthread_mutex_unlock( &alive_mutex );
-      retVal = mq_send( thread_msg_q[TASK_TEMP], (const char*)&msg_out, sizeof( msg_out ), 0 );
+      retVal = mq_send( thread_msg_q[TASK_TMP102], (const char*)&msg_out, sizeof( msg_out ), 0 );
       if( 0 > retVal )
       {
          int errnum = errno;
-         LOG_ERROR( "Encountered error sending status request from watchdog: (%s)\n",
-                  strerror( errnum ) );
+         LOG_ERROR( "CHECK THREAD TMP102: (%s)\n", strerror( errnum ) );
       }
-      retVal = mq_send( thread_msg_q[TASK_LIGHT], (const char*)&msg_out, sizeof( msg_out ), 0 );
+      retVal = mq_send( thread_msg_q[TASK_APDS9301], (const char*)&msg_out, sizeof( msg_out ), 0 );
       if( 0 > retVal )
       {
          int errnum = errno;
-         LOG_ERROR( "Encountered error sending status request from watchdog: (%s)\n",
-                  strerror( errnum ) );
+         LOG_ERROR( "CHECK THREAD APDS9301: (%s)\n", strerror( errnum ) );
+      }
+      retVal = mq_send( thread_msg_q[TASK_LOGGER], (const char*)&msg_out, sizeof( msg_out ), 0 );
+      if( 0 > retVal )
+      {
+         int errnum = errno;
+         LOG_ERROR( "CHECK THREAD LOGGER: (%s)\n", strerror( errnum ) );
       }
    }
    else
    {
       LOG_ERROR( "One of the threads did not return!\n" );
-      LOG_ERROR( "thread_status[TASK_TEMP] = %d\nthread_status[TASK_LIGHT] = %d\n",
-               threads_status[TASK_TEMP], threads_status[TASK_LIGHT] );
+      LOG_ERROR( "thread_status[TASK_TMP102] = %d\nthread_status[TASK_APDS9301] = %d\nthread_status[TASK_LOGGER] = %d\n",
+               threads_status[TASK_TMP102], threads_status[TASK_APDS9301], threads_status[TASK_LOGGER] );
       kill_threads();
       thread_exit( EXIT_ERROR );
    }
@@ -181,11 +187,12 @@ int watchdog_init( void )
       thread_exit( EXIT_INIT );
    }
 
-   while( 0 == (thread_msg_q[TASK_TEMP] = get_temperature_queue()) );
-   while( 0 == (thread_msg_q[TASK_LIGHT] = get_light_queue()) );
+   while( 0 == (thread_msg_q[TASK_LOGGER] = get_logger_queue()) );
+   while( 0 == (thread_msg_q[TASK_TMP102] = get_tmp102_queue()) );
+   while( 0 == (thread_msg_q[TASK_APDS9301] = get_apds9301_queue()) );
 
-   LOG_INFO( "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[0] );
-   LOG_INFO( "Watchdog says: Light Queue FD: %d\n", thread_msg_q[1] );
+   LOG_INFO( "Watchdog says: Temp Queue FD: %d\n", thread_msg_q[TASK_TMP102] );
+   LOG_INFO( "Watchdog says: Light Queue FD: %d\n", thread_msg_q[TASK_APDS9301] );
 
    pthread_mutex_init( &alive_mutex, NULL );
    timer_setup( &timerid, &check_threads );

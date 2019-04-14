@@ -31,10 +31,6 @@
 #include <sys/syscall.h>
 #include <sys/types.h>
 
-//#define SHM_SEGMENT_NAME "/shm-log"
-//#define SHM_BUFFER_SIZE 2048
-
-
 #define NUM_THREADS         (5)
 
 #define MSG_SIZE 100
@@ -91,8 +87,8 @@ pthread_t task_id[ NUM_THREADS ];
 
 typedef enum {
    TASK_LOGGER = 0,
-   TASK_TEMP,
-   TASK_LIGHT,
+   TASK_TMP102,
+   TASK_APDS9301,
    TASK_SOCKET,
    TASK_WATCHDOG,
    TASK_MAX
@@ -141,6 +137,7 @@ typedef enum {
    MSG_CLOSE,
    MSG_KILL,
    MSG_STATUS,
+   MSG_ALIVE,
    MSG_MAX
 } message_e;
 
