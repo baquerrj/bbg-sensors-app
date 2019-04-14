@@ -37,9 +37,11 @@ AR_CROSS	:= arm-linux-ar
 PROG			:= $(BIN)/project1.out
 PROG_CROSS 	:= $(BIN)/project1_bbg.out
 
+default: cross
+
+
 all: cross normal
 
-default: cross
 
 cross: $(PROG_CROSS)
 	
