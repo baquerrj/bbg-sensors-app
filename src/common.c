@@ -34,6 +34,7 @@ const char* const task_name[NUM_THREADS + 1] = {
    (const char*)"LOGGER TASK",
    (const char*)"TMP102 TASK",
    (const char*)"APDS9301 TASK",
+   (const char*)"APDS9960 TASK",
    (const char*)"SOCKET TASK",
    (const char*)"WATCHDOG",
 };

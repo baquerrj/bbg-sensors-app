@@ -1,5 +1,4 @@
 /*!
- * =================================================================================
  *    @file     apds9960_task.h
  *    @brief    
  *
@@ -15,7 +14,6 @@
  *
  *  This source code is released for free distribution under the terms of the
  *  GNU General Public License as published by the Free Software Foundation.
- * =================================================================================
  */
 
 /**
@@ -40,8 +38,6 @@
 #include <stdint.h>
 
 
-#define APDS9960_QUEUE_NAME "/apds9960-queue"
-
 /* Debug */
 #define DEBUG                   0
 
@@ -61,58 +57,58 @@
 #define APDS9960_ID_2           0x9C 
 
 /* Misc parameters */
-#define FIFO_PAUSE_TIME         30      // Wait period (ms) between FIFO reads
+#define FIFO_PAUSE_TIME         30000      // Wait period (us) between FIFO reads
 
 /* APDS-9960 register addresses */
-#define APDS9960_REG_ENABLE         0x80
-#define APDS9960_REG_ATIME          0x81
-#define APDS9960_REG_WTIME          0x83
-#define APDS9960_REG_AILTL          0x84
-#define APDS9960_REG_AILTH          0x85
-#define APDS9960_REG_AIHTL          0x86
-#define APDS9960_REG_AIHTH          0x87
-#define APDS9960_REG_PILT           0x89
-#define APDS9960_REG_PIHT           0x8B
-#define APDS9960_REG_PERS           0x8C
-#define APDS9960_REG_CONFIG1        0x8D
-#define APDS9960_REG_PPULSE         0x8E
-#define APDS9960_REG_CONTROL        0x8F
-#define APDS9960_REG_CONFIG2        0x90
-#define APDS9960_REG_ID             0x92
-#define APDS9960_REG_STATUS         0x93
-#define APDS9960_REG_CDATAL         0x94
-#define APDS9960_REG_CDATAH         0x95
-#define APDS9960_REG_RDATAL         0x96
-#define APDS9960_REG_RDATAH         0x97
-#define APDS9960_REG_GDATAL         0x98
-#define APDS9960_REG_GDATAH         0x99
-#define APDS9960_REG_BDATAL         0x9A
-#define APDS9960_REG_BDATAH         0x9B
-#define APDS9960_REG_PDATA          0x9C
-#define APDS9960_REG_POFFSET_UR     0x9D
-#define APDS9960_REG_POFFSET_DL     0x9E
-#define APDS9960_REG_CONFIG3        0x9F
-#define APDS9960_REG_GPENTH         0xA0
-#define APDS9960_REG_GEXTH          0xA1
-#define APDS9960_REG_GCONF1         0xA2
-#define APDS9960_REG_GCONF2         0xA3
-#define APDS9960_REG_GOFFSET_U      0xA4
-#define APDS9960_REG_GOFFSET_D      0xA5
-#define APDS9960_REG_GOFFSET_L      0xA7
-#define APDS9960_REG_GOFFSET_R      0xA9
-#define APDS9960_REG_GPULSE         0xA6
-#define APDS9960_REG_GCONF3         0xAA
-#define APDS9960_REG_GCONF4         0xAB
-#define APDS9960_REG_GFLVL          0xAE
-#define APDS9960_REG_GSTATUS        0xAF
-#define APDS9960_REG_IFORCE         0xE4
-#define APDS9960_REG_PICLEAR        0xE5
-#define APDS9960_REG_CICLEAR        0xE6
-#define APDS9960_REG_AICLEAR        0xE7
-#define APDS9960_REG_GFIFO_U        0xFC
-#define APDS9960_REG_GFIFO_D        0xFD
-#define APDS9960_REG_GFIFO_L        0xFE
-#define APDS9960_REG_GFIFO_R        0xFF
+#define APDS9960_ENABLE         0x80
+#define APDS9960_ATIME          0x81
+#define APDS9960_WTIME          0x83
+#define APDS9960_AILTL          0x84
+#define APDS9960_AILTH          0x85
+#define APDS9960_AIHTL          0x86
+#define APDS9960_AIHTH          0x87
+#define APDS9960_PILT           0x89
+#define APDS9960_PIHT           0x8B
+#define APDS9960_PERS           0x8C
+#define APDS9960_CONFIG1        0x8D
+#define APDS9960_PPULSE         0x8E
+#define APDS9960_CONTROL        0x8F
+#define APDS9960_CONFIG2        0x90
+#define APDS9960_ID             0x92
+#define APDS9960_STATUS         0x93
+#define APDS9960_CDATAL         0x94
+#define APDS9960_CDATAH         0x95
+#define APDS9960_RDATAL         0x96
+#define APDS9960_RDATAH         0x97
+#define APDS9960_GDATAL         0x98
+#define APDS9960_GDATAH         0x99
+#define APDS9960_BDATAL         0x9A
+#define APDS9960_BDATAH         0x9B
+#define APDS9960_PDATA          0x9C
+#define APDS9960_POFFSET_UR     0x9D
+#define APDS9960_POFFSET_DL     0x9E
+#define APDS9960_CONFIG3        0x9F
+#define APDS9960_GPENTH         0xA0
+#define APDS9960_GEXTH          0xA1
+#define APDS9960_GCONF1         0xA2
+#define APDS9960_GCONF2         0xA3
+#define APDS9960_GOFFSET_U      0xA4
+#define APDS9960_GOFFSET_D      0xA5
+#define APDS9960_GOFFSET_L      0xA7
+#define APDS9960_GOFFSET_R      0xA9
+#define APDS9960_GPULSE         0xA6
+#define APDS9960_GCONF3         0xAA
+#define APDS9960_GCONF4         0xAB
+#define APDS9960_GFLVL          0xAE
+#define APDS9960_GSTATUS        0xAF
+#define APDS9960_IFORCE         0xE4
+#define APDS9960_PICLEAR        0xE5
+#define APDS9960_CICLEAR        0xE6
+#define APDS9960_AICLEAR        0xE7
+#define APDS9960_GFIFO_U        0xFC
+#define APDS9960_GFIFO_D        0xFD
+#define APDS9960_GFIFO_L        0xFE
+#define APDS9960_GFIFO_R        0xFF
 
 /* Bit fields */
 #define APDS9960_PON            0b00000001
@@ -239,109 +235,159 @@ typedef struct gesture_data_type {
     uint8_t out_threshold;
 } gesture_data_type;
 
-/*!
- * =================================================================================
- * Function:       apds9960_queue_init
- * @brief   Initialize message queue for light sensor thread
- *
- * @param   void
- * @return  msg_q - file descriptor for initialized message queue
- * =================================================================================
- */
-uint8_t apds9960_queue_init( void );
-
 
 /*!
- * =================================================================================
- * Function:       apds9960_fn
+ * Function:       apds9960_getMode
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
  * <+DETAILED+>
- * =================================================================================
  */
-void *apds9960_fn( void *thread_args );
-
+uint8_t getMode( void );
 
 
 /*!
- * =================================================================================
- * Function:       apds9960_init
+ * Function:       apds9960_setMode
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
  * <+DETAILED+>
- * =================================================================================
  */
-uint8_t apds9960_init( void );
-
+uint8_t setMode( uint8_t mode, uint8_t enable );
 
 
 /*!
- * =================================================================================
- * Function:       apds9960_read_enable_reg
- * @brief  
+ * @brief 
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
+ * @param  <+name+> <+description+>
+ * @return <+description+>
+ * <+detailed+>
  */
-uint8_t apds9960_read_enable_reg( uint16_t *data );
-
+uint8_t enablePower( void );
 
 /*!
- * =================================================================================
- * Function:       apds9960_write_enable_reg
- * @brief  
+ * @brief 
  *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- * =================================================================================
+ * @param  <+name+> <+description+>
+ * @return <+description+>
+ * <+detailed+>
  */
-uint8_t apds9960_write_enable_reg( uint16_t *data );
+uint8_t disablePower( void );
+
+/* @brief Enable or disable specific sensors */
+uint8_t enableLightSensor( uint8_t interrupts );
+uint8_t disableLightSensor( void );
+uint8_t enableProximitySensor( uint8_t interrupts );
+uint8_t disableProximitySensor( void );
+uint8_t enableGestureSensor( uint8_t interrupts );
+uint8_t disableGestureSensor( void );
 
 
+/* LED drive strength control */
+uint8_t getLEDDrive( void );
+uint8_t setLEDDrive(uint8_t drive);
+uint8_t getGestureLEDDrive( void );
+uint8_t setGestureLEDDrive(uint8_t drive);
 
+/* Gain control */
+uint8_t getAmbientLightGain( void );
+uint8_t setAmbientLightGain(uint8_t gain);
+uint8_t getProximityGain( void );
+uint8_t setProximityGain(uint8_t gain);
+uint8_t getGestureGain( void );
+uint8_t setGestureGain(uint8_t gain);
+    
+/* Get and set light interrupt thresholds */
+uint8_t getLightIntLowThreshold(uint16_t *threshold);
+uint8_t setLightIntLowThreshold(uint16_t threshold);
+uint8_t getLightIntHighThreshold(uint16_t *threshold);
+uint8_t setLightIntHighThreshold(uint16_t threshold);
+   
+/* Get and set proximity interrupt thresholds */
+uint8_t getProximityIntLowThreshold(uint8_t *threshold);
+uint8_t setProximityIntLowThreshold(uint8_t threshold);
+uint8_t getProximityIntHighThreshold(uint8_t *threshold);
+uint8_t setProximityIntHighThreshold(uint8_t threshold);
+    
+/* Get and set interrupt enables */
+uint8_t getAmbientLightIntEnable( void );
+uint8_t setAmbientLightIntEnable(uint8_t enable);
+uint8_t getProximityIntEnable( void );
+uint8_t setProximityIntEnable(uint8_t enable);
+uint8_t getGestureIntEnable( void );
+uint8_t setGestureIntEnable(uint8_t enable);
+
+/* Clear interrupts */
+uint8_t clearAmbientLightInt( void );
+uint8_t clearProximityInt( void );
+
+/* Ambient light methods */
+uint8_t readAmbientLight(uint16_t *val);
+uint8_t readRedLight(uint16_t *val);
+uint8_t readGreenLight(uint16_t *val);
+uint8_t readBlueLight(uint16_t *val);
+
+/* Proximity methods */
+uint8_t readProximity(uint8_t *val);
+
+/* Gesture methods */
+uint8_t isGestureAvailable( void );
+int readGesture( void );
+    
+//private:
+
+/* Gesture processing */
+void resetGestureParameters( void );
+uint8_t processGestureData( void );
+uint8_t decodeGesture( void );
+
+/* Proximity Interrupt Threshold */
+uint8_t getProxIntLowThresh( void );
+uint8_t setProxIntLowThresh(uint8_t threshold);
+uint8_t getProxIntHighThresh( void );
+uint8_t setProxIntHighThresh(uint8_t threshold);
+
+
+/* LED Boost Control */
+uint8_t getLEDBoost( void );
+uint8_t setLEDBoost(uint8_t boost);
+
+
+/* Proximity photodiode select */
+
+uint8_t getProxGainCompEnable( void );
+uint8_t setProxGainCompEnable(uint8_t enable);
+uint8_t getProxPhotoMask( void );
+uint8_t setProxPhotoMask(uint8_t mask);
+
+
+/* Gesture threshold control */
+uint8_t getGestureEnterThresh( void );
+uint8_t setGestureEnterThresh(uint8_t threshold);
+uint8_t getGestureExitThresh( void );
+uint8_t setGestureExitThresh(uint8_t threshold);
+    
+
+/* Gesture LED, gain, and time control */
+uint8_t getGestureWaitTime( void );
+uint8_t setGestureWaitTime(uint8_t time);
+
+
+/* Gesture mode */
+uint8_t getGestureMode( void );
+uint8_t setGestureMode(uint8_t mode);
 
 /*!
- * =================================================================================
  * Function:       apds9960_read_id
  * @brief  
  *
  * @param  <+NAME+> <+DESCRIPTION+>
  * @return <+DESCRIPTION+>
  * <+DETAILED+>
- * =================================================================================
  */
 uint8_t apds9960_read_id( uint8_t *id );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif /* APDS9960_SENSOR_H */

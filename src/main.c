@@ -20,6 +20,7 @@
 
 #include "tmp102_task.h"
 #include "apds9301_task.h"
+#include "apds9960_task.h"
 #include "logger.h"
 #include "common.h"
 #include "watchdog.h"
@@ -43,6 +44,7 @@ void* (*thread_entry_fn[ NUM_THREADS ])(void *) = {
    logger_fn,
    tmp102_fn,
    apds9301_fn,
+   apds9960_fn,
    socket_fn,
    watchdog_fn,
 };
