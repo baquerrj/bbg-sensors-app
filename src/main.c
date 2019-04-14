@@ -18,8 +18,8 @@
  * =================================================================================
  */
 
-#include "temperature.h"
-#include "light.h"
+#include "tmp102_task.h"
+#include "apds9301_task.h"
 #include "logger.h"
 #include "common.h"
 #include "watchdog.h"
@@ -38,15 +38,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-//static pthread_t temp_thread;
-//static pthread_t light_thread;
-//static pthread_t logger_thread;
-//static pthread_t socket_thread;
-//static pthread_t watchdog_thread;
-
-//static pthread_t apds9960_thread;
-
-//static shared_data_t *shm;
 
 void* (*thread_entry_fn[ NUM_THREADS ])(void *) = {
    logger_fn,

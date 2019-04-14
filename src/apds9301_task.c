@@ -20,9 +20,10 @@
 
 
 #include "watchdog.h"
-#include "light.h"
+#include "apds9301_task.h"
 #include "led.h"
 #include "logger.h"
+
 #include <errno.h>
 #include <time.h>
 #include <string.h>

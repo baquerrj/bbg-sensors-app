@@ -19,8 +19,8 @@
 
 
 #include "watchdog.h"
-#include "temperature.h"
-#include "light.h"
+#include "tmp102_task.h"
+#include "apds9301_task.h"
 
 #include <errno.h>
 #include <string.h>

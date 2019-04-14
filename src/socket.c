@@ -16,8 +16,8 @@
  */
 
 #include "socket.h"
-#include "light.h"
-#include "temperature.h"
+#include "apds9301_task.h"
+#include "tmp102_task.h"
 
 #include <string.h>
 #include <stdlib.h>

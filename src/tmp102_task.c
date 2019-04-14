@@ -16,10 +16,11 @@
  */
 
 #include "tmp102_sensor.h"
+#include "tmp102_task.h"
 #include "watchdog.h"
-#include "temperature.h"
 #include "led.h"
 #include "logger.h"
+
 #include <errno.h>
 #include <time.h>
 #include <string.h>
