@@ -59,7 +59,7 @@ static void sig_handler( int signo )
 {
    if( signo == SIGUSR1 )
    {
-      LOG_INFO( "LIGHT TASK: Received SIGUSR1! Exiting...\n");
+      LOG_INFO( "APDS9301 TASK: Received SIGUSR1! Exiting...\n");
       mq_close( apds9301_queue );
       timer_delete( timerid );
       apds9301_power( POWER_OFF );
@@ -68,7 +68,7 @@ static void sig_handler( int signo )
    }
    else if( signo == SIGUSR2 )
    {
-      LOG_INFO( "LIGHT TASK: Received SIGUSR2! Exiting...\n");
+      LOG_INFO( "APDS9301 TASK: Received SIGUSR2! Exiting...\n");
       mq_close( apds9301_queue );
       timer_delete( timerid );
       apds9301_power( POWER_OFF );
@@ -159,7 +159,7 @@ static void cycle( void )
       if( 0 > retVal )
       {
          int errnum = errno;
-         LOG_ERROR( "LIGHT TASK: QUEUE RECEIVE: (%s)\n",
+         LOG_ERROR( "APDS9301 TASK: QUEUE RECEIVE: (%s)\n",
                      strerror( errnum ) );
          continue;
       }
@@ -170,7 +170,7 @@ static void cycle( void )
             threads_status[TASK_APDS9301]--;
             pthread_mutex_unlock( &alive_mutex );
 
-            LOG_INFO( "LIGHT TASK: I am alive!\n" );
+            LOG_INFO( "APDS9301 TASK: I am alive!\n" );
             break;
          default:
             break;
@@ -199,7 +199,7 @@ int apds9301_queue_init( void )
    if( 0 > msg_q )
    {
       int errnum = errno;
-      LOG_ERROR( "LIGHT TASK: QUEUE CREATE: %s\n",
+      LOG_ERROR( "APDS9301 TASK: QUEUE CREATE: %s\n",
                   strerror( errnum ) );
    }
    return msg_q;
@@ -216,24 +216,24 @@ void *apds9301_fn( void *thread_args )
       thread_exit( EXIT_INIT );
    }
 
-   int retVal = i2c_init( &i2c_apds9301 );
-   if( EXIT_CLEAN != retVal )
-   {
-      LOG_ERROR( "Failed to initialize I2C for light sensor\n" );
-      thread_exit( EXIT_INIT );
-   }
-   retVal = apds9301_power( POWER_ON );
-   if( EXIT_CLEAN != retVal )
-   {
-      LOG_ERROR( "Failed to power on light sensor\n" );
-      thread_exit( EXIT_INIT );
-   }
+//   int retVal = i2c_init( &i2c_apds9301 );
+//   if( EXIT_CLEAN != retVal )
+//   {
+//      LOG_ERROR( "APDS9301 TASK: I2C INIT\n" );
+//      thread_exit( EXIT_INIT );
+//   }
+//   retVal = apds9301_power( POWER_ON );
+//   if( EXIT_CLEAN != retVal )
+//   {
+//      LOG_ERROR( "APDS9301 TASK: POWER ON\n" );
+//      thread_exit( EXIT_INIT );
+//   }
 
-   timer_setup( &timerid, &timer_handler );
+//   timer_setup( &timerid, &timer_handler );
 
-   timer_start( &timerid, FREQ_1HZ );
+//   timer_start( &timerid, FREQ_1HZ );
 
-   LOG_INFO( "LIGHT TASK INITIALIZED\n" );
+   LOG_INFO( "APDS9301 TASK INITIALIZED\n" );
    cycle();
 
    thread_exit( 0 );
