@@ -32,57 +32,49 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/syscall.h>
-mqd_t logger_queue;
 
 #define LOGGER_QUEUE_NAME  "/logger_queue"
 
-#define MSG_SIZE  GEN_BUFFER_SIZE
+#define LOG_MSG( fp, fmt, ...)  \
+   do{ \
+      FPRINTF( fp, fmt, ##__VA_ARGS__); \
+      fflush( fp ); \
+      }while(0)
 
-#if 0
-#define LOG_TASK(logger, fmt, ...)  do{SPRINTF((logger)->msg, sizeof((logger)->msg), fmt, ##__VA_ARGS__); \
-                                          convert_timestamp(logger); \
-                                          POST_MSG( logger_queue, logger, sizeof(*logger), 20 ); \
-                                          }while(0)
-#endif
 #define LOG_TASK_MSG(p_logstruct, fmt, ...)  \
     do{ \
         snprintf((p_logstruct)->msg,sizeof((p_logstruct)->msg),fmt, ##__VA_ARGS__);   \
-        convert_timestamp(p_logstruct); \
-        log_msg( logger_queue, p_logstruct, sizeof(*p_logstruct), 20); \
+        convert_timestamp((p_logstruct)->timestamp, sizeof((p_logstruct)->timestamp)); \
+        log_msg( get_logger_queue(), p_logstruct, sizeof(*p_logstruct), 20); \
     }while(0)
 
+/*!
+ * @brief 
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ */
+uint8_t log_msg( mqd_t queue, const message_t *msg, size_t size, int priority );
+//static inline uint8_t log_msg( mqd_t queue, const message_t *msg, size_t size, int priority )
+//{
+//   if( -1 == mq_send( queue, (const char*)msg, size, priority ) )
+//   {
+//      int errnum = errno;
+//      LOG_ERROR( "LOGGER - QUEUE SEND (%s)\n", strerror( errnum ) );
+//      return EXIT_ERROR;
+//   }
+ //  return EXIT_CLEAN;
+//}
 
-
-/*! @brief Types of Logging */
-typedef enum
-{
-   MSG_BEGIN = 0,
-   NMSG_STATUS,
-   MSG_TOGGLE_LED,
-   MSG_GET_TEMP,
-   MSG_TEMP_LOW,
-   MSG_TEMP_HIGH,
-   MSG_TEMP_MAX
-} log_msg_e;
-
-/*! @brief Logging levels */
-typedef enum
-{
-   LOG_ERROR,
-   LOG_WARNING,
-   LOG_INFO,
-   LOG_ALL
-} log_level_e;
-
-/*! @brief Packet structure */
-typedef struct
-{
-   log_level_e level;
-   char        timestamp[25];
-   log_msg_e   type;
-   task_e   src;
-   char        msg[MSG_SIZE];
-} log_msg_t;
+/*!
+ * @brief 
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ */
+mqd_t get_logger_queue( void );
 
 
 
@@ -93,18 +85,7 @@ typedef struct
  * @return <+DESCRIPTION+>
  * <+DETAILED+>
  */
-static inline uint8_t log_msg( mqd_t queue, const log_msg_t *msg, size_t size, int priority )
-{
-   if( -1 == mq_send( queue, (const char*)msg, size, priority ) )
-   {
-      int errnum = errno;
-      LOG_ERROR( "LOGGER - QUEUE SEND (%s)\n", strerror( errnum ) );
-      return EXIT_ERROR;
-   }
-   return EXIT_CLEAN;
-}
-
-
+void logger_cycle( void );
 
 /*!
  * @brief 
@@ -115,9 +96,8 @@ static inline uint8_t log_msg( mqd_t queue, const log_msg_t *msg, size_t size, i
  */
 mqd_t logger_queue_init( void );
 
-
-
 /*!
+ *
  * @brief Get timestamp
  *
  * @param   timestamp store to write timestamp to
@@ -126,16 +106,6 @@ mqd_t logger_queue_init( void );
  * @returns EXIT_ERROR otherwise 
  */
 uint8_t convert_timestamp( char *timestamp, const int len );
-
-
-/*!
- * @brief 
- *
- * @param  <+NAME+> <+DESCRIPTION+>
- * @return <+DESCRIPTION+>
- * <+DETAILED+>
- */
-mqd_t get_logger_queue( void );
 
 
 /*!

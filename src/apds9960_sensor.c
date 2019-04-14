@@ -1,5 +1,4 @@
 /*!
- * =================================================================================
  *    @file     apds9960_sensor.c
  *    @brief    
  *
@@ -15,10 +14,9 @@
  *
  *  This source code is released for free distribution under the terms of the
  *  GNU General Public License as published by the Free Software Foundation.
- * =================================================================================
  */
 
-/**
+/*!
  * @file    SparkFun_APDS-9960.cpp
  * @brief   Library for the SparkFun APDS-9960 breakout board
  * @author  Shawn Hymel (SparkFun Electronics)
@@ -50,11 +48,9 @@ struct itimerspec trigger;
 static i2c_handle_t i2c_apds9960;
 
 static mqd_t apds9960_queue;
-static shared_data_t *shm;
 
 
-/**
- * =================================================================================
+/*!
  * Function:       sig_handler
  * @brief   Signal handler for light sensor thread.
  *          On normal operation, we should be receving SIGUSR1/2 signals from watchdog
@@ -62,7 +58,6 @@ static shared_data_t *shm;
  *
  * @param   signo - enum with signal number of signal being handled
  * @return  void
- * =================================================================================
  */
 static void sig_handler( int signo )
 {
@@ -94,7 +89,7 @@ uint8_t apds9960_init( void )
    if( 0 != retVal )
    {
       mraa_result_print( retVal );
-      fprintf( stderr, "Could not initialize I2C Master instance\n" );
+      LOG_ERROR( "Could not initialize I2C Master instance\n" );
       return retVal;
    }
    uint8_t id;
@@ -102,12 +97,12 @@ uint8_t apds9960_init( void )
    retVal = apds9960_read_id( &id );
    if( ( APDS9960_ID_1 != id ) && ( APDS9960_ID_2 != id ) )
    {
-      fprintf( stderr, "Invalid ID: %u\n", id );
+      LOG_ERROR( "Invalid ID: %u\n", id );
       return 1;
    }
    else
    {
-      fprintf( stderr, "ID: %u\n", id );
+      LOG_ERROR( "ID: %u\n", id );
    }
    return retVal;
 }
@@ -132,18 +127,15 @@ uint8_t apds9960_queue_init( void )
    struct mq_attr attr;
    attr.mq_flags = 0;
    attr.mq_maxmsg = MAX_MESSAGES;
-   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_msgsize = sizeof( message_t );
    attr.mq_curmsgs = 0;
 
    int msg_q = mq_open( APDS9960_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
    if( 0 > msg_q )
    {
       int errnum = errno;
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "Encountered error creating message queue %s: (%s)\n",
+      LOG_ERROR( "Encountered error creating message queue %s: (%s)\n",
                APDS9960_QUEUE_NAME, strerror( errnum ) );
-      sem_post(&shm->r_sem);
    }
    return msg_q;
 }
@@ -151,18 +143,7 @@ uint8_t apds9960_queue_init( void )
 
 void *apds9960_fn( void *thread_args )
 {
-   /* Get time that thread was spawned */
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
-   shm = get_shared_memory();
-
-   /* Write initial state to shared memory */
-   sem_wait(&shm->w_sem);
-   print_header(shm->header);
-   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   /* Signal to logger that shared memory has been updated */
-   sem_post(&shm->r_sem);
+   LOG_INFO( "APDS9960: Hello World!\n" );
 
    signal(SIGUSR1, sig_handler);
    signal(SIGUSR2, sig_handler);
@@ -176,25 +157,19 @@ void *apds9960_fn( void *thread_args )
    int retVal = apds9960_init();
    if( EXIT_CLEAN != retVal )
    {
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "ERROR: Failed to initialize I2C for light sensor!\n" );
-      sem_post(&shm->r_sem);
+      LOG_ERROR( "Failed to initialize I2C for light sensor!\n" );
       thread_exit( EXIT_INIT );
    }
 //   retVal = apds9960_power( POWER_ON );
 //   if( EXIT_CLEAN != retVal )
 //   {
-//      sem_wait(&shm->w_sem);
-//      print_header(shm->header);
-//      sprintf( shm->buffer, "ERROR: Failed to power on light sensor!\n" );
-//      sem_post(&shm->r_sem);
+//      LOG_ERROR( "ERROR: Failed to power on light sensor!\n" );
 //      thread_exit( EXIT_INIT );
 //   }
 
 //   timer_setup( &timerid, &timer_handler );
 
-//   timer_start( &timerid, 5000000 );
+//   timer_start( &timerid, FREQ_1HZ );
 //   cycle();
 
    thread_exit( 0 );

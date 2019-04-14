@@ -25,7 +25,7 @@
 #include "watchdog.h"
 #include "socket.h"
 #include "led.h"
-#include "apds9960_sensor.h"
+//#include "apds9960_sensor.h"
 
 #include <fcntl.h>
 #include <signal.h>
@@ -38,15 +38,23 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-static pthread_t temp_thread;
-static pthread_t light_thread;
-static pthread_t logger_thread;
-static pthread_t socket_thread;
-static pthread_t watchdog_thread;
+//static pthread_t temp_thread;
+//static pthread_t light_thread;
+//static pthread_t logger_thread;
+//static pthread_t socket_thread;
+//static pthread_t watchdog_thread;
 
 //static pthread_t apds9960_thread;
 
-static shared_data_t *shm;
+//static shared_data_t *shm;
+
+void* (*thread_entry_fn[ NUM_THREADS ])(void *) = {
+   logger_fn,
+   temperature_fn,
+   light_fn,
+   socket_fn,
+   watchdog_fn,
+};
 
 /**
  * =================================================================================
@@ -63,10 +71,8 @@ static void signal_handler( int signo )
    switch( signo )
    {
       case SIGINT:
-         fprintf( stderr, "Master caught SIGINT!\n" );
-         pthread_kill( watchdog_thread, SIGUSR2 );
-//         pthread_kill( apds9960_thread, SIGUSR1 );
-//         pthread_kill( logger_thread, SIGUSR1 );
+         LOG_ERROR( "Master caught SIGINT!\n" );
+         pthread_kill( task_id[TASK_WATCHDOG], SIGUSR2 );
    }
 }
 
@@ -109,64 +115,43 @@ int main( int argc, char *argv[] )
       log = malloc( sizeof( file_t ) );
       log->fid = fopen( argv[1], "w" );
       log->name = argv[1];
-      printf( "Opened file %s\n", argv[1] );
+      LOG_INFO( "Opened file %s\n", argv[1] );
    }
    else
    {
-      fprintf( stderr, "Name of log file required!\n" );
+      LOG_ERROR( "Name of log file required!\n" );
       return 1;
    }
 
-   /* Initialize Shared Memory */
-   shm = get_shared_memory();
-   if( 0  > sems_init( shm ) )
-   {
-      fprintf( stderr, "Encountered error initializing semaphores!\n" );
-      return 1;
-   }
+   LOG_INFO( "Starting Threads!\n" );
 
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
-
-   print_header( NULL );
-   fprintf( stdout, "Starting Threads! Start Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-
-   struct thread_id_s* threads = malloc( sizeof( struct thread_id_s ) );
 
    led_on( LED2_BRIGHTNESS );
 
    set_trigger( LED2_TRIGGER, "timer" );
    set_delay( LED2_DELAYON, 50 );
+
    /* Attempting to spawn child threads */
-   pthread_create( &logger_thread, NULL, logger_fn, (void*)log->fid );
-   pthread_create( &temp_thread, NULL, temperature_fn, NULL );
-   pthread_create( &light_thread, NULL, light_fn, NULL );
-   pthread_create( &socket_thread, NULL , socket_fn, NULL );
-//   pthread_create( &apds9960_thread, NULL, apds9960_fn, NULL );
-   
-   threads->temp_thread = temp_thread;
-   threads->logger_thread = logger_thread;
-   threads->light_thread = light_thread;
-   threads->socket_thread = socket_thread;
+   for( uint8_t i = 0; i < TASK_MAX; ++i )
+   {
+      if( 0 != pthread_create( &task_id[i], NULL, thread_entry_fn[i], (void*)log->fid ) )
+      {
+         int errnum = errno;
+         LOG_ERROR( "Could not create thread %d (%s)\n", i, strerror( errnum ) ); 
+         return 1;
+      }
+   }
+   LOG_INFO( "MAIN: CHILD THREADS INIT\n" );
 
-   pthread_create( &watchdog_thread, NULL, watchdog_fn, (void*)threads );
+   //pthread_create( &watchdog_thread, NULL, watchdog_fn, (void*)threads );
 
-   pthread_join( watchdog_thread, NULL );
+   pthread_join( task_id[TASK_WATCHDOG], NULL );
 
 //   pthread_join( apds9960_thread, NULL );
-   clock_gettime(CLOCK_REALTIME, &time);
 
-
-   print_header( NULL );
-   fprintf( stdout, "All threads exited! Main thread exiting... " );
-   fprintf( stdout, "End Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
+   LOG_INFO( "All threads exited! Main thread exiting... " );
 
    free( log );
-   free( threads );
-   munmap( shm, sizeof( shared_data_t ) );
-   shm_unlink( SHM_SEGMENT_NAME );
    turn_off_leds();
    return 0;
 }

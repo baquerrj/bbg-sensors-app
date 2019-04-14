@@ -19,7 +19,7 @@
 #include "watchdog.h"
 #include "temperature.h"
 #include "led.h"
-
+#include "logger.h"
 #include <errno.h>
 #include <time.h>
 #include <string.h>
@@ -30,12 +30,16 @@ struct itimerspec trigger;
 static i2c_handle_t i2c_tmp102;
 static float last_temp_value = -5;
 static mqd_t temp_queue;
-//static shared_data_t *shm;
 
-float get_temperature( void )
-{
-   return last_temp_value;
-}
+static message_t temp_log = {
+   .level      = LOG_INFO,
+   .timestamp  = {0},
+   .id         = MSG_STATUS,
+   .src        = TASK_TEMP,
+   .msg        = {0}
+};
+
+
 
 /*!
  * Function:       sig_handler
@@ -50,7 +54,7 @@ static void sig_handler( int signo )
 {
    if( signo == SIGUSR1 )
    {
-      printf("Received SIGUSR1! Exiting...\n");
+      LOG_INFO( "TEMP TASK: Received SIGUSR1! Exiting...\n");
       mq_close( temp_queue );
       timer_delete( timerid );
       i2c_stop( &i2c_tmp102 );
@@ -58,7 +62,7 @@ static void sig_handler( int signo )
    }
    else if( signo == SIGUSR2 )
    {
-      printf("Received SIGUSR2! Exiting...\n");
+      LOG_INFO( "TEMP TASK: Received SIGUSR2! Exiting...\n");
       mq_close( temp_queue );
       timer_delete( timerid );
       i2c_stop( &i2c_tmp102 );
@@ -67,38 +71,37 @@ static void sig_handler( int signo )
    return;
 }
 
+float get_temperature( void )
+{
+   return last_temp_value;
+}
+
 void tmp102_handler( union sigval sig )
 {
    static int i = 0;
-   led_toggle( LED0_BRIGHTNESS );
-//   sem_wait(&shm->w_sem);
-   
-//   print_header(shm->header);
+
    float temperature;
    int retVal = tmp102_get_temp( &temperature );
    i++;
    if( retVal )
    {
-//      sprintf( shm->buffer, "cycle[%d]: could not get temperature reading!\n", i );
-      LOG_ERROR( "CYCLE [%d] --- Couldn't read temperature\n", i );
+      LOG_WARNING( "CYCLE [%d] --- Couldn't read temperature\n", i );
+      led_toggle( LED0_BRIGHTNESS );
    }
    else
    {
-//      sprintf( shm->buffer, "cycle[%d]: %0.5f Celsius\n", i, temperature );
-      LOG_INFO( "CYCLE [%d] --- TEMP: %0.5f Celsius\n", i, temperature );
+      LOG_TASK_MSG( &temp_log, "TEMP: %0.5f Celsius\n", temperature );
    }
 
-//   sem_post(&shm->r_sem);
-   led_toggle( LED0_BRIGHTNESS );
    return;
+   led_toggle( LED2_BRIGHTNESS );
 }
 
 
 void tmp102_cycle( void )
 {
    int retVal = 0;
-   msg_t request = {0};
-   msg_t response = {0};
+   message_t request = {0};
    while( 1 )
    {
       memset( &request, 0, sizeof( request ) );
@@ -106,29 +109,18 @@ void tmp102_cycle( void )
       if( 0 > retVal )
       {
          int errnum = errno;
-//         sem_wait(&shm->w_sem);
-//         sprintf( shm->buffer, "ERROR: Encountered error receiving from message queue %s: (%s)\n",
-//                  TEMP_QUEUE_NAME, strerror( errnum ) );
-//         sem_post(&shm->r_sem);
-         LOG_ERROR( "Encountered error receiving from message queue %s: (%s)\n",
-                  TEMP_QUEUE_NAME, strerror( errnum ) );
+         LOG_ERROR( "TEMP TASK: QUEUE RECEIVE: (%s)\n",
+                     strerror( errnum ) );
          continue;
       }
       switch( request.id )
       {
-         case REQUEST_STATUS:
-//            sem_wait(&shm->w_sem);
-//            print_header(shm->header);
-//            sprintf( shm->buffer, "(Temperature) I am alive!\n" );
-//            sem_post(&shm->r_sem);
-            LOG_INFO( "(Temperature) I am alive!\n" );
-            response.id = request.id;
-            sprintf( response.info, "(Temperature) I am alive!\n" );
-            retVal = mq_send( request.src, (const char*)&response, sizeof( response ), 0 );
-
+         case MSG_STATUS:
             pthread_mutex_lock( &alive_mutex );
-            threads_status[THREAD_TEMP]--;
+            threads_status[TASK_TEMP]--;
             pthread_mutex_unlock( &alive_mutex );
+
+            LOG_INFO( "TEMP TASK: I am alive!\n" );
             break;
          default:
             break;
@@ -150,40 +142,21 @@ int temp_queue_init( void )
    struct mq_attr attr;
    attr.mq_flags = 0;
    attr.mq_maxmsg = MAX_MESSAGES;
-   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_msgsize = sizeof( message_t );
    attr.mq_curmsgs = 0;
 
    int msg_q = mq_open( TEMP_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
    if( 0 > msg_q )
    {
       int errnum = errno;
-//      sem_wait(&shm->w_sem);
-//      print_header(shm->header);
-//      sprintf( shm->buffer, "ERROR: Encountered error creating message queue %s: (%s)\n",
-//               TEMP_QUEUE_NAME, strerror( errnum ) );
-//      sem_post(&shm->r_sem);
-      LOG_ERROR( "Could not create message queue for logger task: %s\n",
+      LOG_ERROR( "TEMP TASK: QUEUE CREATE: (%s)\n",
                   strerror( errnum ) );
-
    }
    return msg_q;
 }
 
 void *temperature_fn( void *thread_args )
 {
-   /* Get time that thread was spawned */
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
-//   shm = get_shared_memory();
-
-   /* Write initial state to shared memory */
-//   sem_wait(&shm->w_sem);
-//   print_header(shm->header);
-//   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
-//            time.tv_sec, time.tv_nsec );
-   /* Signal to logger that shared memory has been updated */
-//   sem_post(&shm->r_sem);
-
    signal(SIGUSR1, sig_handler);
    signal(SIGUSR2, sig_handler);
 
@@ -196,16 +169,15 @@ void *temperature_fn( void *thread_args )
    int retVal = i2c_init( &i2c_tmp102 );
    if( EXIT_INIT == retVal )
    {
-//      sem_wait(&shm->w_sem);
-//      print_header(shm->header);
-//      sprintf( shm->buffer, "ERROR: Failed to initialize I2C for temperature sensor!\n" );
-//      sem_post(&shm->r_sem);
+      LOG_ERROR( "TEMP TASK: I2C INIT\n" );
       thread_exit( EXIT_INIT );
    }
 
    timer_setup( &timerid, &tmp102_handler );
 
    timer_start( &timerid, FREQ_1HZ );
+
+   LOG_INFO( "TEMP TASK INITIALIZED\n" );
    tmp102_cycle();
 
    thread_exit( 0 );

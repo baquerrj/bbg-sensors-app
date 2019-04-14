@@ -1,5 +1,4 @@
-/**
- * =================================================================================
+/*!
  *    @file     watchdog.h
  *    @brief   Watchdog thread header 
  *
@@ -14,7 +13,6 @@
  *
  *  This source code is released for free distribution under the terms of the
  *  GNU General Public License as published by the Free Software Foundation.
- * =================================================================================
  */
 
 
@@ -26,33 +24,22 @@
 #include <mqueue.h>
 
 #define WATCHDOG_QUEUE_NAME "/watchdog-queue"
-#define NUM_THREADS 4
 
-typedef enum {
-   THREAD_TEMP = 0,
-   THREAD_LIGHT,
-   THREAD_LOGGER,
-   THREAD_SOCKET,
-   THREAD_MAX
-} thread_e;
 
 volatile int threads_status[NUM_THREADS];
 
 extern pthread_mutex_t alive_mutex;
 
-/**
- * =================================================================================
+/*!
  * Function:       kill_threads
  * @brief   Function to kill children threads 
  *
  * @param   void
  * @return  void
- * =================================================================================
  */
 void kill_threads( void );
 
-/**
- * =================================================================================
+/*!
  * Function:       check_threads
  * @brief   Periodically send message via message queue for temperature and sensor threads
  *          to check for health. This function is registered as the timer hanlder for the
@@ -60,35 +47,29 @@ void kill_threads( void );
  *
  * @param   sig
  * @return  void
- * =================================================================================
  */
 void check_threads( union sigval sig );
 
-/**
- * =================================================================================
+/*!
  * Function:       watchdog_queue_init
  * @brief   Initalize message queue for watchdog
  *
  * @param   void
  * @return  msg_q - file descriptor for initialized message queue
- * =================================================================================
  */
-int watchdog_queue_init( void );
+mqd_t watchdog_queue_init( void );
 
-/**
- * =================================================================================
+/*!
  * Function:       watchdog_init
  * @brief   Initialize watchdog, calling appropriate functions to do so.
  *          E.g. calling timer_setup and timer_start to set up timer
  *
  * @param   void
  * @return  EXIT_CLEAN, otherwise EXIT_INIT
- * =================================================================================
  */
 int watchdog_init( void );
 
-/**
- * =================================================================================
+/*!
  * Function:       watchdog_fn
  * @brief   Entry point for wachtdog
  *
@@ -96,7 +77,6 @@ int watchdog_init( void );
  *                      child threads we have to check for health
  * @return  NULL  - We don't really exit from this function,
  *                   since the exit point for threads is thread_exit()
- * =================================================================================
  */
 void *watchdog_fn( void *thread_args );
 

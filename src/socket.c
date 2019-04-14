@@ -1,5 +1,4 @@
-/**
- * =================================================================================
+/*!
  *    @file     socket.c
  *    @brief   Remote Socket task capable of requesting sensor readings from
  *             temperature and light sensor threads
@@ -14,11 +13,9 @@
  *
  *  This source code is released for free distribution under the terms of the
  *  GNU General Public License as published by the Free Software Foundation.
- * =================================================================================
  */
 
 #include "socket.h"
-#include "common.h"
 #include "light.h"
 #include "temperature.h"
 
@@ -35,94 +32,66 @@
 
 #define PORT 8080
 
-static shared_data_t *shm;
 
-/**
- * =================================================================================
+/*!
  * Function:       process_request
  * @brief   Process a request from remote client
  *
  * @param   *request - request from client
  * @return  response - our response
- * =================================================================================
  */
-msg_t process_request( msg_t *request )
+remote_t process_request( remote_t *request )
 {
-   msg_t response = {0};
+   remote_t response = {0};
    switch( request->id )
    {
       case REQUEST_LUX:
          response.id = request->id;
          response.data.data = get_lux();
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Lux: %.5f\n",
+         LOG_INFO( "Request Lux: %.5f\n",
                   response.data.data );
-         sem_post(&shm->r_sem);
          break;
       case REQUEST_DARK:
          response.id = request->id;
          response.data.night = is_dark();
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Day or Night: %s\n",
+         LOG_INFO( "Request Day or Night: %s\n",
                   (response.data.night == 0) ? "day" : "night");
-         sem_post(&shm->r_sem);
          break;
       case REQUEST_TEMP:
          response.id = request->id;
          response.data.data = get_temperature();
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Temperature: %.5f C\n",
+         LOG_INFO( "Request Temperature: %.5f C\n",
                   response.data.data );
-         sem_post(&shm->r_sem);
          break;
       case REQUEST_TEMP_K:
          response.id = request->id;
          response.data.data = get_temperature() + 273.15;
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Temperature: %.5f K\n",
+         LOG_INFO( "Request Temperature: %.5f K\n",
                   response.data.data );
-         sem_post(&shm->r_sem);
          break;
        case REQUEST_TEMP_F:
          response.id = request->id;
          response.data.data = (get_temperature() *1.80) + 32.0;
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Temperature: %.5f F\n",
+         LOG_INFO( "Request Temperature: %.5f F\n",
                   response.data.data );
-         sem_post(&shm->r_sem);
          break;
       case REQUEST_CLOSE:
          response.id = request->id;
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Close Connection\n" );
-         sem_post(&shm->r_sem);
+         LOG_INFO( "Request Close Connection\n" );
          break;
       case REQUEST_KILL:
          response.id = request->id;
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Request Kill Application\n" );
-         sem_post(&shm->r_sem);
+         LOG_INFO( "Request Kill Application\n" );
          break;
       default:
-         sem_wait(&shm->w_sem);
-         print_header(shm->header);
-         sprintf( shm->buffer, "Invalid Request\n" );
-         sem_post(&shm->r_sem);
+        LOG_INFO( "Invalid Request\n" );
          break;
    }
 
    return response;
 }
 
-/**
- * =================================================================================
+/*!
  * Function:       cycle
  * @brief   Cycle function for remote socket task. Spins in this infinite while-loop
  *          checking for new connections to make. When it receives a new connection,
@@ -130,7 +99,6 @@ msg_t process_request( msg_t *request )
  *
  * @param   server   - server socket file descriptor
  * @return  void
- * =================================================================================
  */
 static void cycle( int server )
 {
@@ -140,8 +108,6 @@ static void cycle( int server )
    struct sockaddr_in addr;
    int addrlen = sizeof( addr );
 
-   /* Buffer to copy status to shared memory for logger */
-   //char *status;
    while( 1 )
    {
       int kill = 0;
@@ -150,18 +116,18 @@ static void cycle( int server )
       {
          int errnum = errno;
 
-         fprintf( stderr, "Could not accept new connection (%s)\n",
+         LOG_ERROR( "Could not accept new connection (%s)\n",
                   strerror( errnum ) );
          continue;
       }
 
       client_info = inet_ntop( AF_INET, &addr.sin_addr, ip, sizeof( ip ) );
-      fprintf( stdout, "New connection accepted: %s\n", client_info );
+      LOG_INFO( "New connection accepted: %s\n", client_info );
 
       while( 1 )
       {
-         msg_t request = {0};
-         msg_t response = {0};
+         remote_t request = {0};
+         remote_t response = {0};
          int bytes = 0;
          while( ( -1 != bytes ) && ( sizeof( request ) > bytes ) )
          {
@@ -187,29 +153,29 @@ static void cycle( int server )
             if( -1 == bytes )
             {
                int errnum = errno;
-               fprintf( stderr, "Encountered error sending data to client: (%s)\n",
+               LOG_ERROR( "Encountered error sending data to client: (%s)\n",
                         strerror( errnum ) );
                break;
             }
             else
             {
-               fprintf( stderr, "Could not transmit all data: %u out of %u bytes sent.\n",
+               LOG_ERROR( "Could not transmit all data: %u out of %u bytes sent.\n",
                         bytes, sizeof( response ) );
                break;
             }
          }
-         fprintf( stdout, "%u out of %u bytes sent.\n",
+         LOG_INFO( "%u out of %u bytes sent.\n",
                   bytes, sizeof( response ) );
       }
 
       client_info = inet_ntop( AF_INET, &addr.sin_addr, ip, sizeof( ip ) );
       close( client );
-      fprintf( stdout, "Client connection closed: %s\n", client_info );
+      LOG_INFO( "Client connection closed: %s\n", client_info );
 
       if( 1 == kill )
       {
          close( server );
-         fprintf( stdout, "Closed server.\n" );
+         LOG_INFO( "Closed server.\n" );
          break;
       }
    }
@@ -217,14 +183,12 @@ static void cycle( int server )
 }
 
 
-/**
- * =================================================================================
+/*!
  * Function:       socket_init
  * @brief   Initliaze the server socket
  *
  * @param   void
  * @return  server - file descriptor for newly created socket for server
- * =================================================================================
  */
 int socket_init( void )
 {
@@ -236,7 +200,7 @@ int socket_init( void )
    if( 0 == server )
    {
       int errnum = errno;
-      fprintf( stderr, "Encountered error creating new socket (%s)\n",
+      LOG_ERROR( "Encountered error creating new socket (%s)\n",
                strerror( errnum ) );
       return -1;
    }
@@ -245,11 +209,8 @@ int socket_init( void )
    if( 0 != retVal )
    {
       int errnum = errno;
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "Encountered error setting socket options (%s)\n",
+      LOG_ERROR( "Encountered error setting socket options (%s)\n",
                strerror( errnum ) );
-      sem_post(&shm->r_sem);
       return -1;
    }
 
@@ -262,11 +223,8 @@ int socket_init( void )
    if( 0 > retVal )
    {
       int errnum = errno;
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "Encountered error binding the new socket (%s)\n",
+      LOG_ERROR( "Encountered error binding the new socket (%s)\n",
                strerror( errnum ) );
-      sem_post(&shm->r_sem);
       return -1;
    }
 
@@ -275,32 +233,24 @@ int socket_init( void )
    if( 0 > retVal )
    {
       int errnum = errno;
-      sem_wait(&shm->w_sem);
-      print_header(shm->header);
-      sprintf( shm->buffer, "Encountered error listening with new socket (%s)\n",
+      LOG_ERROR( "Encountered error listening with new socket (%s)\n",
                strerror( errnum ) );
-      sem_post(&shm->r_sem);
       return -1;
    }
 
-   sem_wait(&shm->w_sem);
-   print_header(shm->header);
-   sprintf( shm->buffer, "Created new socket [%d]!\n", server );
-   sem_post(&shm->r_sem);
+   LOG_INFO( "SOCKET TASK: SERVER ID [%d]\n", server );
 
    return server;
 }
 
 
-/**
- * =================================================================================
+/*!
  * Function:       socket_fn
  * @brief   Entry point for remote socket thread
  *
  * @param   *thread_args   - thread arguments (if any)
  * @return  NULL  - We don't really exit from this function,
  *                   since the exit point is thread_exit()
- * =================================================================================
  */
 void *socket_fn( void *thread_args )
 {
@@ -308,23 +258,14 @@ void *socket_fn( void *thread_args )
    struct timespec time;
    clock_gettime(CLOCK_REALTIME, &time);
 
-   /* Get pointer to shared memory struct */
-   shm = get_shared_memory();
-
    int server = socket_init();
    if( -1 == server )
    {
-      fprintf( stderr, "Failed to set up server!\n" );
+      LOG_ERROR( "SOCKET TASK INIT\n" );
       thread_exit( EXIT_INIT );
    }
 
-   /* Write initial state to shared memory */
-   sem_wait(&shm->w_sem);
-   print_header(shm->header);
-   sprintf( shm->buffer, "Hello World! Start Time: %ld.%ld secs\n",
-            time.tv_sec, time.tv_nsec );
-   /* Signal to logger that shared memory has been updated */
-   sem_post(&shm->r_sem);
+   LOG_INFO( "SOCKET TASK: Hello World!\n" );
 
    cycle( server );
 

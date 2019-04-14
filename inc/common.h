@@ -26,14 +26,18 @@
 #include <unistd.h>
 #include <semaphore.h>
 #include <mqueue.h>
-
+#include <time.h>
+#include <string.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
 
-#define SHM_SEGMENT_NAME "/shm-log"
-#define SHM_BUFFER_SIZE 2048
+//#define SHM_SEGMENT_NAME "/shm-log"
+//#define SHM_BUFFER_SIZE 2048
 
-#define GEN_BUFFER_SIZE 100
+
+#define NUM_THREADS         (5)
+
+#define MSG_SIZE 100
 #define MAX_MESSAGES 100
 
 #define MICROS_PER_SEC  1000000
@@ -42,7 +46,7 @@
 #define FREQ_2HZ        (MICROS_PER_SEC/2)
 #define FREQ_4HZ        (MICROS_PER_SEC/4)
 #define FREQ_HALF_HZ    (MICROS_PER_SEC*2)
-#define HALF_QURT_HZ    (MICROS_PER_SEC*4)
+#define FREQ_QURT_HZ    (MICROS_PER_SEC*4)
 
 #define ERROR   "[ERROR]\n"
 #define INFO    "[INFO]\n"
@@ -51,7 +55,7 @@
 
 #define FPRINTF(stream, fmt, ...)   \
    do{ \
-      fprintf(stream, "[PID:%d][TID:%ld]", getpid(), syscall(SYS_gettid)); \
+      fprintf(stream, "[%s]\t[PID:%d]\t[TID:%ld]", get_timestamp(), getpid(), syscall(SYS_gettid)); \
       fprintf(stream, fmt, ##__VA_ARGS__); \
       fflush( stream ); \
    }while(0)
@@ -64,13 +68,13 @@
 
 #define LOG_ERROR(fmt, ...)  \
    do{ \
-      fprintf( stderr, ERROR fmt, ##__VA_ARGS__ ); \
+      FPRINTF( stderr, ERROR fmt, ##__VA_ARGS__ ); \
       fflush( stderr ); \
    }while(0)
 
 #define LOG_INFO(fmt, ...)  \
    do{ \
-      FPRINTF( stdout, INFO fmt, ##__VA_ARGS__ ); \
+      FPRINTF( stderr, INFO fmt, ##__VA_ARGS__ ); \
       fflush( stdout ); \
    }while(0)
 
@@ -80,11 +84,33 @@
       fflush( stderr ); \
    }while(0)
 
+/*******************************************************************************
+ *  Struct to hold thread identifiers for tasks
+ ******************************************************************************/
+pthread_t task_id[ NUM_THREADS ];
 
+typedef enum {
+   TASK_LOGGER = 0,
+   TASK_TEMP,
+   TASK_LIGHT,
+   TASK_SOCKET,
+   TASK_WATCHDOG,
+   TASK_MAX
+} task_e;
+
+
+/*! @brief Logging levels */
+typedef enum
+{
+   LOG_ERROR,
+   LOG_WARNING,
+   LOG_INFO,
+   LOG_ALL
+} log_level_e;
 
 
 /*******************************************************************************
- *  Defines types of possible messages
+ *  Defines types of possible requests from remote clients
  ******************************************************************************/
 typedef enum {
    REQUEST_BEGIN = 0,
@@ -100,6 +126,24 @@ typedef enum {
    REQUEST_MAX
 } request_e;
 
+
+/*******************************************************************************
+ *  Defines types of possible messages
+ ******************************************************************************/
+typedef enum {
+   MSG_BEGIN = 0,
+   MSG_LUX,
+   MSG_DARK,
+   MSG_TEMP,
+   MSG_TEMP_C = REQUEST_TEMP,
+   MSG_TEMP_K,
+   MSG_TEMP_F,
+   MSG_CLOSE,
+   MSG_KILL,
+   MSG_STATUS,
+   MSG_MAX
+} message_e;
+
 /*******************************************************************************
  *  Defines struct for communicating sensor information
  ******************************************************************************/
@@ -114,10 +158,21 @@ typedef struct {
  ******************************************************************************/
 typedef struct {
    request_e id;
-   mqd_t src;
-   char info[GEN_BUFFER_SIZE];
+   char info[MSG_SIZE];
    sensor_data_t data;
-} msg_t;
+} remote_t;
+
+
+/*! @brief Log Message Structure */
+typedef struct
+{
+   log_level_e level;
+   char        timestamp[25];
+   message_e   id;
+   task_e      src;
+   char        msg[MSG_SIZE];
+} message_t;
+
 
 /*******************************************************************************
  *
@@ -126,42 +181,6 @@ typedef struct {
    char *name;
    FILE *fid;
 } file_t;
-
-/*******************************************************************************
- *  Struct to hold thread identifiers for tasks
- ******************************************************************************/
-typedef struct thread_id_s {
-   pthread_t temp_thread;
-   pthread_t light_thread;
-   pthread_t logger_thread;
-   pthread_t socket_thread;
-   pthread_t watchdog_thread;
-} thread_id_s;
-
-
-/*******************************************************************************
- *  Struct to hold thread identifiers for tasks
- ******************************************************************************/
-typedef enum {
-   TASK_LOGGER = 0,
-   TASK_TMP102,
-   TASK_APDS9301,
-   TASK_SOCKET,
-   TASK_WATCHDOG,
-   TASK_MAIN,
-   TASK_MAX   
-} task_e;
-
-/*******************************************************************************
- *  Shared Memory Data Struct
- ******************************************************************************/
-typedef struct {
-   char buffer[SHM_BUFFER_SIZE];  /** Buffer for message from thread */
-   char header[SHM_BUFFER_SIZE];  /** Buffer for header identifying the thread who wrote to shm */
-   sem_t w_sem;
-   sem_t r_sem;
-} shared_data_t;
-
 
 /*******************************************************************************
  *  Exit Enum
@@ -173,6 +192,33 @@ typedef enum {
    EXIT_ERROR,
    EXIT_MAX
 } exit_e;
+
+
+
+extern const char* const task_name[NUM_THREADS + 1];
+
+/*!
+ * @brief 
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ */
+static inline const char* get_task_name( task_e task_id )
+{
+   return task_name[ task_id ];
+}
+
+
+/*!
+ * @brief 
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ */
+char* get_timestamp( void );
+
 
 /**
  * =================================================================================
@@ -207,7 +253,7 @@ void thread_exit( int exit_status );
  * @return  *shm_p - pointer to shared memory object
  * =================================================================================
  */
-void *get_shared_memory( void );
+//void *get_shared_memory( void );
 
 /**
  * =================================================================================
@@ -218,7 +264,7 @@ void *get_shared_memory( void );
  * @return  EXIT_CLEAN if successful, otherwise EXIT_INIT
  * =================================================================================
  */
-int sems_init( shared_data_t *shm );
+//int sems_init( shared_data_t *shm );
 
 /**
  * =================================================================================

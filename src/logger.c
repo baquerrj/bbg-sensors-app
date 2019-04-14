@@ -36,9 +36,20 @@
 
 struct itimerspec trigger;
 static FILE *log;
-//static shared_data_t *shm;
 
-//static mqd_t logger_queue
+static mqd_t logger_queue;
+
+uint8_t log_msg( mqd_t queue, const message_t *msg, size_t size, int priority )
+{
+   if( -1 == mq_send( queue, (const char*)msg, size, priority ) )
+   {
+      int errnum = errno;
+      LOG_ERROR( "LOGGER - QUEUE SEND (%s)\n", strerror( errnum ) );
+      return EXIT_ERROR;
+   }
+   return EXIT_CLEAN;
+}
+
 /*!
  * Function:       sig_handler
  * @brief   Signal handler for logger thread.
@@ -52,16 +63,53 @@ static void sig_handler( int signo )
 {
    if( signo == SIGUSR1 )
    {
-      printf("Received SIGUSR1! Exiting...\n");
+      LOG_INFO( "LOGGER TASK: Received SIGUSR1! Exiting...\n");
       thread_exit( signo );
    }
    else if( signo == SIGUSR2 )
    {
-      printf("Received SIGUSR2! Exiting...\n");
+      LOG_INFO( "LOGGER TASK: Received SIGUSR2! Exiting...\n");
       thread_exit( signo );
    }
    return;
 }
+
+
+void logger_cycle( void )
+{
+   uint8_t retVal;
+   unsigned int prio;
+   message_t msg = {0};
+   while( 1 )
+   {
+      memset( &msg, 0, sizeof( msg ) );
+
+      retVal = mq_receive( logger_queue, (char*)&msg, sizeof(msg), &prio );
+
+      if( 0 > retVal )
+      {
+         led_toggle( LED3_BRIGHTNESS ); 
+         int errnum = errno;
+         LOG_ERROR( "LOGGER TASK: QUEUE RECEIVE: (%s)\n",
+                     strerror( errnum ) );
+         continue;
+      }
+      switch( msg.id )
+      {
+         case MSG_STATUS:
+         {
+            LOG_MSG( log, INFO"FROM: %s ----- %s",
+                     get_task_name(msg.src), msg.msg );
+            //LOG_MSG( log, INFO "[%s] FROM: %s ----- %s",
+            //         msg.timestamp, get_task_name(msg.src), msg.msg );
+            break;
+         }
+         default:
+            break;
+      }
+   }
+}
+                     
 
 uint8_t convert_timestamp( char *timestamp, const int len )
 {
@@ -95,28 +143,21 @@ mqd_t logger_queue_init( void )
    struct mq_attr attr;
    attr.mq_flags = 0;
    attr.mq_maxmsg = MAX_MESSAGES;
-   attr.mq_msgsize = sizeof( msg_t );
+   attr.mq_msgsize = sizeof( message_t );
    attr.mq_curmsgs = 0;
 
-   int msg_q = mq_open( LOGGER_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
-   if( 0 > msg_q )
+   logger_queue = mq_open( LOGGER_QUEUE_NAME, O_CREAT | O_RDWR, 0666, &attr );
+   if( 0 > logger_queue )
    {
       int errnum = errno;
-//      sem_wait(&shm->w_sem);
-//      print_header(shm->header);
-//      sprintf( shm->buffer, "ERROR: Encountered error creating message queue %s: (%s)\n",
-//               LOGGER_QUEUE_NAME, strerror( errnum ) );
-//      sem_post(&shm->r_sem);
-      LOG_ERROR( "Could not create message queue for logger task: %s\n",
+      LOG_ERROR( "LOGGER TASK: QUEUE CREATE: (%s)\n",
                   strerror( errnum ) );
    }
-   return msg_q;   
+   return logger_queue;   
 }
 
 void *logger_fn( void *arg )
 {
-   struct timespec time;
-   clock_gettime(CLOCK_REALTIME, &time);
    static int failure = 1;
 
    signal(SIGUSR1, sig_handler);
@@ -133,47 +174,22 @@ void *logger_fn( void *arg )
    if( NULL == log )
    {
       int errnum = errno;
-      //perror( "Encountered error opening log file" );
       LOG_ERROR( "Encountered error opening log file (%s)\n",
                   strerror( errnum ) );
       pthread_exit(&failure);
    }
 
-//   shm = get_shared_memory();
-//   if( NULL == shm )
-//   {
-//      int errnum = errno;
-//      fprintf( stderr, "Encountered error memory mapping shared memory: %s\n",
-//               strerror( errnum ) );
-//   }
-
-
-//  shared_data_t *buf = malloc( sizeof( shared_data_t ) );
-//   if( NULL == buf )
-//   {
-//      int errnum = errno;
-//      fprintf( stderr, "Encountered error allocating memory for local buffer %s\n",
-//               strerror( errnum ) );
-//   }
-
    uint8_t retVal = logger_queue_init();
    if( 0 > retVal )
    {
-      LOG_ERROR( "LOGGER TASK INIT\n" );
       pthread_exit( &failure );
    }
 
    LOG_INFO( "LOGGER TASK INITIALIZED\n" );
+
+   logger_cycle();
    while( 1 )
    {
-//      sem_wait(&shm->r_sem);
-//      memcpy( buf, shm, sizeof(*shm) );
-         
-//      fprintf( log, "%s\n%s", buf->header, buf->buffer );
-//      fflush( log );
-
-      led_toggle( LED3_BRIGHTNESS ); 
-//      sem_post(&shm->w_sem);
    }
 
    return NULL;

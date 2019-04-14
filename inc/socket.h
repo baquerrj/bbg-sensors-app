@@ -1,5 +1,4 @@
-/**
- * =================================================================================
+/*!
  *    @file     socket.h
  *    @brief   Remote Socket task capable of requesting sensor readings from
  *             temperature and light sensor threads
@@ -14,7 +13,6 @@
  *
  *  This source code is released for free distribution under the terms of the
  *  GNU General Public License as published by the Free Software Foundation.
- * =================================================================================
  */
 
 
@@ -24,20 +22,17 @@
 
 #include "common.h"
 
-/**
- * =================================================================================
+/*!
  * Function:       process_request
  * @brief   Process a request from remote client
  *
  * @param   *request - request from client
  * @return  response - our response 
- * =================================================================================
  */
-msg_t process_request( msg_t *request );
+remote_t process_request( remote_t *request );
 
-/**
+/*!
  *
- * =================================================================================
  * Function:       cycle
  * @brief   Cycle function for remote socket task. Spins in this infinite while-loop
  *          checking for new connections to make. When it receives a new connection,
@@ -45,19 +40,16 @@ msg_t process_request( msg_t *request );
  *
  * @param   server   - server socket file descriptor
  * @return  void
- * =================================================================================
  */
 int socket_init( void );
 
-/**
- * =================================================================================
+/*!
  * Function:       socket_fn
  * @brief   Entry point for remote socket thread
  *
  * @param   *thread_args   - thread arguments (if any) 
  * @return  NULL  - We don't really exit from this function, 
  *                   since the exit point is thread_exit()
- * =================================================================================
  */
 void *socket_fn( void *thread_arg );
 
