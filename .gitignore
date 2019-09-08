@@ -1,3 +1,6 @@
+**/docs/
+!./docs/*.config
+!/docs/*.cfg
 # Prerequisites
 *.d
 
