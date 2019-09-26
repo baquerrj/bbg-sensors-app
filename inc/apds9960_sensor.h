@@ -236,6 +236,18 @@ typedef struct gesture_data_type {
 } gesture_data_type;
 
 
+
+/*!
+ * @brief 
+ *
+ * @param  <+NAME+> <+DESCRIPTION+>
+ * @return <+DESCRIPTION+>
+ * <+DETAILED+>
+ */
+uint8_t apds9960_sensor_init( i2c_handle_t *i2c );
+
+
+
 /*!
  * Function:       apds9960_getMode
  * @brief  

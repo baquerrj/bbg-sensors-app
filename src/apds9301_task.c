@@ -57,22 +57,15 @@ static message_t apds9301_log = {
  */
 static void sig_handler( int signo )
 {
-   if( signo == SIGUSR1 )
+   if( signo == SIGUSR1 || signo == SIGUSR2 )
    {
-      LOG_INFO( "APDS9301 TASK: Received SIGUSR1! Exiting...\n");
+      LOG_INFO( "APDS9301 TASK: Received signal! Exiting...\n");
       mq_close( apds9301_queue );
       timer_delete( timerid );
+#ifndef _PROXIMITY_ 
       apds9301_power( POWER_OFF );
       i2c_stop( &i2c_apds9301 );
-      thread_exit( signo );
-   }
-   else if( signo == SIGUSR2 )
-   {
-      LOG_INFO( "APDS9301 TASK: Received SIGUSR2! Exiting...\n");
-      mq_close( apds9301_queue );
-      timer_delete( timerid );
-      apds9301_power( POWER_OFF );
-      i2c_stop( &i2c_apds9301 );
+#endif
       thread_exit( signo );
    }
    return;
@@ -80,7 +73,7 @@ static void sig_handler( int signo )
 
 /**
  * =================================================================================
- * Function:       timer_handler
+ * Function:       apds9301_task
  * @brief   Timer handler function for light sensor thread
  *          When woken up by the timer, get lux reading and write state to shared memory
  *
@@ -88,9 +81,9 @@ static void sig_handler( int signo )
  * @return  void
  * =================================================================================
  */
-static void timer_handler( union sigval sig )
+static void apds9301_task( union sigval sig )
 {
-
+#if _PROXIMITY_ == 0
    static int i = 0;
 
    float lux = -5;
@@ -116,7 +109,7 @@ static void timer_handler( union sigval sig )
          LOG_TASK_MSG( &apds9301_log, "State: %s, Lux: %0.5f\n", "DAY", lux );
       }
    }
-
+#endif
    led_toggle( LED1_BRIGHTNESS );
    return;
 }
@@ -216,22 +209,25 @@ void *apds9301_fn( void *thread_args )
       thread_exit( EXIT_INIT );
    }
 
-//   int retVal = i2c_init( &i2c_apds9301 );
-//   if( EXIT_CLEAN != retVal )
-//   {
-//      LOG_ERROR( "APDS9301 TASK: I2C INIT\n" );
-//      thread_exit( EXIT_INIT );
-//   }
-//   retVal = apds9301_power( POWER_ON );
-//   if( EXIT_CLEAN != retVal )
-//   {
-//      LOG_ERROR( "APDS9301 TASK: POWER ON\n" );
-//      thread_exit( EXIT_INIT );
-//   }
+#ifndef _PROXIMITY_
+   
+   int retVal = i2c_init( &i2c_apds9301 );
+   if( EXIT_CLEAN != retVal )
+   {
+      LOG_ERROR( "APDS9301 TASK: I2C INIT\n" );
+      thread_exit( EXIT_INIT );
+   }
+   retVal = apds9301_power( POWER_ON );
+   if( EXIT_CLEAN != retVal )
+   {
+      LOG_ERROR( "APDS9301 TASK: POWER ON\n" );
+      thread_exit( EXIT_INIT );
+   }
+#endif
+   
+   timer_setup( &timerid, &apds9301_task );
 
-//   timer_setup( &timerid, &timer_handler );
-
-//   timer_start( &timerid, FREQ_1HZ );
+   timer_start( &timerid, FREQ_1HZ );
 
    LOG_INFO( "APDS9301 TASK INITIALIZED\n" );
    cycle();

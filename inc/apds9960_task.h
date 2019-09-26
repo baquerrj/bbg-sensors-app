@@ -43,7 +43,7 @@ mqd_t get_apds9960_queue( void );
  * @return <+DESCRIPTION+>
  * <+DETAILED+>
  */
-uint8_t apds9960_i2c_init( void );
+//uint8_t apds9960_i2c_init( void );
 
 
 

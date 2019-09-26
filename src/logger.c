@@ -108,11 +108,23 @@ void logger_cycle( void )
          }
          case MSG_STATUS:
          {
-            LOG_MSG( log, INFO"FROM: %s ----- %s",
+            switch( msg.level )
+            {
+               case LOG_ERROR:
+               {
+                  LOG_MSG( log, ERROR"FROM: %s ----- %s",
                      get_task_name(msg.src), msg.msg );
-            //LOG_MSG( log, INFO "[%s] FROM: %s ----- %s",
-            //         msg.timestamp, get_task_name(msg.src), msg.msg );
-            break;
+                  break;
+               }
+               case LOG_INFO:
+               {
+                  LOG_MSG( log, INFO"FROM: %s ----- %s",
+                           get_task_name(msg.src), msg.msg );
+                  break;
+               }
+               default:
+                  break;
+            }
          }
          default:
             break;

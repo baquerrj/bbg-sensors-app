@@ -52,22 +52,14 @@ static message_t apds9960_log = {
  */
 static void sig_handler( int signo )
 {
-   if( signo == SIGUSR1 )
+   if( signo == SIGUSR1 || signo == SIGUSR2 )
    {
-      printf("Received SIGUSR1! Exiting...\n");
+      printf("Received signal! Exiting...\n");
       mq_close( apds9960_queue );
       timer_delete( timerid );
-//      apds9960_power( POWER_OFF );
+#ifdef _PROXIMITY_
       i2c_stop( &i2c_apds9960 );
-      thread_exit( signo );
-   }
-   else if( signo == SIGUSR2 )
-   {
-      printf("Received SIGUSR2! Exiting...\n");
-      mq_close( apds9960_queue );
-      timer_delete( timerid );
-//      apds9960_power( POWER_OFF );
-      i2c_stop( &i2c_apds9960 );
+#endif
       thread_exit( signo );
    }
    return;
@@ -107,6 +99,7 @@ static void cycle( void )
 static void apds9960_task( union sigval sig )
 {
    uint8_t id = 0;
+#ifdef _PROXIMITY_
    int retVal = apds9960_read_id( &id );
    if( EXIT_CLEAN != retVal )
    {
@@ -124,161 +117,21 @@ static void apds9960_task( union sigval sig )
    uint8_t proximity_level = 0;
    if( EXIT_CLEAN != readProximity( &proximity_level ) )
    {
-      LOG_ERROR( "READ PROXIMITY: %d\n", proximity_level );
+      apds9960_log.level = LOG_ERROR;
+      apds9960_log.id = MSG_STATUS;
+      LOG_TASK_MSG( &apds9960_log, "READ PROXIMITY: %d\n", proximity_level );
    }
    else
    {
-      LOG_INFO( "READ PROXIMITY: %d\n", proximity_level );
+      apds9960_log.level = LOG_INFO;
+      apds9960_log.id = MSG_STATUS;
+      LOG_TASK_MSG( &apds9960_log, "READ PROXIMITY: %d\n", proximity_level );
    }
+#endif
+   LOG_TASK_MSG( &apds9960_log, "APDS9960 TASK\n" );
    return;
 }
 
-
-uint8_t apds9960_i2c_init( void )
-{
-   uint8_t retVal = i2c_init( &i2c_apds9960 );
-   if( 0 != retVal )
-   {
-      mraa_result_print( retVal );
-      LOG_ERROR( "Could not initialize I2C Master instance\n" );
-      return retVal;
-   }
-   uint8_t id;
-   
-   retVal = apds9960_read_id( &id );
-   if( ( APDS9960_ID_1 != id ) && ( APDS9960_ID_2 != id ) )
-   {
-      LOG_ERROR( "Invalid ID: %u\n", id );
-      return 1;
-   }
-   else
-   {
-      LOG_INFO( "ID: %u\n", id );
-   }
-
-   if( EXIT_CLEAN != setMode( ALL, OFF ) )
-   {
-      return EXIT_ERROR;
-   }
-
-
-   if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_ATIME, DEFAULT_ATIME ) )
-   {
-      return EXIT_ERROR;
-   }
-
-   if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_WTIME, DEFAULT_WTIME) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_PPULSE, DEFAULT_PROX_PPULSE) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_POFFSET_UR, DEFAULT_POFFSET_UR) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_POFFSET_DL, DEFAULT_POFFSET_DL) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_CONFIG1, DEFAULT_CONFIG1) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setLEDDrive(DEFAULT_LDRIVE) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setProximityGain(DEFAULT_PGAIN) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setAmbientLightGain(DEFAULT_AGAIN) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setProximityIntLowThreshold(DEFAULT_PILT) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setProximityIntHighThreshold(DEFAULT_PIHT) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setLightIntLowThreshold(DEFAULT_AILT) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != setLightIntHighThreshold(DEFAULT_AIHT) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_PERS, DEFAULT_PERS) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_CONFIG2, DEFAULT_CONFIG2) ) {
-        return EXIT_ERROR;
-    }
-    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_CONFIG3, DEFAULT_CONFIG3) ) {
-        return EXIT_ERROR;
-    }
-
-    /* Set default values for gesture sense registers */
-//    if( EXIT_CLEAN != setGestureEnterThresh(DEFAULT_GPENTH) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != setGestureExitThresh(DEFAULT_GEXTH) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GCONF1, DEFAULT_GCONF1) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != setGestureGain(DEFAULT_GGAIN) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != setGestureLEDDrive(DEFAULT_GLDRIVE) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != setGestureWaitTime(DEFAULT_GWTIME) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GOFFSET_U, DEFAULT_GOFFSET) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GOFFSET_D, DEFAULT_GOFFSET) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GOFFSET_L, DEFAULT_GOFFSET) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GOFFSET_R, DEFAULT_GOFFSET) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GPULSE, DEFAULT_GPULSE) ) {
-//        return EXIT_ERROR;
-//    }
-//    if( EXIT_CLEAN != i2c_write_byte( APDS9960_I2C_ADDR, APDS9960_GCONF3, DEFAULT_GCONF3) ) {
-//        return EXIT_ERROR;
-//    }
-    if( EXIT_CLEAN != setGestureIntEnable(DEFAULT_GIEN) ) {
-        return EXIT_ERROR;
-    }
-
-
-    if( EXIT_CLEAN != setProximityGain(PGAIN_2X) )
-    {
-       LOG_ERROR( "SET PROXIMITY GAIN %d\n", PGAIN_2X );
-       return EXIT_ERROR;
-    }
-
-   if( EXIT_CLEAN != enableProximitySensor( 0 ) )
-   {
-      return EXIT_ERROR;
-   }
-
-   uint8_t proximity_gain = getProximityGain();
-   if( DEFAULT_PGAIN != proximity_gain )
-   {
-      LOG_ERROR( "PROXIMITY GAIN: [%d] != [%d]\n", DEFAULT_PGAIN, proximity_gain );
-      return EXIT_ERROR;
-   }
-   else
-   {
-      LOG_INFO( "EXPECTED %d, ACTUAL %d\n", PGAIN_2X, proximity_gain );
-   }
-
-   return retVal;
-}
 
 mqd_t get_apds9960_queue( void )
 {
@@ -316,19 +169,14 @@ void *apds9960_fn( void *thread_args )
       thread_exit( EXIT_INIT );
    }
 
-   int retVal = apds9960_i2c_init();
+#ifdef _PROXIMITY_
+   int retVal = apds9960_sensor_init( &i2c_apds9960 );
    if( EXIT_CLEAN != retVal )
    {
-      LOG_ERROR( "APDS9960 TASK: I2C INIT\n" );
-      thread_exit( EXIT_INIT );
+     LOG_ERROR( "APDS9960 TASK: I2C INIT\n" );
+     thread_exit( EXIT_INIT );
    }
-//   retVal = apds9960_power( POWER_ON );
-//   if( EXIT_CLEAN != retVal )
-//   {
-//      LOG_ERROR( "ERROR: Failed to power on light sensor!\n" );
-//      thread_exit( EXIT_INIT );
-//   }
-
+#endif
    timer_setup( &timerid, &apds9960_task );
 
    timer_start( &timerid, FREQ_1HZ );

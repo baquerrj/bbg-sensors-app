@@ -32,7 +32,7 @@
 #include <sys/types.h>
 
 #define NUM_THREADS         (6)
-
+#define _PROXIMITY_ 1
 #define MSG_SIZE 100
 #define MAX_MESSAGES 100
 
